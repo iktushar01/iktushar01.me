@@ -3,6 +3,7 @@ import Header from "@/components/modules/homepage/header";
 import AboutMe from "@/components/modules/homepage/aboutme";
 import Skills from "@/components/modules/homepage/skills";
 import Education from "@/components/modules/homepage/education";
+import Contact from "@/components/modules/homepage/contactUs";
 export default function Home() {
   return (
     <div>
@@ -11,6 +12,7 @@ export default function Home() {
       <AboutMe />
       <Skills />
       <Education />
+      <Contact />
     </div>
   );
 }
