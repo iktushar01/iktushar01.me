@@ -55,7 +55,8 @@ export default function RootLayout({
           Initializing...
         </h2>
       </div>
-     
+      
+      {/* Brutalist Progress Bar */}
       
 
       
