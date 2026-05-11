@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, DM_Sans, Syne } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
+import SmoothFollower from "@/components/modules/SmoothFollower/SmoothFollower";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <SmoothFollower />
           <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>

@@ -79,50 +79,67 @@ export default function ContactUs() {
   };
 
   return (
-    <section className="relative min-h-screen py-24 px-6 bg-background text-foreground overflow-hidden font-sans">
+    <section id="contact" className="relative py-24 px-4 sm:px-8 bg-background text-foreground overflow-hidden font-dm-sans">
       {/* Background Decor */}
-      <div className="absolute inset-0 bg-grid-red opacity-10 pointer-events-none" />
-      <div className="absolute top-1/4 -left-48 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
-      
-      <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-        
-        {/* Left Side: Info */}
-        <motion.div 
-          initial={{ opacity: 0, x: -30 }} 
-          whileInView={{ opacity: 1, x: 0 }} 
-          viewport={{ once: true }}
-          className="space-y-8"
-        >
-          <div>
-            <h4 className="text-primary font-bold tracking-widest uppercase text-sm mb-4">— Get in Touch</h4>
-            <h2 className="text-5xl md:text-7xl font-black leading-tight italic">
-              LET'S <span className="text-primary">BUILD</span> SOMETHING.
-            </h2>
-          </div>
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(circle, var(--primary) 1px, transparent 1px)", backgroundSize: "40px 40px" }}
+      />
+      <div className="absolute top-1/4 -right-48 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-48 w-96 h-96 bg-secondary/10 rounded-full blur-[140px] pointer-events-none" />
 
-          <div className="space-y-4">
-            {[
-              { icon: <FaMapMarkerAlt />, val: "Gazipur, Dhaka", label: "Location" },
-              { icon: <FaWhatsapp />, val: "+880 1756650014", label: "Phone" },
-              { icon: <FaEnvelope />, val: "hello@tushar.dev", label: "Email" },
-            ].map((item) => (
-              <div 
-                key={item.label}
-                className="flex items-center gap-4 p-4 rounded-2xl bg-card border border-white/5 hover:border-primary/50 transition-colors group cursor-pointer"
-                onClick={() => handleCopy(item.val, item.label)}
-              >
-                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                  {item.icon}
-                </div>
-                <div className="flex-1">
-                  <p className="text-xs text-muted-foreground uppercase tracking-tighter">{item.label}</p>
-                  <p className="font-medium">{item.val}</p>
-                </div>
-                {copied === item.label ? <FaCheck className="text-green-500" /> : <FaCopy className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />}
+      <div className="relative z-10 container mx-auto max-w-6xl">
+        <header className="text-center mb-16">
+          <motion.span 
+            initial={{ opacity: 0 }} 
+            whileInView={{ opacity: 1 }} 
+            className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-4 block"
+          >
+            — Get in Touch
+          </motion.span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-syne tracking-tight">
+            Contact <span className="text-primary">Me</span>
+          </h2>
+          <p className="mt-4 text-muted-foreground text-sm max-w-xs mx-auto">
+            Have a project in mind? Let&apos;s build something amazing together.
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          
+          {/* Left Side: Info */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }} 
+            whileInView={{ opacity: 1, x: 0 }} 
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <div>
+              <h3 className="text-2xl font-bold font-syne mb-6">Contact Information</h3>
+              <div className="space-y-4">
+                {[
+                  { icon: <FaMapMarkerAlt />, val: "Gazipur, Dhaka", label: "Location" },
+                  { icon: <FaWhatsapp />, val: "+880 1756650014", label: "Phone" },
+                  { icon: <FaEnvelope />, val: "hello@tushar.dev", label: "Email" },
+                ].map((item) => (
+                  <div 
+                    key={item.label}
+                    className="flex items-center gap-4 p-4 rounded-2xl bg-card border border-white/5 hover:border-primary/50 transition-colors group cursor-pointer"
+                    onClick={() => handleCopy(item.val, item.label)}
+                  >
+                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                      {item.icon}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs text-muted-foreground uppercase tracking-tighter">{item.label}</p>
+                      <p className="font-medium">{item.val}</p>
+                    </div>
+                    {copied === item.label ? <FaCheck className="text-green-500" /> : <FaCopy className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </motion.div>
+            </div>
+          </motion.div>
 
         {/* Right Side: Form */}
         <motion.div
@@ -201,6 +218,7 @@ export default function ContactUs() {
           </form>
         </motion.div>
 
+        </div>
       </div>
     </section>
   );
