@@ -116,6 +116,7 @@ export default function Certificates() {
                           src={cert.image} 
                           alt={cert.title} 
                           fill 
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -150,7 +151,13 @@ export default function Certificates() {
                 </DialogHeader>
                 <div className="mt-4 space-y-6">
                   <div className="relative h-64 rounded-xl overflow-hidden border border-border">
-                    <Image src={cert.image} alt={cert.title} fill className="object-cover" />
+                    <Image 
+                      src={cert.image} 
+                      alt={cert.title} 
+                      fill 
+                      sizes="(max-width: 768px) 100vw, 640px"
+                      className="object-cover" 
+                    />
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">

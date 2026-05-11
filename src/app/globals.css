@@ -7,7 +7,7 @@
 @theme inline {
   --font-dm-sans: var(--font-dm-sans);
   --font-syne: var(--font-syne);
-  
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
@@ -20,64 +20,84 @@
 
 :root {
   /* LIGHT MODE: Navy Blue & White with Red accents */
-  --background: oklch(1 0 0);               /* White */
-  --foreground: oklch(0.25 0.05 260);      /* Deep Navy Text */
+  --background: oklch(1 0 0);
+  /* White */
+  --foreground: oklch(0.25 0.05 260);
+  /* Deep Navy Text */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.25 0.05 260);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.25 0.05 260);
-  
-  --primary: oklch(0.35 0.12 260);         /* Navy Blue */
-  --primary-foreground: oklch(1 0 0);      /* White text on Navy */
-  
-  --secondary: oklch(0.6 0.25 25);         /* Accent Red (Gaming Red) */
+
+  --primary: oklch(0.35 0.12 260);
+  /* Navy Blue */
+  --primary-foreground: oklch(1 0 0);
+  /* White text on Navy */
+
+  --secondary: oklch(0.6 0.25 25);
+  /* Accent Red (Gaming Red) */
   --secondary-foreground: oklch(1 0 0);
-  
-  --muted: oklch(0.95 0.02 260);           /* Very faint Navy tint */
+
+  --muted: oklch(0.95 0.02 260);
+  /* Very faint Navy tint */
   --muted-foreground: oklch(0.45 0.05 260);
-  
-  --accent: oklch(0.6 0.25 25);            /* Red for highlights */
+
+  --accent: oklch(0.6 0.25 25);
+  /* Red for highlights */
   --accent-foreground: oklch(1 0 0);
-  
+
   --destructive: oklch(0.5 0.2 25);
-  --border: oklch(0.9 0.05 260);           /* Navy-tinted light border */
+  --border: oklch(0.9 0.05 260);
+  /* Navy-tinted light border */
   --input: oklch(0.9 0.05 260);
-  --ring: oklch(0.6 0.25 25);              /* Red ring for focus */
+  --ring: oklch(0.6 0.25 25);
+  /* Red ring for focus */
 
   --radius: 0.625rem;
 }
 
 .dark {
   /* DARK MODE: Pitch Black & Aggressive Red */
-  --background: oklch(0.12 0 0);           /* Almost pure black */
-  --foreground: oklch(0.95 0 0);           /* Near white */
-  --card: oklch(0.16 0.01 0);              /* Slightly lighter black */
+  --background: oklch(0.12 0 0);
+  /* Almost pure black */
+  --foreground: oklch(0.95 0 0);
+  /* Near white */
+  --card: oklch(0.16 0.01 0);
+  /* Slightly lighter black */
   --card-foreground: oklch(0.95 0 0);
   --popover: oklch(0.12 0 0);
   --popover-foreground: oklch(0.95 0 0);
-  
-  --primary: oklch(0.62 0.25 25);          /* Vivid "Vibrant" Red */
-  --primary-foreground: oklch(0.12 0 0);   /* Black text on Red */
-  
-  --secondary: oklch(0.22 0.02 0);         /* Dark Charcoal */
+
+  --primary: oklch(0.62 0.25 25);
+  /* Vivid "Vibrant" Red */
+  --primary-foreground: oklch(0.12 0 0);
+  /* Black text on Red */
+
+  --secondary: oklch(0.22 0.02 0);
+  /* Dark Charcoal */
   --secondary-foreground: oklch(0.95 0 0);
-  
+
   --muted: oklch(0.2 0.02 0);
-  --muted-foreground: oklch(0.6 0 0);      /* Grayed out red/white */
-  
-  --accent: oklch(0.62 0.25 25);           /* Red glow accent */
+  --muted-foreground: oklch(0.6 0 0);
+  /* Grayed out red/white */
+
+  --accent: oklch(0.62 0.25 25);
+  /* Red glow accent */
   --accent-foreground: oklch(1 0 0);
-  
+
   --destructive: oklch(0.4 0.2 25);
-  --border: oklch(0.25 0.02 0);            /* Dark border */
+  --border: oklch(0.25 0.02 0);
+  /* Dark border */
   --input: oklch(0.25 0.02 0);
-  --ring: oklch(0.62 0.25 25);             /* Red focus ring */
+  --ring: oklch(0.62 0.25 25);
+  /* Red focus ring */
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

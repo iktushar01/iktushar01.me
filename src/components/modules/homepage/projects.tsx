@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useCallback, ReactNode } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import Image from "next/image";
 import { FiExternalLink, FiX, FiChevronLeft, FiChevronRight, FiEye } from "react-icons/fi";
 import { projectsData, type Project } from '@/components/data/projects';
 
@@ -76,16 +77,22 @@ const ImageCarousel: React.FC<{ images: string[]; title: string }> = ({ images, 
   return (
     <div className="relative h-64 md:h-[420px] rounded-2xl overflow-hidden bg-black/60 group shadow-2xl border border-border/50">
       <AnimatePresence mode="wait">
-        <motion.img
+        <motion.div
           key={idx}
-          src={images[idx]}
-          alt={`${title} screenshot ${idx + 1}`}
-          className="w-full h-full object-cover"
+          className="relative w-full h-full"
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.97 }}
           transition={{ duration: 0.4 }}
-        />
+        >
+          <Image
+            src={images[idx]}
+            alt={`${title} screenshot ${idx + 1}`}
+            fill
+            sizes="(max-width: 768px) 100vw, 800px"
+            className="object-cover"
+          />
+        </motion.div>
       </AnimatePresence>
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
       {images.length > 1 && (
@@ -140,8 +147,14 @@ const Projects: React.FC = () => {
               transition={{ delay: index * 0.1 }}
               className="group relative flex flex-col md:flex-row gap-8 p-6 rounded-3xl bg-card/40 backdrop-blur-md border border-border/50 hover:border-primary/50 transition-all duration-500"
             >
-               <div className="w-full md:w-1/2 overflow-hidden rounded-2xl border border-border/50">
-                 <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+               <div className="w-full md:w-1/2 h-[300px] md:h-auto relative overflow-hidden rounded-2xl border border-border/50">
+                 <Image 
+                   src={project.images[0]} 
+                   alt={project.title} 
+                   fill
+                   sizes="(max-width: 768px) 100vw, 500px"
+                   className="object-cover group-hover:scale-105 transition-transform duration-700" 
+                 />
                </div>
                <div className="flex-1 flex flex-col justify-between">
                  <div>

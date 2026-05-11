@@ -11,10 +11,12 @@ interface SocialLink {
 }
 
 const Footer: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   const currentYear: number = new Date().getFullYear();
 
   useEffect(() => {
+    setMounted(true);
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
@@ -88,7 +90,9 @@ const Footer: React.FC = () => {
           <div className="flex flex-col items-center md:items-end space-y-4">
             <div className="text-right font-mono">
               <span className="text-[10px] block text-muted-foreground uppercase tracking-widest">Runtime_Clock</span>
-              <span className="text-lg text-foreground font-bold">{formatTime(currentTime)}</span>
+              <span className="text-lg text-foreground font-bold">
+                {mounted ? formatTime(currentTime) : "--:--:--"}
+              </span>
             </div>
             <motion.button
               whileHover={{ scale: 1.1, backgroundColor: "var(--primary)" }}

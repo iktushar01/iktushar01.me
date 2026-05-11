@@ -78,15 +78,15 @@ const educationData: EducationItem[] = [
 const GlitchText: React.FC<{ children: ReactNode }> = ({ children }) => (
   <span className="relative inline-block group">
     <span className="relative z-10">{children}</span>
-    <span 
-      aria-hidden 
+    <span
+      aria-hidden
       className="absolute inset-0 text-primary opacity-0 group-hover:opacity-50 translate-x-[2px] -translate-y-[1px] pointer-events-none select-none"
       style={{ clipPath: "polygon(0 25%, 100% 25%, 100% 45%, 0 45%)" }}
     >
       {children}
     </span>
-    <span 
-      aria-hidden 
+    <span
+      aria-hidden
       className="absolute inset-0 text-secondary opacity-0 group-hover:opacity-50 -translate-x-[2px] translate-y-[1px] pointer-events-none select-none"
       style={{ clipPath: "polygon(0 65%, 100% 65%, 100% 85%, 0 85%)" }}
     >
@@ -244,7 +244,7 @@ const EducationRow: React.FC<{ item: EducationItem; index: number }> = ({ item, 
 const Education: React.FC = () => (
   <section id="education" className="relative py-24 px-4 sm:px-8 bg-background text-foreground overflow-hidden font-dm-sans">
     {/* Decorative BG */}
-    <div 
+    <div
       className="absolute inset-0 opacity-[0.03] pointer-events-none"
       style={{ backgroundImage: "radial-gradient(circle, var(--primary) 1px, transparent 1px)", backgroundSize: "40px 40px" }}
     />
@@ -252,9 +252,9 @@ const Education: React.FC = () => (
 
     <div className="relative z-10 container mx-auto max-w-5xl">
       <header className="text-center mb-16">
-        <motion.span 
-          initial={{ opacity: 0 }} 
-          whileInView={{ opacity: 1 }} 
+        <motion.span
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-4 block"
         >
           — Academic History
