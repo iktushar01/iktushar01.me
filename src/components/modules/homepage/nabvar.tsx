@@ -93,12 +93,11 @@ export default function Navbar() {
                         className="flex items-center gap-3 group cursor-pointer"
                         onClick={() => scrollToSection("home")}
                     >
-                        <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20">
-                            P
-                        </div>
-                        <span className="text-foreground font-bold tracking-tight text-xl hidden sm:block">
-                            PORTFOLIO<span className="text-primary">.</span>
-                        </span>
+                        <img 
+                            src="https://res.cloudinary.com/dfoqasqnw/image/upload/logo_msrkwi.png" 
+                            alt="Logo" 
+                            className="h-10 w-auto"
+                        />
                     </div>
 
                     {/* Actions Section */}
