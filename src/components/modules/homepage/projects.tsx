@@ -5,217 +5,204 @@ import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motio
 import Image from "next/image";
 import { FiExternalLink, FiX, FiChevronLeft, FiChevronRight, FiEye } from "react-icons/fi";
 import { projectsData, type Project } from '@/components/data/projects';
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-// ─── Shadcn-like Utility Types ───────────────────────────────────────────────
-interface MagneticProps {
-  children: ReactNode;
-  className?: string;
-  onClick?: () => void;
-  href?: string;
-  target?: string;
-  rel?: string;
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
 }
 
-// ─── Tech colour map ──────────────────────────────────────────────────────────
-const TECH_COLORS: Record<string, string> = {
-  "Next.js 16": "bg-white/10 text-white border border-white/20",
-  "React 19": "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30",
-  TypeScript: "bg-blue-500/10 text-blue-400 border border-blue-500/30",
-  "Tailwind CSS 4": "bg-teal-500/10 text-teal-400 border border-teal-500/30",
-  "TanStack Query": "bg-orange-500/10 text-orange-400 border border-orange-500/30",
-  "Node.js": "bg-green-500/10 text-green-400 border border-green-500/30",
-  MongoDB: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30",
-  default: "bg-primary/10 text-primary border border-primary/30",
-};
-
-const getTechColor = (t: string) => TECH_COLORS[t] || TECH_COLORS.default;
-
-// ─── Magnetic button ──────────────────────────────────────────────────────────
-const MagneticButton: React.FC<MagneticProps> = ({ children, className, onClick, href, target, rel }) => {
-  const ref = useRef<any>(null);
+// ─── Magnetic Button (Cartoon Style) ──────────────────────────────────────────
+const MagneticButton: React.FC<{ children: ReactNode; onClick?: () => void; className?: string }> = ({ children, onClick, className }) => {
+  const ref = useRef<HTMLButtonElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 300, damping: 20 });
-  const sy = useSpring(y, { stiffness: 300, damping: 20 });
+  const sx = useSpring(x, { stiffness: 400, damping: 15 });
+  const sy = useSpring(y, { stiffness: 400, damping: 15 });
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    x.set((e.clientX - cx) * 0.35);
-    y.set((e.clientY - cy) * 0.35);
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    x.set((clientX - (left + width / 2)) * 0.4);
+    y.set((clientY - (top + height / 2)) * 0.4);
   };
 
-  const handleMouseLeave = () => { x.set(0); y.set(0); };
-
-  const Tag = href ? motion.a : motion.button;
   return (
-    <Tag
+    <motion.button
       ref={ref}
-      href={href} 
-      target={target} 
-      rel={rel}
+      onMouseMove={handleMove}
+      onMouseLeave={() => { x.set(0); y.set(0); }}
       onClick={onClick}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       style={{ x: sx, y: sy }}
-      whileTap={{ scale: 0.94 }}
-      className={className}
+      className={cn(
+        "bg-primary text-primary-foreground border-[4px] border-black font-black uppercase italic px-6 py-3 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all",
+        className
+      )}
     >
       {children}
-    </Tag>
+    </motion.button>
   );
 };
 
-// ─── Image carousel ───────────────────────────────────────────────────────────
-const ImageCarousel: React.FC<{ images: string[]; title: string }> = ({ images, title }) => {
-  const [idx, setIdx] = useState(0);
-  const next = useCallback(() => setIdx((p) => (p + 1) % images.length), [images.length]);
-  const prev = useCallback(() => setIdx((p) => (p - 1 + images.length) % images.length), [images.length]);
-
+// ─── Project Card (Sticker/Postcard Style) ─────────────────────────────────────
+const ProjectCard: React.FC<{ project: Project; index: number; onOpen: () => void }> = ({ project, index, onOpen }) => {
   return (
-    <div className="relative h-64 md:h-[420px] rounded-2xl overflow-hidden bg-black/60 group shadow-2xl border border-border/50">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={idx}
-          className="relative w-full h-full"
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.97 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Image
-            src={images[idx]}
-            alt={`${title} screenshot ${idx + 1}`}
-            fill
-            sizes="(max-width: 768px) 100vw, 800px"
-            className="object-cover"
-          />
-        </motion.div>
-      </AnimatePresence>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-      {images.length > 1 && (
-        <>
-          <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary">
-            <FiChevronLeft size={18} />
-          </button>
-          <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary">
-            <FiChevronRight size={18} />
-          </button>
-        </>
-      )}
-    </div>
+    <motion.div
+      initial={{ opacity: 0, rotate: index % 2 === 0 ? -2 : 2, y: 50 }}
+      whileInView={{ opacity: 1, rotate: 0, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -10, rotate: index % 2 === 0 ? 1 : -1 }}
+      className="group relative flex flex-col md:flex-row gap-8 p-8 bg-white dark:bg-zinc-900 border-[5px] border-black shadow-[15px_15px_0px_0px_rgba(0,0,0,1)] transition-all"
+    >
+      {/* Project Thumbnail */}
+      <div className="w-full md:w-1/2 aspect-video relative overflow-hidden border-[4px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <Image
+          src={project.images[0]}
+          alt={project.title}
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+        <div className="absolute top-4 left-4 px-3 py-1 bg-yellow-400 border-[3px] border-black font-black text-xs uppercase -rotate-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          Featured
+        </div>
+      </div>
+
+      {/* Project Info */}
+      <div className="flex-1 flex flex-col justify-between">
+        <div>
+          <h3 className="text-4xl font-black font-handwritten uppercase tracking-tighter mb-4 italic">
+            {project.title}
+          </h3>
+          <p className="font-bold text-zinc-600 dark:text-zinc-400 mb-6 leading-tight">
+            {project.description}
+          </p>
+          <div className="flex flex-wrap gap-2 mb-8">
+            {project.technologies.slice(0, 4).map((tech) => (
+              <span key={tech} className="px-3 py-1 bg-white dark:bg-zinc-800 border-[3px] border-black text-[10px] font-black uppercase shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                #{tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <MagneticButton onClick={onOpen} className="flex items-center gap-2">
+            <FiEye size={20} /> Inspect
+          </MagneticButton>
+          <a
+            href={project.liveLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-4 bg-white dark:bg-zinc-800 border-[4px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+          >
+            <FiExternalLink size={24} className="text-black dark:text-white" />
+          </a>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
-// ─── Main Section ─────────────────────────────────────────────────────────────
+// ─── Main Projects Section ───────────────────────────────────────────────────
 const Projects: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
-    <section id="projects" className="relative py-24 px-4 bg-background text-foreground overflow-hidden min-h-screen font-dm-sans">
-      {/* Background Decor */}
+    <section id="projects" className="relative py-32 px-6 bg-background overflow-hidden">
+      {/* Background Decor (Grid/Dots) */}
       <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(circle, var(--primary) 1px, transparent 1px)", backgroundSize: "40px 40px" }}
+        className="absolute inset-0 opacity-[0.1] pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(#000 2px, transparent 2px)", backgroundSize: "30px 30px" }}
       />
-      <div className="absolute top-1/4 -right-48 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-48 w-96 h-96 bg-secondary/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
-        <header className="text-center mb-20">
-          <motion.span 
-            initial={{ opacity: 0 }} 
-            whileInView={{ opacity: 1 }} 
-            className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-4 block"
+        <header className="text-center mb-24">
+          <motion.div
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            className="inline-block px-6 py-2 border-[4px] border-black bg-cyan-400 font-black text-sm uppercase mb-4 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] -rotate-3"
           >
-            — Selected Works
-          </motion.span>
-          <h2 className="text-5xl md:text-7xl font-black mb-4 font-syne tracking-tight">
-            Crafted <span className="text-primary">Code.</span>
+            Portfolio Lab 🧪
+          </motion.div>
+          <h2 className="text-7xl md:text-9xl font-black italic tracking-tighter drop-shadow-[10px_10px_0_rgba(0,0,0,1)] uppercase">
+            CRAFTED <span className="text-primary">WORKS</span>
           </h2>
         </header>
 
-        <div className="grid grid-cols-1 gap-12">
-          {projectsData.map((project: Project, index: number) => (
-            <motion.div 
-              key={project.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative flex flex-col md:flex-row gap-8 p-6 rounded-3xl bg-card/40 backdrop-blur-md border border-border/50 hover:border-primary/50 transition-all duration-500"
-            >
-               <div className="w-full md:w-1/2 h-[300px] md:h-auto relative overflow-hidden rounded-2xl border border-border/50">
-                 <Image 
-                   src={project.images[0]} 
-                   alt={project.title} 
-                   fill
-                   sizes="(max-width: 768px) 100vw, 500px"
-                   className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                 />
-               </div>
-               <div className="flex-1 flex flex-col justify-between">
-                 <div>
-                   <h3 className="text-3xl font-bold mb-4 font-syne">{project.title}</h3>
-                   <p className="text-muted-foreground mb-6 leading-relaxed">{project.description}</p>
-                   <div className="flex flex-wrap gap-2 mb-8">
-                     {project.technologies.slice(0, 6).map((tech: string) => (
-                       <span key={tech} className={`px-3 py-1 rounded-full text-xs font-medium ${getTechColor(tech)}`}>
-                         {tech}
-                       </span>
-                     ))}
-                   </div>
-                 </div>
-                 <div className="flex gap-4">
-                   <MagneticButton onClick={() => setSelectedProject(project)} className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
-                     <FiEye /> View Details
-                   </MagneticButton>
-                   <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="p-3 bg-secondary/20 rounded-xl border border-border hover:bg-secondary/40 transition-colors">
-                     <FiExternalLink size={20} className="text-foreground" />
-                   </a>
-                 </div>
-               </div>
-            </motion.div>
+        <div className="grid grid-cols-1 gap-24">
+          {projectsData.map((project, index) => (
+            <ProjectCard 
+              key={project.id} 
+              project={project} 
+              index={index} 
+              onOpen={() => setSelectedProject(project)} 
+            />
           ))}
         </div>
       </div>
 
+      {/* Modal Detail (Cartoon Style) */}
       <AnimatePresence>
         {selectedProject && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div 
-               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-               className="absolute inset-0 bg-black/90 backdrop-blur-md" 
-               onClick={() => setSelectedProject(null)} 
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-yellow-400/20 backdrop-blur-xl border-[10px] border-black"
+              onClick={() => setSelectedProject(null)}
             />
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-4xl bg-card rounded-3xl overflow-hidden border border-border shadow-2xl"
+            
+            <motion.div
+              initial={{ scale: 0.5, rotate: -10, opacity: 0 }}
+              animate={{ scale: 1, rotate: 0, opacity: 1 }}
+              exit={{ scale: 0.5, rotate: 10, opacity: 0 }}
+              className="relative w-full max-w-4xl bg-white dark:bg-zinc-900 border-[8px] border-black shadow-[30px_30px_0px_0px_rgba(0,0,0,1)] rounded-none overflow-hidden max-h-[90vh] flex flex-col"
             >
-              <button onClick={() => setSelectedProject(null)} className="absolute top-6 right-6 z-10 p-2 bg-secondary/40 rounded-full hover:bg-primary transition-colors text-foreground">
-                <FiX size={20} />
-              </button>
-              <div className="p-8 max-h-[90vh] overflow-y-auto">
-                <ImageCarousel images={selectedProject.images} title={selectedProject.title} />
-                <h2 className="text-4xl font-bold mt-8 mb-4 font-syne">{selectedProject.title}</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+              <div className="p-4 bg-black text-white flex justify-between items-center">
+                <span className="font-black italic uppercase text-sm">Project_Terminal.exe</span>
+                <button onClick={() => setSelectedProject(null)} className="hover:text-red-500 transition-colors">
+                  <FiX size={24} />
+                </button>
+              </div>
+
+              <div className="p-8 overflow-y-auto">
+                {/* Simplified Carousel for Cartoon style */}
+                <div className="relative aspect-video border-[5px] border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] bg-zinc-200 mb-8">
+                  <Image
+                    src={selectedProject.images[0]}
+                    alt={selectedProject.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                <h2 className="text-5xl font-black font-handwritten italic uppercase mb-6">{selectedProject.title}</h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                   <div>
-                    <h4 className="text-primary font-bold uppercase text-xs tracking-widest mb-4">The Challenge</h4>
-                    <ul className="space-y-3">
-                      {selectedProject.challenges.map((c: string, i: number) => (
-                        <li key={i} className="text-muted-foreground text-sm flex gap-2">
-                          <span className="text-primary">/</span> {c}
+                    <h4 className="inline-block px-3 py-1 bg-primary text-white border-[3px] border-black font-black uppercase text-xs mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                      The Mission
+                    </h4>
+                    <ul className="space-y-4">
+                      {selectedProject.challenges.map((c, i) => (
+                        <li key={i} className="font-bold flex gap-3 text-zinc-600">
+                          <span className="text-primary font-black">▶</span> {c}
                         </li>
                       ))}
                     </ul>
                   </div>
+
                   <div>
-                    <h4 className="text-primary font-bold uppercase text-xs tracking-widest mb-4">Tech Stack</h4>
+                    <h4 className="inline-block px-3 py-1 bg-green-400 text-black border-[3px] border-black font-black uppercase text-xs mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                      Technology
+                    </h4>
                     <div className="flex flex-wrap gap-2">
-                      {selectedProject.technologies.map((t: string) => (
-                        <span key={t} className={`px-3 py-1 rounded-full text-[10px] ${getTechColor(t)}`}>{t}</span>
+                      {selectedProject.technologies.map((t) => (
+                        <span key={t} className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 border-[3px] border-black text-xs font-black uppercase">
+                          {t}
+                        </span>
                       ))}
                     </div>
                   </div>

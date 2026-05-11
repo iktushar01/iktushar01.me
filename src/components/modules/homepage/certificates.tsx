@@ -1,58 +1,38 @@
 "use client";
 
-import React, { useState, useRef, ReactNode } from "react";
+import React, { useRef, ReactNode } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
-import { FiExternalLink, FiAward, FiCalendar, FiZap } from "react-icons/fi";
+import { FiExternalLink, FiAward, FiCalendar, FiEye, FiX } from "react-icons/fi";
 import { 
   Dialog, 
   DialogContent, 
   DialogHeader, 
   DialogTitle, 
-  DialogTrigger 
+  DialogTrigger,
+  DialogClose
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
 import { certificatesData, type Certificate } from "@/components/data/certificates";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-// --- Types ---
-interface TechColors {
-  [key: string]: string;
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
 }
 
-const TECH_COLORS: TechColors = {
-  React: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
-  JavaScript: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
-  MongoDB: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
-  "Node.js": "bg-green-500/10 text-green-400 border-green-500/30",
-  "UI/UX": "bg-pink-500/10 text-pink-400 border-pink-500/30",
-  default: "bg-primary/10 text-primary border-primary/30",
-};
-
-const getTechColor = (t: string) => TECH_COLORS[t] || TECH_COLORS.default;
-
-// --- Sub-Components ---
-const GlitchText = ({ children }: { children: ReactNode }) => (
-  <span className="relative inline-block group font-syne">
-    <span className="relative z-10">{children}</span>
-    <span aria-hidden className="absolute inset-0 text-primary opacity-0 group-hover:opacity-50 translate-x-[2px] -translate-y-[1px] pointer-events-none select-none transition-opacity duration-300"
-      style={{ clipPath: "polygon(0 25%, 100% 25%, 100% 45%, 0 45%)" }}>{children}</span>
-    <span aria-hidden className="absolute inset-0 text-cyan-400 opacity-0 group-hover:opacity-50 -translate-x-[2px] translate-y-[1px] pointer-events-none select-none transition-opacity duration-300"
-      style={{ clipPath: "polygon(0 65%, 100% 65%, 100% 85%, 0 85%)" }}>{children}</span>
-  </span>
-);
-
+// --- Cartoon Tilt Component ---
 const TiltCard = ({ children, className }: { children: ReactNode; className?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 200, damping: 25 });
-  const sry = useSpring(ry, { stiffness: 200, damping: 25 });
+  const srx = useSpring(rx, { stiffness: 300, damping: 15 });
+  const sry = useSpring(ry, { stiffness: 300, damping: 15 });
 
   const handleMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
-    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 12);
-    ry.set(((e.clientX - r.left) / r.width - 0.5) * 12);
+    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 15);
+    ry.set(((e.clientX - r.left) / r.width - 0.5) * 15);
   };
 
   return (
@@ -70,73 +50,68 @@ const TiltCard = ({ children, className }: { children: ReactNode; className?: st
 
 export default function Certificates() {
   return (
-    <section id="certificates" className="relative py-24 px-4 sm:px-8 bg-background text-foreground overflow-hidden font-dm-sans">
-      {/* Background Decor */}
+    <section id="certificates" className="relative py-32 px-6 bg-background overflow-hidden">
+      {/* Polka Dot Background */}
       <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(circle, var(--primary) 1px, transparent 1px)", backgroundSize: "40px 40px" }}
+        className="absolute inset-0 opacity-[0.1] pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(#000 3px, transparent 3px)", backgroundSize: "40px 40px" }}
       />
-      <div className="absolute top-1/4 -right-48 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-48 w-96 h-96 bg-secondary/10 rounded-full blur-[140px] pointer-events-none" />
-      
-      <div className="relative z-10 container mx-auto max-w-5xl">
+
+      <div className="relative z-10 container mx-auto max-w-6xl">
         {/* Header */}
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-4 block">— Achievements</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-syne">
-            Certificates & <span className="text-primary">Awards</span>
+        <header className="text-center mb-24">
+          <motion.div
+            initial={{ scale: 0, rotate: -10 }}
+            whileInView={{ scale: 1, rotate: -3 }}
+            className="inline-block px-6 py-2 border-[4px] border-black bg-purple-400 font-black text-sm uppercase mb-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+          >
+            Skill Badges Unlocked! 🏆
+          </motion.div>
+          <h2 className="text-6xl md:text-9xl font-black uppercase italic tracking-tighter drop-shadow-[10px_10px_0_rgba(0,0,0,1)]">
+            CERTIF<span className="text-primary">ICATES</span>
           </h2>
-          <p className="mt-4 text-muted-foreground text-sm max-w-xs mx-auto">
-            A testament to my dedication and continuous learning journey.
-          </p>
-        </motion.div>
+        </header>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {certificatesData.map((cert: Certificate, index: number) => (
             <Dialog key={cert.id}>
               <DialogTrigger asChild>
-                <div className="h-full">
-                  <TiltCard className="h-full">
+                <div className="cursor-pointer group">
+                  <TiltCard>
                     <motion.div
-                      initial={{ opacity: 0, y: 30 }}
+                      initial={{ opacity: 0, y: 50, rotate: index % 2 === 0 ? -1 : 1 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.1 }}
-                      className="group relative h-full rounded-2xl border border-border bg-card/40 backdrop-blur-md overflow-hidden cursor-pointer flex flex-col"
+                      className="relative bg-white dark:bg-zinc-900 border-[5px] border-black p-4 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[18px_18px_0px_0px_rgba(0,0,0,1)] group-hover:-translate-y-2 transition-all"
                     >
-                      {/* Image Preview */}
-                      <div className="relative h-52 overflow-hidden bg-black/40">
+                      {/* Image Area */}
+                      <div className="relative h-64 border-[4px] border-black overflow-hidden bg-zinc-100">
                         <Image 
                           src={cert.image} 
                           alt={cert.title} 
                           fill 
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                           <Badge variant="destructive" className="flex gap-2"><FiAward /> View Details</Badge>
+                        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="bg-white border-4 border-black px-4 py-2 font-black uppercase italic flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                                <FiEye /> Inspect
+                            </div>
                         </div>
                       </div>
 
-                      {/* Content */}
-                      <div className="p-5 flex-1 flex flex-col">
-                        <h3 className="text-lg font-bold mb-2 font-syne">
-                          <GlitchText>{cert.title}</GlitchText>
+                      {/* Info Area */}
+                      <div className="pt-6 pb-2">
+                        <h3 className="text-2xl font-black uppercase italic leading-none mb-3">
+                          {cert.title}
                         </h3>
-                        <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cert.description}</p>
-                        <div className="flex flex-wrap gap-2 mt-auto">
-                          {cert.skills.slice(0, 3).map((skill: string) => (
-                            <Badge key={skill} variant="outline" className={getTechColor(skill)}>
+                        <div className="flex flex-wrap gap-2">
+                          {cert.skills.slice(0, 3).map((skill) => (
+                            <span key={skill} className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 border-2 border-black text-[10px] font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                               {skill}
-                            </Badge>
+                            </span>
                           ))}
-                          {cert.skills.length > 3 && <Badge variant="secondary" className="bg-secondary/30 text-foreground">+{cert.skills.length - 3}</Badge>}
                         </div>
                       </div>
                     </motion.div>
@@ -144,52 +119,54 @@ export default function Certificates() {
                 </div>
               </DialogTrigger>
 
-              {/* Modal Content */}
-              <DialogContent className="max-w-2xl bg-card border-border text-foreground">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl font-syne font-bold">{cert.title}</DialogTitle>
-                </DialogHeader>
-                <div className="mt-4 space-y-6">
-                  <div className="relative h-64 rounded-xl overflow-hidden border border-border">
+              {/* Cartoon Modal Content */}
+              <DialogContent className="max-w-2xl bg-white dark:bg-zinc-900 border-[8px] border-black rounded-none shadow-[30px_30px_0px_0px_rgba(0,0,0,1)] p-0 gap-0 overflow-hidden">
+                <div className="bg-black p-4 flex justify-between items-center">
+                    <DialogTitle className="text-white font-black italic uppercase tracking-widest flex items-center gap-2">
+                       <FiAward className="text-yellow-400" /> Achievement_Unlocked
+                    </DialogTitle>
+                    <DialogClose className="text-white hover:text-red-500 transition-colors">
+                        <FiX size={24} />
+                    </DialogClose>
+                </div>
+
+                <div className="p-8">
+                  <div className="relative h-64 border-[5px] border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] mb-8 overflow-hidden">
                     <Image 
                       src={cert.image} 
                       alt={cert.title} 
                       fill 
-                      sizes="(max-width: 768px) 100vw, 640px"
                       className="object-cover" 
                     />
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 rounded-xl bg-muted/30 border border-border">
-                      <p className="text-[10px] uppercase text-primary font-bold mb-1">Issuer</p>
-                      <p className="flex items-center gap-2 text-sm"><FiAward className="text-primary" /> {cert.issuer}</p>
+                  <h2 className="text-4xl font-black italic uppercase mb-6 leading-tight underline decoration-primary decoration-4">
+                    {cert.title}
+                  </h2>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <div className="p-4 bg-yellow-400 border-[4px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] -rotate-1">
+                      <p className="text-[10px] font-black uppercase text-black/60">Issuer</p>
+                      <p className="font-black text-lg">{cert.issuer}</p>
                     </div>
-                    <div className="p-4 rounded-xl bg-muted/30 border border-border">
-                      <p className="text-[10px] uppercase text-primary font-bold mb-1">Date</p>
-                      <p className="flex items-center gap-2 text-sm"><FiCalendar className="text-primary" /> {cert.date}</p>
+                    <div className="p-4 bg-cyan-400 border-[4px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rotate-1">
+                      <p className="text-[10px] font-black uppercase text-black/60">Achieved</p>
+                      <p className="font-black text-lg">{cert.date}</p>
                     </div>
                   </div>
 
-                  <div>
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-6">{cert.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-8">
-                      {cert.skills.map((skill: string) => (
-                        <Badge key={skill} variant="outline" className={`${getTechColor(skill)} py-1 px-3`}>
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
-                    
-                    <a 
-                      href={cert.credentialUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary/20"
-                    >
-                      <FiExternalLink /> Verify Credential
-                    </a>
-                  </div>
+                  <p className="font-bold text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed">
+                    {cert.description}
+                  </p>
+
+                  <a 
+                    href={cert.credentialUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="group relative inline-flex w-full items-center justify-center gap-3 bg-primary text-primary-foreground border-[5px] border-black py-4 font-black uppercase italic shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all"
+                  >
+                    <FiExternalLink size={20} /> Verify This Win
+                  </a>
                 </div>
               </DialogContent>
             </Dialog>
