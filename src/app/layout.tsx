@@ -4,7 +4,12 @@ import { Fredoka, Bubblegum_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
-import SmoothFollower from "@/components/modules/SmoothFollower/SmoothFollower";
+import dynamic from "next/dynamic";
+
+const SmoothFollower = dynamic(
+  () => import("@/components/modules/SmoothFollower/SmoothFollower"),
+  { ssr: false },
+);
 
 const fredoka = Fredoka({
   variable: "--font-fredoka",

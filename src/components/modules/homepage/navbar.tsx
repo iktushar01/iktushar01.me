@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import Image from "next/image";
 import {
@@ -32,6 +32,10 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [activeItem, setActiveItem] = useState("home");
     const [scrolled, setScrolled] = useState(false);
+    const rafScrollId = useRef<number | null>(null);
+
+    const navItemIds = useMemo(() => NAV_ITEMS.map((i) => i.id), []);
+    const sectionRangesRef = useRef<Array<{ id: string; top: number; bottom: number }>>([]);
 
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, {
@@ -55,22 +59,52 @@ export default function Navbar() {
     }, []);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
-            const scrollPosition = window.scrollY + 200;
-            for (const item of NAV_ITEMS) {
-                const section = document.getElementById(item.id);
-                if (section &&
-                    scrollPosition >= section.offsetTop &&
-                    scrollPosition < section.offsetTop + section.offsetHeight) {
-                    setActiveItem(item.id);
+        const computeSectionRanges = () => {
+            const next: Array<{ id: string; top: number; bottom: number }> = [];
+            for (const id of navItemIds) {
+                const el = document.getElementById(id);
+                if (!el) continue;
+                const top = el.offsetTop;
+                const bottom = top + el.offsetHeight;
+                next.push({ id, top, bottom });
+            }
+            sectionRangesRef.current = next;
+        };
+
+        computeSectionRanges();
+        window.addEventListener("resize", computeSectionRanges, { passive: true });
+
+        const updateFromScroll = () => {
+            const y = window.scrollY;
+            setScrolled(y > 20);
+
+            const scrollPosition = y + 200;
+            const ranges = sectionRangesRef.current;
+            for (const r of ranges) {
+                if (scrollPosition >= r.top && scrollPosition < r.bottom) {
+                    setActiveItem((prev) => (prev === r.id ? prev : r.id));
                     break;
                 }
             }
         };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+
+        const onScroll = () => {
+            if (rafScrollId.current != null) return;
+            rafScrollId.current = window.requestAnimationFrame(() => {
+                rafScrollId.current = null;
+                updateFromScroll();
+            });
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        updateFromScroll();
+
+        return () => {
+            window.removeEventListener("resize", computeSectionRanges);
+            window.removeEventListener("scroll", onScroll);
+            if (rafScrollId.current != null) window.cancelAnimationFrame(rafScrollId.current);
+        };
+    }, [navItemIds]);
 
     return (
         <>
