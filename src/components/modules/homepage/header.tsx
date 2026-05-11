@@ -9,6 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { springSnappy, springSoft, easeInOut } from "@/lib/motion";
 
+const RESUME_PDF_PATH = "/resume.pdf";
+const CV_DOC_URL =
+  "https://docs.google.com/document/d/1ztbC17xOWptwf2VrMfnj8E_hO7D9JQKyt7wfhGdNC1U/edit?usp=sharing";
+
 const cartoonFloat: Variants = {
   animate: (i: number) => ({
     y: [0, -10, 0],
@@ -115,20 +119,26 @@ const Header: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-6 pt-2">
             <motion.div whileHover={{ scale: 1.02, rotate: -1 }} whileTap={{ scale: 0.98 }} transition={springSnappy}>
               <Button
+                asChild
                 size="lg"
                 className="w-full sm:w-auto bg-primary text-primary-foreground border-4 border-border rounded-[var(--radius-sticker)] px-10 h-16 sm:h-[4.5rem] font-black text-xl shadow-cartoon-md hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-200 ease-out"
               >
-                RESUME <FaFileDownload className="ml-3" />
+                <a href={RESUME_PDF_PATH} download="Ibrahim Khalil Tushar.pdf">
+                  RESUME <FaFileDownload className="ml-3" />
+                </a>
               </Button>
             </motion.div>
 
             <motion.div whileHover={{ scale: 1.02, rotate: 1 }} whileTap={{ scale: 0.98 }} transition={springSnappy}>
               <Button
+                asChild
                 variant="outline"
                 size="lg"
                 className="w-full sm:w-auto bg-card text-card-foreground border-4 border-border rounded-[var(--radius-sticker)] px-10 h-16 sm:h-[4.5rem] font-black text-xl shadow-cartoon-md hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-200 ease-out"
               >
-                VIEW CV <FaEye className="ml-3" />
+                <a href={CV_DOC_URL} target="_blank" rel="noopener noreferrer">
+                  VIEW CV <FaEye className="ml-3" />
+                </a>
               </Button>
             </motion.div>
           </div>
