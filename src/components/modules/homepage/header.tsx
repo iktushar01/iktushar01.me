@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion, Variants } from "framer-motion";
+import Image from "next/image";
 import { 
   FaGithub, FaFileDownload, FaEye, FaReact, FaNodeJs 
 } from "react-icons/fa";
@@ -74,10 +75,13 @@ const Header: React.FC = () => {
           <div className="absolute left-0 right-0 h-[2px] bg-primary/50 shadow-[0_0_15px_rgba(220,38,38,0.8)] z-30 animate-scan" />
 
           <div className="relative z-20 overflow-hidden rounded-lg bg-muted border border-white/5 shadow-2xl">
-            <img
-              src="https://res.cloudinary.com/dfoqasqnw/image/upload/photo_jnp3c8.png" // Replace with your 'photo' import
+            <Image
+              src="https://res.cloudinary.com/dfoqasqnw/image/upload/photo_jnp3c8.png"
               alt="Tushar"
+              width={500}
+              height={500}
               className="w-full max-w-sm md:max-w-md h-auto grayscale hover:grayscale-0 transition-all duration-700"
+              priority
             />
             <div className="absolute bottom-4 left-4 font-mono text-[10px] text-primary/70 uppercase">
               System.Status: Active<br />
@@ -100,7 +104,7 @@ const Header: React.FC = () => {
               FULL STACK DEVELOPER
             </Badge>
 
-            <h1 className="text-6xl lg:text-8xl font-black tracking-tighter leading-none mb-4">
+            <h1 className="text-6xl lg:text-8xl font-black tracking-tighter leading-none mb-4 font-syne">
               TUSHAR<span className="text-primary">.</span>
             </h1>
 

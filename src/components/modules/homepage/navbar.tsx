@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
+import Image from "next/image";
 import {
     Home, User, Code, GraduationCap,
     Briefcase, Award, Mail, ArrowRight, Menu, X
@@ -93,9 +94,11 @@ export default function Navbar() {
                         className="flex items-center gap-3 group cursor-pointer"
                         onClick={() => scrollToSection("home")}
                     >
-                        <img 
+                        <Image 
                             src="https://res.cloudinary.com/dfoqasqnw/image/upload/logo_msrkwi.png" 
                             alt="Logo" 
+                            width={120}
+                            height={40}
                             className="h-10 w-auto"
                         />
                     </div>
