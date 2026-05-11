@@ -4,7 +4,6 @@ import React, { useState, useEffect, JSX } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaFacebook, FaArrowUp } from 'react-icons/fa';
 
-// Define the interface for social links
 interface SocialLink {
   icon: JSX.Element;
   link: string;
@@ -21,7 +20,6 @@ const Footer: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Explicitly typing the date parameter
   const formatTime = (date: Date): string => {
     return date.toLocaleTimeString('en-US', {
       hour: '2-digit',
@@ -41,75 +39,80 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="relative bg-background text-muted-foreground py-12 border-t border-border/50 overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:30px_30px]" />
+    <footer className="relative bg-background py-16 border-t-[8px] border-black overflow-hidden">
+      {/* Cartoon Grid Background */}
+      <div className="absolute inset-0 z-0 opacity-[0.07] pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#000_2px,transparent_2px),linear-gradient(to_bottom,#000_2px,transparent_2px)] bg-[size:40px_40px]" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-12">
           
-          {/* LEFT: System Status */}
-          <div className="flex flex-col items-center md:items-start space-y-2">
-            <div className="flex items-center gap-3">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-muted-foreground/60">
-                System_Live // v2.0.26
-              </span>
+          {/* LEFT: Identity Sticker */}
+          <div className="flex flex-col items-center md:items-start">
+            <div className="bg-green-400 border-[4px] border-black px-4 py-1 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -rotate-2">
+                <div className="flex items-center gap-2">
+                    <span className="h-3 w-3 rounded-full bg-black animate-pulse" />
+                    <span className="font-black text-[10px] uppercase tracking-widest text-black">
+                        System_Operational
+                    </span>
+                </div>
             </div>
-            <p className="text-sm font-light tracking-widest text-foreground/80 uppercase">
-              © {currentYear} <span className="text-primary font-bold uppercase">Ibrahim Khalil Tushar</span>
+            <p className="text-2xl font-black uppercase italic leading-none text-foreground drop-shadow-[2px_2px_0_#fff]">
+              © {currentYear} <span className="text-primary underline decoration-[6px] decoration-black/10">Tushar.Dev</span>
             </p>
+            <p className="mt-2 font-mono text-[10px] font-bold uppercase opacity-60">Hand-coded in Dhaka_BD</p>
           </div>
 
-          {/* CENTER: Social Cluster */}
-          <div className="flex flex-col items-center space-y-4">
-            <div className="flex gap-6">
+          {/* CENTER: Social Slab */}
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex gap-4">
               {socialLinks.map((social, i) => (
                 <motion.a
                   key={i}
                   href={social.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ y: -3, color: "var(--primary)" }}
-                  className="text-xl transition-colors duration-300"
+                  whileHover={{ scale: 1.1, rotate: i % 2 === 0 ? 5 : -5 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="w-14 h-14 bg-white dark:bg-zinc-900 border-[4px] border-black flex items-center justify-center text-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-primary hover:text-white transition-colors"
                 >
                   {social.icon}
                 </motion.a>
               ))}
             </div>
-            <p className="text-[10px] font-mono tracking-tighter opacity-40 uppercase">MERN_STACK_ENGINEER // DHAKA_BD</p>
+            <div className="bg-black text-white px-3 py-1 font-black text-[10px] uppercase italic tracking-widest">
+                Full-Stack_Maverick
+            </div>
           </div>
 
-          {/* RIGHT: Time & Top Button */}
-          <div className="flex flex-col items-center md:items-end space-y-4">
-            <div className="text-right font-mono">
-              <span className="text-[10px] block text-muted-foreground uppercase tracking-widest">Runtime_Clock</span>
-              <span className="text-lg text-foreground font-bold">
-                {mounted ? formatTime(currentTime) : "--:--:--"}
-              </span>
+          {/* RIGHT: Time & Plunger Button */}
+          <div className="flex items-center gap-8">
+            <div className="text-right">
+              <span className="text-[10px] font-black uppercase tracking-tighter text-primary">Local_Timestamp</span>
+              <div className="bg-zinc-100 dark:bg-zinc-800 border-[4px] border-black px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <span className="text-2xl font-black font-mono">
+                   {mounted ? formatTime(currentTime) : "00:00:00"}
+                </span>
+              </div>
             </div>
+
             <motion.button
-              whileHover={{ scale: 1.1, backgroundColor: "var(--primary)" }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ y: -5, boxShadow: "12px 12px 0px 0px rgba(0,0,0,1)" }}
+              whileTap={{ y: 5, boxShadow: "none" }}
               onClick={scrollToTop}
-              className="p-3 bg-foreground/5 border border-border rounded-lg transition-all"
+              className="p-5 bg-primary border-[4px] border-black text-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
               aria-label="Scroll to top"
             >
-              <FaArrowUp className="text-foreground group-hover:text-background" />
+              <FaArrowUp size={24} className="stroke-[20px]" />
             </motion.button>
           </div>
         </div>
 
         {/* Bottom Banner */}
-        <div className="mt-12 text-center">
-            <p className="text-[10px] font-mono text-muted-foreground/30 uppercase tracking-[0.8em]">
-                Built_with_Love
+        <div className="mt-16 pt-8 border-t-[4px] border-black/5 flex flex-col items-center gap-2">
+            <p className="text-[10px] font-black text-black/20 uppercase tracking-[1em]">
+                EndOfLine
             </p>
         </div>
       </div>
