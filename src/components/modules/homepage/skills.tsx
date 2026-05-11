@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, ReactNode } from "react";
-import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import {
   FaReact, FaNodeJs, FaGitAlt, FaHtml5, FaCss3Alt, FaFire, FaWordpress, FaPython, FaPaintBrush
 } from "react-icons/fa";
@@ -14,7 +14,6 @@ import { FiZap, FiCode, FiDatabase, FiTool } from "react-icons/fi";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-/** Utility for Tailwind class merging (Standard in Shadcn) */
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -23,7 +22,7 @@ function cn(...inputs: ClassValue[]) {
 interface Skill {
   name: string;
   icon: ReactNode;
-  color: string; // Used for dynamic glow/styles
+  color: string;
   level: number;
 }
 
@@ -36,101 +35,62 @@ interface SkillGroup {
   skills: Skill[];
 }
 
-// ─── Skill Data ───────────────────────────────────────────────────────────────
 const skillsData: SkillGroup[] = [
   {
     id: 1,
     category: "Frontend",
     icon: <FiCode />,
-    color: "var(--secondary)",
-    description: "Building responsive, interactive user interfaces with modern frameworks and styling tools.",
+    color: "#3B82F6", // Blue
+    description: "Making the web look pretty and stay snappy with modern frameworks.",
     skills: [
-      { name: "React.js", icon: <FaReact />, color: "#61DAFB", level: 90 },
-      { name: "Next.js", icon: <SiNextdotjs />, color: "#FFFFFF", level: 85 },
-      { name: "TypeScript", icon: <SiTypescript />, color: "#3178C6", level: 80 },
-      { name: "JavaScript", icon: <SiJavascript />, color: "#F7DF1E", level: 85 },
-      { name: "HTML5", icon: <FaHtml5 />, color: "#E34F26", level: 90 },
-      { name: "CSS3", icon: <FaCss3Alt />, color: "#1572B6", level: 85 },
-      { name: "Tailwind CSS", icon: <SiTailwindcss />, color: "#38BDF8", level: 85 },
+      { name: "React", icon: <FaReact />, color: "#61DAFB", level: 90 },
+      { name: "Next.js", icon: <SiNextdotjs />, color: "#000000", level: 85 },
+      { name: "TS", icon: <SiTypescript />, color: "#3178C6", level: 80 },
+      { name: "Tailwind", icon: <SiTailwindcss />, color: "#38BDF8", level: 85 },
     ],
   },
   {
     id: 2,
     category: "Backend",
     icon: <FiZap />,
-    color: "var(--primary)",
-    description: "Developing robust server-side logic, RESTful APIs, and integrated systems.",
+    color: "#EF4444", // Red
+    description: "The secret sauce behind the scenes that keeps everything running.",
     skills: [
       { name: "Node.js", icon: <FaNodeJs />, color: "#68A063", level: 85 },
-      { name: "Express.js", icon: <SiExpress />, color: "#CCCCCC", level: 80 },
+      { name: "Express", icon: <SiExpress />, color: "#828282", level: 80 },
       { name: "Python", icon: <FaPython />, color: "#3776AB", level: 75 },
-      { name: "WordPress", icon: <FaWordpress />, color: "#21759B", level: 70 },
-      { name: "JWT Auth", icon: <SiJsonwebtokens />, color: "#FB923C", level: 75 },
+      { name: "JWT", icon: <SiJsonwebtokens />, color: "#FB923C", level: 75 },
     ],
   },
   {
     id: 3,
-    category: "Database & ORM",
+    category: "Data",
     icon: <FiDatabase />,
-    color: "var(--accent)",
-    description: "Designing and managing relational and NoSQL databases with type-safe ORMs.",
+    color: "#10B981", // Green
+    description: "Organizing bits and bytes into powerful, structured logic.",
     skills: [
-      { name: "PostgreSQL", icon: <SiPostgresql />, color: "#4169E1", level: 80 },
+      { name: "Postgres", icon: <SiPostgresql />, color: "#4169E1", level: 80 },
       { name: "MongoDB", icon: <SiMongodb />, color: "#4DB33D", level: 85 },
       { name: "Prisma", icon: <SiPrisma />, color: "#5a67d8", level: 85 },
       { name: "Firebase", icon: <FaFire />, color: "#FFA000", level: 80 },
-    ],
-  },
-  {
-    id: 4,
-    category: "Design & Tools",
-    icon: <FiTool />,
-    color: "var(--primary)",
-    description: "Proficient with industry-standard tools for design, version control, and productivity.",
-    skills: [
-      { name: "Figma", icon: <SiFigma />, color: "#F24E1E", level: 85 },
-      { name: "Photoshop", icon: <FaPaintBrush />, color: "#31A8FF", level: 70 },
-      { name: "Git", icon: <FaGitAlt />, color: "#F05032", level: 85 },
-      { name: "Postman", icon: <SiPostman />, color: "#FF6C37", level: 85 },
-      { name: "Notion", icon: <SiNotion />, color: "#FFFFFF", level: 80 },
     ],
   },
 ];
 
 // ─── Sub-Components ───────────────────────────────────────────────────────────
 
-const GlitchText: React.FC<{ children: ReactNode }> = ({ children }) => (
-  <span className="relative inline-block group">
-    <span className="relative z-10">{children}</span>
-    <span 
-      aria-hidden 
-      className="absolute inset-0 text-primary opacity-0 group-hover:opacity-50 translate-x-[2px] -translate-y-[1px] pointer-events-none select-none"
-      style={{ clipPath: "polygon(0 25%, 100% 25%, 100% 45%, 0 45%)" }}
-    >
-      {children}
-    </span>
-    <span 
-      aria-hidden 
-      className="absolute inset-0 text-secondary opacity-0 group-hover:opacity-50 -translate-x-[2px] translate-y-[1px] pointer-events-none select-none"
-      style={{ clipPath: "polygon(0 65%, 100% 65%, 100% 85%, 0 85%)" }}
-    >
-      {children}
-    </span>
-  </span>
-);
-
 const TiltCard: React.FC<{ children: ReactNode; className?: string }> = ({ children, className }) => {
   const ref = useRef<HTMLDivElement>(null);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 200, damping: 25 });
-  const sry = useSpring(ry, { stiffness: 200, damping: 25 });
+  const srx = useSpring(rx, { stiffness: 300, damping: 15 });
+  const sry = useSpring(ry, { stiffness: 300, damping: 15 });
 
   const move = (e: React.MouseEvent) => {
     if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
-    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 10);
-    ry.set(((e.clientX - r.left) / r.width - 0.5) * 10);
+    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 15);
+    ry.set(((e.clientX - r.left) / r.width - 0.5) * 15);
   };
 
   return (
@@ -146,101 +106,74 @@ const TiltCard: React.FC<{ children: ReactNode; className?: string }> = ({ child
   );
 };
 
-const SkillChip: React.FC<{ skill: Skill; delay: number }> = ({ skill, delay }) => {
-  const [hovered, setHovered] = useState(false);
+const SkillSticker: React.FC<{ skill: Skill; delay: number }> = ({ skill, delay }) => {
   return (
     <motion.div
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      initial={{ opacity: 0, scale: 0.8 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      whileHover={{ scale: 1.05, y: -3 }}
+      initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+      whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+      whileHover={{ scale: 1.1, rotate: 5, y: -5 }}
       viewport={{ once: true }}
-      transition={{ delay, duration: 0.4, type: "spring" }}
-      className={cn(
-        "flex flex-col items-center gap-1.5 p-3 rounded-xl border backdrop-blur-sm cursor-default transition-all duration-300",
-        "bg-white/5 border-white/10"
-      )}
-      style={{
-        backgroundColor: hovered ? `${skill.color}15` : undefined,
-        borderColor: hovered ? `${skill.color}40` : undefined,
-      }}
+      transition={{ type: "spring", stiffness: 260, damping: 20, delay }}
+      className="group relative bg-white dark:bg-zinc-800 border-4 border-black p-4 rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center gap-2 min-w-[100px]"
     >
-      <div 
-        className="text-xl flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 transition-colors duration-300"
-        style={{ color: skill.color, backgroundColor: hovered ? `${skill.color}20` : undefined }}
-      >
-        {skill.icon}
-      </div>
-      <span className="text-[10px] font-semibold text-foreground/70 uppercase tracking-tighter whitespace-nowrap">
-        {skill.name}
-      </span>
-      <div className="w-full bg-white/5 rounded-full h-1 overflow-hidden mt-1">
-        <motion.div
-          className="h-full rounded-full"
-          style={{ background: skill.color }}
+      <div className="text-3xl" style={{ color: skill.color }}>{skill.icon}</div>
+      <span className="text-[10px] font-black uppercase tracking-tight">{skill.name}</span>
+      
+      {/* Cartoon Progress Bar */}
+      <div className="w-full h-3 bg-zinc-200 dark:bg-zinc-700 border-2 border-black rounded-full overflow-hidden">
+        <motion.div 
           initial={{ width: 0 }}
           whileInView={{ width: `${skill.level}%` }}
-          transition={{ duration: 1, delay: delay + 0.2 }}
+          transition={{ duration: 1, delay: delay + 0.3, type: "spring" }}
+          className="h-full border-r-2 border-black"
+          style={{ backgroundColor: skill.color }}
         />
       </div>
     </motion.div>
   );
 };
 
-const SkillCard: React.FC<{ group: SkillGroup; index: number }> = ({ group, index }) => {
-  const [hovered, setHovered] = useState(false);
+const SkillGroupSection: React.FC<{ group: SkillGroup; index: number }> = ({ group, index }) => {
   const isEven = index % 2 === 0;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.7, delay: index * 0.1 }}
       className={cn(
-        "relative flex flex-col lg:flex-row items-center gap-8 lg:gap-12",
+        "flex flex-col lg:flex-row items-center gap-10",
         isEven ? "lg:flex-row" : "lg:flex-row-reverse"
       )}
     >
-      {/* Category Orb */}
+      {/* Chunky Category Badge */}
       <div className="lg:w-1/3 flex justify-center">
         <motion.div
-          whileHover={{ scale: 1.05, rotate: isEven ? 5 : -5 }}
-          className="relative w-32 h-32 lg:w-40 lg:h-40 rounded-3xl flex flex-col items-center justify-center gap-2 border bg-muted/20 backdrop-blur-md"
-          style={{ borderColor: `${group.color}40`, boxShadow: `0 0 30px ${group.color}15` }}
+          animate={{ rotate: [0, 5, -5, 0] }}
+          transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+          className="w-40 h-40 rounded-full border-8 border-black flex flex-col items-center justify-center shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]"
+          style={{ backgroundColor: group.color }}
         >
-          <div className="text-4xl lg:text-5xl" style={{ color: group.color }}>{group.icon}</div>
-          <span className="text-[10px] font-black tracking-widest uppercase text-center" style={{ color: group.color }}>
+          <div className="text-6xl text-white drop-shadow-[4px_4px_0_rgba(0,0,0,1)]">{group.icon}</div>
+          <span className="font-black text-white uppercase tracking-tighter text-sm drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">
             {group.category}
           </span>
         </motion.div>
       </div>
 
-      {/* Content Card */}
+      {/* Skills Container */}
       <div className="w-full lg:w-2/3">
         <TiltCard>
-          <motion.div
-            onHoverStart={() => setHovered(true)}
-            onHoverEnd={() => setHovered(false)}
-            className="relative rounded-3xl border border-border bg-card/50 backdrop-blur-xl p-6 md:p-8 overflow-hidden"
-          >
-            <div 
-              className="absolute left-0 top-0 bottom-0 w-1"
-              style={{ background: `linear-gradient(to bottom, ${group.color}, transparent)` }}
-            />
-            <h3 className="text-2xl font-bold font-syne mb-2">
-              <GlitchText>{group.category}</GlitchText>
+          <div className="bg-white dark:bg-zinc-900 border-4 border-black rounded-[2.5rem] p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden">
+            <h3 className="text-4xl font-black font-handwritten mb-4 italic drop-shadow-sm">
+              {group.category} <span className="text-primary italic">Stuff</span>
             </h3>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+            <p className="text-lg font-bold opacity-80 mb-8 leading-tight">
               {group.description}
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {group.skills.map((skill, i) => (
-                <SkillChip key={skill.name} skill={skill} delay={index * 0.1 + i * 0.05} />
+                <SkillSticker key={skill.name} skill={skill} delay={i * 0.1} />
               ))}
             </div>
-          </motion.div>
+          </div>
         </TiltCard>
       </div>
     </motion.div>
@@ -249,52 +182,54 @@ const SkillCard: React.FC<{ group: SkillGroup; index: number }> = ({ group, inde
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const Skills: React.FC = () => {
-  const totalSkills = skillsData.reduce((a, g) => a + g.skills.length, 0);
-
   return (
-    <section id="skills" className="relative py-24 px-4 sm:px-8 bg-background text-foreground overflow-hidden font-dm-sans">
-      {/* Background Decor */}
+    <section id="skills" className="relative py-24 px-6 bg-background overflow-hidden">
+      {/* Cartoon Polka Dots */}
       <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(circle, var(--primary) 1px, transparent 1px)", backgroundSize: "40px 40px" }}
+        className="absolute inset-0 opacity-[0.15] pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(#000 2px, transparent 2px)", backgroundSize: "30px 30px" }}
       />
-      <div className="absolute top-1/4 -right-48 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-48 w-96 h-96 bg-secondary/10 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto max-w-5xl">
-        <header className="text-center mb-20">
-          <motion.span 
-            initial={{ opacity: 0 }} 
-            whileInView={{ opacity: 1 }} 
-            className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-4 block"
+      <div className="relative z-10 container mx-auto max-w-6xl">
+        <header className="text-center mb-24">
+          <motion.div
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            transition={{ type: "spring", bounce: 0.6 }}
+            className="inline-block px-6 py-2 border-4 border-black bg-yellow-400 font-black text-sm uppercase mb-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] -rotate-2"
           >
-            — My Stack
-          </motion.span>
-          <h2 className="text-4xl sm:text-6xl font-extrabold font-syne tracking-tight">
-            Technical <span className="text-primary">Skills</span>
+            My Power Ups! ⚡
+          </motion.div>
+          <h2 className="text-7xl md:text-9xl font-black font-handwritten drop-shadow-[8px_8px_0_rgba(0,0,0,1)] tracking-tighter">
+            TECH <span className="text-primary italic">STACK</span>
           </h2>
         </header>
 
-        <div className="space-y-20">
+        <div className="space-y-32">
           {skillsData.map((group, index) => (
-            <SkillCard key={group.id} group={group} index={index} />
+            <SkillGroupSection key={group.id} group={group} index={index} />
           ))}
         </div>
 
-        {/* Stats Summary */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-20">
+        {/* Bouncy Stats Footer */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-32">
           {[
-            { label: "Categories", value: skillsData.length, color: "var(--primary)" },
-            { label: "Tools Mastered", value: `${totalSkills}+`, color: "var(--secondary)" },
-            { label: "Experience", value: "1+ Year", color: "var(--accent)" },
+            { label: "XP Categories", value: "04", color: "bg-blue-400" },
+            { label: "Mastered Tools", value: "20+", color: "bg-green-400" },
+            { label: "Leveling Since", value: "2023", color: "bg-purple-400" },
           ].map((stat, i) => (
             <motion.div
               key={i}
-              whileHover={{ y: -5 }}
-              className="p-6 rounded-2xl border border-border bg-card/30 backdrop-blur-sm text-center"
+              whileHover={{ y: -10, rotate: i % 2 === 0 ? 2 : -2 }}
+              className={cn(
+                "p-8 rounded-[2rem] border-4 border-black text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
+                stat.color
+              )}
             >
-              <div className="text-3xl font-black font-syne mb-1" style={{ color: stat.color }}>{stat.value}</div>
-              <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{stat.label}</div>
+              <div className="text-6xl font-black text-white drop-shadow-[4px_4px_0_rgba(0,0,0,1)] mb-2 font-handwritten">
+                {stat.value}
+              </div>
+              <div className="text-sm font-black uppercase tracking-widest text-black/80">{stat.label}</div>
             </motion.div>
           ))}
         </div>

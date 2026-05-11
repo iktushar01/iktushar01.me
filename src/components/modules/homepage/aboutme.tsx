@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useRef, ReactNode } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, Variants } from "framer-motion";
 import { FaCode, FaPaintBrush, FaBook } from "react-icons/fa";
 import { FiZap, FiTarget, FiTrendingUp } from "react-icons/fi";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface StoryItem {
   icon: ReactNode;
-  colorClass: string; // Using Tailwind classes for theme colors
+  colorClass: string; 
   title: string;
   content: string;
 }
@@ -25,51 +25,30 @@ interface FunFactItem {
   text: string;
 }
 
-// ─── BG Grid ──────────────────────────────────────────────────────────────────
-const BgGrid: React.FC = () => (
+// ─── BG Polka Dots (Cartoon Style) ──────────────────────────────────────────
+const BgDots: React.FC = () => (
   <div 
-    className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.05]"
+    className="absolute inset-0 pointer-events-none opacity-[0.15]"
     style={{ 
-      backgroundImage: "radial-gradient(circle, var(--secondary) 1px, transparent 1px)", 
-      backgroundSize: "40px 40px" 
+      backgroundImage: "radial-gradient(#000 2px, transparent 2px)", 
+      backgroundSize: "30px 30px" 
     }} 
   />
 );
 
-// ─── Glitch Text ──────────────────────────────────────────────────────────────
-const GlitchText: React.FC<{ children: ReactNode }> = ({ children }) => (
-  <span className="relative inline-block group">
-    <span className="relative z-10">{children}</span>
-    <span 
-      aria-hidden 
-      className="absolute inset-0 text-secondary opacity-0 group-hover:opacity-50 translate-x-[2px] -translate-y-[1px] pointer-events-none select-none"
-      style={{ clipPath: "polygon(0 25%, 100% 25%, 100% 45%, 0 45%)" }}
-    >
-      {children}
-    </span>
-    <span 
-      aria-hidden 
-      className="absolute inset-0 text-cyan-400 opacity-0 group-hover:opacity-50 -translate-x-[2px] translate-y-[1px] pointer-events-none select-none"
-      style={{ clipPath: "polygon(0 65%, 100% 65%, 100% 85%, 0 85%)" }}
-    >
-      {children}
-    </span>
-  </span>
-);
-
-// ─── Tilt Card ────────────────────────────────────────────────────────────────
+// ─── Tilt Card (Enhanced for Cartoon) ────────────────────────────────────────
 const TiltCard: React.FC<{ children: ReactNode; className?: string }> = ({ children, className }) => {
   const ref = useRef<HTMLDivElement>(null);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 200, damping: 25 });
-  const sry = useSpring(ry, { stiffness: 200, damping: 25 });
+  const srx = useSpring(rx, { stiffness: 300, damping: 15 }); // Snappier
+  const sry = useSpring(ry, { stiffness: 300, damping: 15 });
 
   const move = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
-    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 10);
-    ry.set(((e.clientX - r.left) / r.width - 0.5) * 10);
+    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 15);
+    ry.set(((e.clientX - r.left) / r.width - 0.5) * 15);
   };
 
   const leave = () => {
@@ -90,90 +69,28 @@ const TiltCard: React.FC<{ children: ReactNode; className?: string }> = ({ child
   );
 };
 
-// ─── Animated progress bar ────────────────────────────────────────────────────
-const ProgressBar: React.FC<{ level: number; colorClass: string; delay?: number }> = ({ level, colorClass, delay = 0 }) => (
-  <div className="w-full bg-foreground/10 rounded-full h-1.5 overflow-hidden">
-    <motion.div
-      className={`h-full rounded-full ${colorClass}`}
-      initial={{ width: 0 }}
-      whileInView={{ width: `${level}%` }}
-      viewport={{ once: true }}
-      transition={{ duration: 1.1, ease: "easeOut", delay }}
-    />
-  </div>
-);
-
-// ─── Story card ───────────────────────────────────────────────────────────────
+// ─── Story card (Sticker Look) ────────────────────────────────────────────────
 const StoryCard: React.FC<{ item: StoryItem; index: number }> = ({ item, index }) => {
-  const [hovered, setHovered] = useState(false);
   return (
     <motion.div
-      initial={{ opacity: 0, x: -50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.65, delay: index * 0.13, ease: [0.16, 1, 0.3, 1] }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
+      initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+      whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+      viewport={{ once: true }}
+      transition={{ type: "spring", stiffness: 260, damping: 20, delay: index * 0.1 }}
     >
       <TiltCard>
-        <motion.div
-          className="relative rounded-2xl border border-border bg-card/50 backdrop-blur-md overflow-hidden p-5 md:p-6 flex gap-4"
-          style={{ transformStyle: "preserve-3d" }}
-        >
-          {/* Hover Overlay */}
-          <motion.div
-            className={`absolute inset-0 opacity-0 transition-opacity duration-300 ${item.colorClass}/10`}
-            style={{ opacity: hovered ? 0.1 : 0 }}
-          />
-          
-          <div className={`absolute left-0 top-0 bottom-0 w-1 ${item.colorClass}`} />
-
-          <motion.div
-            className={`flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center text-xl mt-0.5 border border-border bg-muted ${hovered ? item.colorClass + ' text-white' : 'text-foreground'}`}
-            animate={hovered ? { rotate: [0, -8, 8, 0] } : { rotate: 0 }}
-          >
+        <div className="relative rounded-3xl border-4 border-black bg-white dark:bg-zinc-900 p-6 flex gap-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+          <div className={`flex-shrink-0 w-14 h-14 rounded-2xl border-4 border-black flex items-center justify-center text-2xl ${item.colorClass} text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}>
             {item.icon}
-          </motion.div>
-
-          <div className="flex-1 min-w-0" style={{ transform: "translateZ(8px)" }}>
-            <h3 className="text-base font-bold mb-1.5 tracking-tight font-syne text-foreground">
-              <GlitchText>{item.title}</GlitchText>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-xl font-black mb-1 font-handwritten italic tracking-wide drop-shadow-sm">
+              {item.title}
             </h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">{item.content}</p>
+            <p className="text-sm font-bold opacity-80 leading-snug">{item.content}</p>
           </div>
-        </motion.div>
-      </TiltCard>
-    </motion.div>
-  );
-};
-
-// ─── Approach stat row ────────────────────────────────────────────────────────
-const ApproachRow: React.FC<{ item: ApproachItem; index: number }> = ({ item, index }) => {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 30 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 + 0.2, ease: [0.16, 1, 0.3, 1] }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-    >
-      <motion.div
-        whileHover={{ x: 5 }}
-        className="p-4 rounded-xl border border-border bg-muted/30 backdrop-blur-sm transition-all duration-300"
-      >
-        <div className="flex items-center justify-between mb-2.5">
-          <div className="flex items-center gap-2.5">
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${item.colorClass} text-white`}>
-              {item.icon}
-            </div>
-            <span className="text-sm font-semibold text-foreground/80">{item.skill}</span>
-          </div>
-          <span className="text-sm font-black text-secondary">{item.level}%</span>
         </div>
-        <ProgressBar level={item.level} colorClass={item.colorClass} delay={index * 0.1 + 0.4} />
-      </motion.div>
+      </TiltCard>
     </motion.div>
   );
 };
@@ -183,107 +100,122 @@ const AboutMe: React.FC = () => {
   const stories: StoryItem[] = [
     {
       icon: <FaCode />,
-      colorClass: "bg-secondary",
+      colorClass: "bg-blue-500",
       title: "My Coding Journey",
-      content: "My programming adventure began at college when I built my first website. Since then, I've fallen in love with problem-solving. Currently specializing in the MERN stack, I enjoy creating full-stack applications.",
+      content: "Started with a simple 'Hello World', now I'm architecting full-scale MERN adventures!",
     },
     {
       icon: <FaPaintBrush />,
-      colorClass: "bg-primary",
-      title: "Creative Problem Solver",
-      content: "I thrive on projects that require both technical skills and creative thinking. Designing intuitive interfaces and architecting backend systems is where I shine.",
+      colorClass: "bg-pink-500",
+      title: "Design & Logic",
+      content: "I believe code should work perfectly and look like a masterpiece at the same time.",
     },
     {
       icon: <FaBook />,
-      colorClass: "bg-accent",
-      title: "Beyond the Keyboard",
-      content: "When I'm not coding, you'll find me playing Valorant or PUBG. I believe diverse interests fuel creativity, and I'm active in mentoring aspiring developers.",
+      colorClass: "bg-yellow-500",
+      title: "Gamer Spirit",
+      content: "When the IDE closes, the gaming rig glows. Valorant and PUBG fuel my competitive edge.",
     },
   ];
 
   const approaches: ApproachItem[] = [
-    { skill: "Clean Code", level: 90, colorClass: "bg-secondary", icon: <FiZap size={13} /> },
-    { skill: "Problem Solving", level: 80, colorClass: "bg-primary", icon: <FiTarget size={13} /> },
-    { skill: "UI/UX Design", level: 90, colorClass: "bg-accent", icon: <FaPaintBrush size={11} /> },
-    { skill: "Continuous Learning", level: 100, colorClass: "bg-green-500", icon: <FiTrendingUp size={13} /> },
-  ];
-
-  const funFacts: FunFactItem[] = [
-    { emoji: "🎮", text: "Gamer — Valorant" },
-    { emoji: "🌍", text: "Dhaka, Bangladesh" },
-    { emoji: "🎓", text: "CSE Undergrad" },
-    { emoji: "💡", text: "Full Stack" },
-    { emoji: "🏆", text: "GPA 5.00" },
+    { skill: "Clean Code", level: 90, colorClass: "bg-blue-500", icon: <FiZap /> },
+    { skill: "Problem Solving", level: 85, colorClass: "bg-red-500", icon: <FiTarget /> },
+    { skill: "Modern UI", level: 95, colorClass: "bg-purple-500", icon: <FaPaintBrush /> },
   ];
 
   return (
-    <section
-      id="about"
-      className="relative py-24 px-4 sm:px-8 bg-background text-foreground overflow-hidden font-dm-sans"
-    >
-      <BgGrid />
+    <section id="about" className="relative py-24 px-6 bg-background overflow-hidden">
+      <BgDots />
       
-      {/* Dynamic Glows using Theme Colors */}
-      <div className="absolute top-1/4 -right-48 w-96 h-96 bg-secondary/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-48 w-96 h-96 bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
+      {/* Cartoon Glow Blobs */}
+      <div className="absolute top-1/4 -right-20 w-64 h-64 bg-primary/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-20 w-64 h-64 bg-secondary/30 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto max-w-5xl">
+      <div className="relative z-10 container mx-auto max-w-6xl">
+        {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          className="text-center mb-20"
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring" }}
         >
-          <span className="text-xs font-bold tracking-[0.3em] uppercase text-secondary mb-4 block">— Who I Am</span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-syne">
-            About <span className="text-secondary">Me</span>
+          <span className="inline-block px-4 py-1 border-2 border-black bg-white font-black text-xs uppercase mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            — The Player Profile
+          </span>
+          <h2 className="text-6xl md:text-8xl font-black font-handwritten drop-shadow-[6px_6px_0_rgba(0,0,0,1)]">
+            ABOUT <span className="text-primary italic">ME!</span>
           </h2>
-          <p className="mt-4 text-muted-foreground text-sm max-w-xs mx-auto">
-            A passionate full-stack developer crafting meaningful digital experiences.
-          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          <div className="space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column: Story Cards */}
+          <div className="space-y-8">
             {stories.map((item, index) => (
               <StoryCard key={index} item={item} index={index} />
             ))}
           </div>
 
-          <div className="space-y-6">
+          {/* Right Column: Stats & Fun Facts */}
+          <div className="space-y-10">
             <TiltCard>
-              <div className="relative rounded-2xl border border-border bg-card p-6 md:p-8">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-9 h-9 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
-                    <FiTarget size={16} />
+              <div className="bg-white dark:bg-zinc-900 border-4 border-black rounded-[2.5rem] p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-12 h-12 rounded-full bg-secondary border-4 border-black flex items-center justify-center text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                    <FiTarget size={24} />
                   </div>
-                  <h3 className="text-lg font-bold tracking-tight font-syne">My Approach</h3>
+                  <h3 className="text-3xl font-black font-handwritten uppercase tracking-tighter">My Stats</h3>
                 </div>
-                <div className="space-y-4">
+
+                <div className="space-y-6">
                   {approaches.map((item, index) => (
-                    <ApproachRow key={index} item={item} index={index} />
+                    <div key={index} className="space-y-2">
+                      <div className="flex justify-between font-black uppercase text-sm">
+                        <span>{item.skill}</span>
+                        <span>{item.level}%</span>
+                      </div>
+                      <div className="h-6 w-full bg-zinc-200 dark:bg-zinc-800 border-4 border-black rounded-full overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <motion.div
+                          className={`h-full ${item.colorClass} border-r-4 border-black`}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${item.level}%` }}
+                          transition={{ type: "spring", bounce: 0.4, duration: 1.5, delay: index * 0.1 }}
+                        />
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
             </TiltCard>
 
-            <div className="flex flex-wrap gap-2">
-              {funFacts.map((fact, i) => (
-                <div key={i} className="flex items-center gap-2 px-3 py-2 rounded-xl border border-border bg-muted text-xs font-medium">
+            {/* Fun Fact Stickers */}
+            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+              {[
+                { emoji: "🎮", text: "Gamer", color: "bg-green-400" },
+                { emoji: "🌍", text: "BD", color: "bg-blue-400" },
+                { emoji: "🎓", text: "CSE", color: "bg-yellow-400" },
+                { emoji: "🏆", text: "GPA 5", color: "bg-orange-400" },
+              ].map((fact, i) => (
+                <motion.div
+                  key={i}
+                  whileHover={{ scale: 1.1, rotate: i % 2 === 0 ? 5 : -5 }}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-2xl border-4 border-black ${fact.color} font-black text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
+                >
                   <span>{fact.emoji}</span> {fact.text}
-                </div>
+                </motion.div>
               ))}
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            {/* Big Stat Boxes */}
+            <div className="grid grid-cols-3 gap-4">
               {[
-                { value: "1+", label: "Years" },
-                { value: "10+", label: "Tools" },
-                { value: "3+", label: "Projects" },
+                { val: "1+", lab: "YEARS" },
+                { val: "10+", lab: "TOOLS" },
+                { val: "3+", lab: "PROJECTS" },
               ].map((stat, i) => (
-                <div key={i} className="flex flex-col items-center py-4 rounded-2xl border border-border bg-card text-center">
-                  <span className="text-2xl font-extrabold text-secondary font-syne">{stat.value}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{stat.label}</span>
+                <div key={i} className="bg-white dark:bg-zinc-900 border-4 border-black p-4 rounded-2xl text-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:scale-105 transition-transform">
+                  <div className="text-3xl font-black text-primary font-handwritten">{stat.val}</div>
+                  <div className="text-[10px] font-black uppercase tracking-tighter">{stat.lab}</div>
                 </div>
               ))}
             </div>
