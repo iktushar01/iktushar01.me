@@ -24,8 +24,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cartoon App",
-  description: "Bold and Fun UI",
+  title: "Tushar's protfolio",
+  description: "full stack devloper.",
 };
 
 export default function RootLayout({

@@ -4,41 +4,35 @@ import React, { useRef, ReactNode } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { FiExternalLink, FiAward, FiEye, FiX } from "react-icons/fi";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
   DialogTrigger,
   DialogClose
 } from "@/components/ui/dialog";
 import { certificatesData, type Certificate } from "@/components/data/certificates";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { springSoft, tiltSpring } from "@/lib/motion";
+import { SectionHeader } from "@/components/modules/homepage/section-header";
 
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-// --- Cartoon Tilt Component ---
 const TiltCard = ({ children, className }: { children: ReactNode; className?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 300, damping: 15 });
-  const sry = useSpring(ry, { stiffness: 300, damping: 15 });
+  const srx = useSpring(rx, tiltSpring);
+  const sry = useSpring(ry, tiltSpring);
 
   const handleMove = (e: React.MouseEvent) => {
-    if (!ref.current || window.innerWidth < 768) return; // Disable tilt on mobile for better UX
+    if (!ref.current || window.innerWidth < 768) return;
     const r = ref.current.getBoundingClientRect();
-    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 15);
-    ry.set(((e.clientX - r.left) / r.width - 0.5) * 15);
+    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 12);
+    ry.set(((e.clientX - r.left) / r.width - 0.5) * 12);
   };
 
   return (
-    <motion.div 
-      ref={ref} 
-      onMouseMove={handleMove} 
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMove}
       onMouseLeave={() => { rx.set(0); ry.set(0); }}
       style={{ rotateX: srx, rotateY: sry, transformStyle: "preserve-3d", perspective: 1000 }}
       className={className}
@@ -50,66 +44,57 @@ const TiltCard = ({ children, className }: { children: ReactNode; className?: st
 
 export default function Certificates() {
   return (
-    <section id="certificates" className="relative py-24 px-4 bg-background overflow-hidden">
-      {/* Background Pattern */}
-      <div 
-        className="absolute inset-0 opacity-[0.05] pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(#000 3px, transparent 3px)", backgroundSize: "30px 30px" }}
-      />
+    <section id="certificates" className="lp-section">
+      <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.04] pointer-events-none lp-dots" />
 
-      <div className="relative z-10 container mx-auto max-w-6xl">
-        {/* Header */}
-        <header className="text-center mb-20">
-          <motion.div
-            initial={{ scale: 0, rotate: -10 }}
-            whileInView={{ scale: 1, rotate: -3 }}
-            viewport={{ once: true }}
-            className="inline-block px-6 py-2 border-[4px] border-black bg-purple-400 font-black text-xs sm:text-sm uppercase mb-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
-          >
-            Skill Badges Unlocked! 🏆
-          </motion.div>
-          <h2 className="text-5xl md:text-8xl lg:text-9xl font-black uppercase italic tracking-tighter drop-shadow-[6px_6px_0_rgba(0,0,0,1)] md:drop-shadow-[10px_10px_0_rgba(0,0,0,1)]">
-            CERTIF<span className="text-primary">ICATES</span>
-          </h2>
-        </header>
+      <div className="lp-container">
+        <SectionHeader
+          kicker="Skill Badges Unlocked! 🏆"
+          kickerTone="primary"
+          title={
+            <>
+              CERTIF<span className="text-primary">ICATES</span>
+            </>
+          }
+        />
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {certificatesData.map((cert: Certificate, index: number) => (
             <Dialog key={cert.id}>
               <DialogTrigger asChild>
                 <div className="cursor-pointer group">
                   <TiltCard>
                     <motion.div
-                      initial={{ opacity: 0, y: 50 }}
+                      initial={{ opacity: 0, y: 28 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      className="relative bg-white dark:bg-zinc-900 border-[4px] border-black p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[14px_14px_0px_0px_rgba(0,0,0,1)] group-hover:-translate-y-2 transition-all"
+                      transition={{ ...springSoft, delay: index * 0.06 }}
+                      className="relative bg-card text-card-foreground border-4 border-border p-4 rounded-[var(--radius-cartoon)] shadow-cartoon-md group-hover:shadow-none group-hover:-translate-y-1 transition-all duration-200 ease-out"
                     >
-                      {/* Image Area */}
-                      <div className="relative h-48 sm:h-64 border-[4px] border-black overflow-hidden bg-zinc-100">
-                        <Image 
-                          src={cert.image} 
-                          alt={cert.title} 
-                          fill 
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      <div className="relative h-48 sm:h-60 border-4 border-border overflow-hidden bg-muted rounded-[var(--radius-sticker)]">
+                        <Image
+                          src={cert.image}
+                          alt={cert.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
-                        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <div className="bg-white border-4 border-black px-4 py-2 font-black uppercase italic flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                                <FiEye /> View Detail
-                            </div>
+                        <div className="absolute inset-0 bg-primary/25 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                          <div className="bg-card border-4 border-border px-3 py-2 font-black uppercase italic text-xs flex items-center gap-2 shadow-cartoon-sm rounded-[var(--radius-sticker)]">
+                            <FiEye /> View Detail
+                          </div>
                         </div>
                       </div>
 
-                      {/* Info Area */}
-                      <div className="pt-5 pb-1">
-                        <h3 className="text-xl sm:text-2xl font-black uppercase italic leading-none mb-3 group-hover:text-primary transition-colors">
+                      <div className="pt-4 pb-1">
+                        <h3 className="text-lg sm:text-xl font-black uppercase italic leading-tight mb-2 group-hover:text-primary transition-colors duration-200">
                           {cert.title}
                         </h3>
                         <div className="flex flex-wrap gap-2">
                           {cert.skills.slice(0, 3).map((skill) => (
-                            <span key={skill} className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 border-2 border-black text-[9px] font-black uppercase">
+                            <span
+                              key={skill}
+                              className="px-2 py-0.5 bg-muted border-2 border-border text-[9px] font-black uppercase rounded-[var(--radius-sticker)]"
+                            >
                               {skill}
                             </span>
                           ))}
@@ -120,76 +105,75 @@ export default function Certificates() {
                 </div>
               </DialogTrigger>
 
-              {/* MODERN CARTOON MODAL */}
-              <DialogContent className="w-[95%] max-w-2xl bg-white dark:bg-zinc-900 border-[6px] sm:border-[8px] border-black rounded-none shadow-[15px_15px_0px_0px_rgba(0,0,0,1)] sm:shadow-[25px_25px_0px_0px_rgba(0,0,0,1)] p-0 gap-0 overflow-hidden outline-none">
-                
-                {/* Fixed Header */}
-                <div className="bg-black p-4 flex justify-between items-center sticky top-0 z-50">
-                    <DialogTitle className="text-white font-black italic uppercase tracking-widest flex items-center gap-2 text-sm sm:text-base">
-                       <FiAward className="text-yellow-400" /> Achievement_Unlocked
-                    </DialogTitle>
-                    <DialogClose className="text-white hover:bg-red-500 p-1 transition-colors border-2 border-transparent hover:border-black">
-                       <FiX size={20} />
-                    </DialogClose>
+              <DialogContent
+                showCloseButton={false}
+                className="w-[95%] max-w-2xl bg-card text-card-foreground border-4 border-border rounded-[var(--radius-sticker)] shadow-cartoon-md p-0 gap-0 overflow-hidden outline-none lp-scrollbar max-h-[90vh] overflow-y-auto sm:max-w-2xl"
+              >
+                <div className="bg-foreground text-background p-4 flex justify-between items-center sticky top-0 z-50 border-b-4 border-border">
+                  <DialogTitle className="font-black italic uppercase tracking-wide flex items-center gap-2 text-xs sm:text-sm">
+                    <FiAward className="text-accent" /> Achievement_Unlocked
+                  </DialogTitle>
+                  <DialogClose className="text-background hover:bg-destructive hover:text-white p-1.5 transition-colors duration-200 border-2 border-transparent hover:border-border rounded-[var(--radius-sticker)]">
+                    <FiX size={20} />
+                  </DialogClose>
                 </div>
 
-                {/* Scrollable Content Body */}
-                <div className="max-h-[80vh] overflow-y-auto p-5 sm:p-8 custom-scrollbar">
-                  {/* Certificate Preview */}
-                  <div className="relative w-full aspect-video border-[4px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-8 overflow-hidden group">
-                    <Image 
-                      src={cert.image} 
-                      alt={cert.title} 
-                      fill 
-                      className="object-cover" 
+                <div className="p-5 sm:p-8">
+                  <div className="relative w-full aspect-video border-4 border-border shadow-cartoon-sm mb-6 overflow-hidden rounded-[var(--radius-sticker)] group">
+                    <Image
+                      src={cert.image}
+                      alt={cert.title}
+                      fill
+                      className="object-cover"
                     />
                   </div>
-                  
-                  <div className="space-y-6">
-                    <h2 className="text-3xl sm:text-4xl font-black italic uppercase leading-tight decoration-primary decoration-[6px] underline underline-offset-4">
+
+                  <div className="space-y-5">
+                    <h2 className="text-2xl sm:text-3xl font-black italic uppercase leading-tight decoration-primary decoration-4 underline underline-offset-4">
                       {cert.title}
                     </h2>
 
-                    {/* Stats/Badges Row */}
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <div className="flex-1 p-3 bg-yellow-400 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -rotate-1">
-                        <p className="text-[9px] font-black uppercase text-black/60 leading-none mb-1">Issuer</p>
-                        <p className="font-black text-base truncate">{cert.issuer}</p>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <div className="flex-1 p-3 bg-accent text-accent-foreground border-4 border-border shadow-cartoon-sm -rotate-1 rounded-[var(--radius-sticker)]">
+                        <p className="text-[9px] font-black uppercase opacity-70 leading-none mb-1">Issuer</p>
+                        <p className="font-black text-sm sm:text-base truncate">{cert.issuer}</p>
                       </div>
-                      <div className="flex-1 p-3 bg-cyan-400 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rotate-1">
-                        <p className="text-[9px] font-black uppercase text-black/60 leading-none mb-1">Achieved</p>
-                        <p className="font-black text-base">{cert.date}</p>
+                      <div className="flex-1 p-3 bg-secondary text-secondary-foreground border-4 border-border shadow-cartoon-sm rotate-1 rounded-[var(--radius-sticker)]">
+                        <p className="text-[9px] font-black uppercase opacity-70 leading-none mb-1">Achieved</p>
+                        <p className="font-black text-sm sm:text-base">{cert.date}</p>
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                        <p className="text-xs font-black uppercase text-zinc-400">Description</p>
-                        <p className="font-bold text-zinc-700 dark:text-zinc-300 leading-relaxed bg-zinc-50 dark:bg-zinc-800/50 p-4 border-l-4 border-black">
+                      <p className="text-[10px] font-black uppercase text-muted-foreground">Description</p>
+                      <p className="font-semibold text-foreground/90 leading-relaxed bg-muted/50 p-4 border-l-4 border-border rounded-r-[var(--radius-sticker)]">
                         {cert.description}
-                        </p>
+                      </p>
                     </div>
 
                     <div className="space-y-2">
-                        <p className="text-xs font-black uppercase text-zinc-400">Skills Earned</p>
-                        <div className="flex flex-wrap gap-2">
-                            {cert.skills.map((skill) => (
-                                <span key={skill} className="px-3 py-1 bg-white dark:bg-zinc-900 border-2 border-black font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                                    #{skill}
-                                </span>
-                            ))}
-                        </div>
+                      <p className="text-[10px] font-black uppercase text-muted-foreground">Skills Earned</p>
+                      <div className="flex flex-wrap gap-2">
+                        {cert.skills.map((skill) => (
+                          <span
+                            key={skill}
+                            className="px-2.5 py-1 bg-card border-2 border-border font-black text-[10px] uppercase shadow-cartoon-sm rounded-[var(--radius-sticker)]"
+                          >
+                            #{skill}
+                          </span>
+                        ))}
+                      </div>
                     </div>
 
-                    {/* Fixed-at-bottom feel button */}
-                    <div className="pt-4 sticky bottom-0 bg-white dark:bg-zinc-900 pb-2">
-                        <a 
-                            href={cert.credentialUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex w-full items-center justify-center gap-3 bg-primary text-primary-foreground border-[4px] border-black py-4 font-black uppercase italic shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all active:scale-95"
-                        >
-                            <FiExternalLink size={18} /> Verify Credential
-                        </a>
+                    <div className="pt-2">
+                      <a
+                        href={cert.credentialUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex w-full items-center justify-center gap-2 bg-primary text-primary-foreground border-4 border-border py-3.5 sm:py-4 font-black uppercase italic shadow-cartoon-sm hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-200 rounded-[var(--radius-sticker)] active:scale-[0.99]"
+                      >
+                        <FiExternalLink size={18} /> Verify Credential
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -198,20 +182,6 @@ export default function Certificates() {
           ))}
         </div>
       </div>
-
-      <style jsx global>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-          border-left: 1px solid rgba(0,0,0,0.1);
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #000;
-          border-radius: 0px;
-        }
-      `}</style>
     </section>
   );
 }

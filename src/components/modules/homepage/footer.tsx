@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, JSX } from 'react';
-import { motion } from 'framer-motion';
-import { FaGithub, FaFacebook, FaArrowUp } from 'react-icons/fa';
+import React, { useState, useEffect, JSX } from "react";
+import { motion } from "framer-motion";
+import { FaGithub, FaFacebook, FaArrowUp } from "react-icons/fa";
+import { springSnappy } from "@/lib/motion";
 
 interface SocialLink {
   icon: JSX.Element;
@@ -15,105 +16,103 @@ const Footer: React.FC = () => {
   const currentYear: number = new Date().getFullYear();
 
   useEffect(() => {
-    setMounted(true);
+    const raf = requestAnimationFrame(() => setMounted(true));
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearInterval(timer);
+    };
   }, []);
 
   const formatTime = (date: Date): string => {
-    return date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
     });
   };
 
   const scrollToTop = (): void => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const socialLinks: SocialLink[] = [
     { icon: <FaGithub />, link: "https://github.com/iktushar01" },
-    { icon: <FaFacebook />, link: "https://facebook.com/iktushar01" }
+    { icon: <FaFacebook />, link: "https://facebook.com/iktushar01" },
   ];
 
   return (
-    <footer className="relative bg-background py-16 border-t-[8px] border-black overflow-hidden">
-      {/* Cartoon Grid Background */}
-      <div className="absolute inset-0 z-0 opacity-[0.07] pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#000_2px,transparent_2px),linear-gradient(to_bottom,#000_2px,transparent_2px)] bg-[size:40px_40px]" />
+    <footer className="relative bg-background py-16 border-t-4 border-border overflow-hidden">
+      <div className="absolute inset-0 z-0 opacity-[0.06] dark:opacity-[0.05] pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] bg-[size:32px_32px] text-foreground" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-12">
-          
-          {/* LEFT: Identity Sticker */}
+      <div className="lp-container relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-10 md:gap-12">
           <div className="flex flex-col items-center md:items-start">
-            <div className="bg-green-400 border-[4px] border-black px-4 py-1 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -rotate-2">
-                <div className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-black animate-pulse" />
-                    <span className="font-black text-[10px] uppercase tracking-widest text-black">
-                        System_Operational
-                    </span>
-                </div>
+            <div className="bg-accent text-accent-foreground border-4 border-border px-3 py-1 mb-3 shadow-cartoon-sm -rotate-1 rounded-[var(--radius-sticker)]">
+              <div className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-current opacity-80 animate-pulse" />
+                <span className="font-black text-[10px] uppercase tracking-widest">System_Operational</span>
+              </div>
             </div>
-            <p className="text-2xl font-black uppercase italic leading-none text-foreground drop-shadow-[2px_2px_0_#fff]">
-              © {currentYear} <span className="text-primary underline decoration-[6px] decoration-black/10">Tushar.Dev</span>
+            <p className="text-xl sm:text-2xl font-black uppercase italic leading-none text-foreground">
+              © {currentYear}{" "}
+              <span className="text-primary underline decoration-border decoration-4 underline-offset-2">iktushar01.me</span>
             </p>
-            <p className="mt-2 font-mono text-[10px] font-bold uppercase opacity-60">Hand-coded in Dhaka_BD</p>
+            <p className="mt-2 font-mono text-[10px] font-bold uppercase text-muted-foreground tracking-wide">
+              Hand-coded in Dhaka_BD
+            </p>
           </div>
 
-          {/* CENTER: Social Slab */}
           <div className="flex flex-col items-center gap-4">
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               {socialLinks.map((social, i) => (
                 <motion.a
-                  key={i}
+                  key={social.link}
                   href={social.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, rotate: i % 2 === 0 ? 5 : -5 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="w-14 h-14 bg-white dark:bg-zinc-900 border-[4px] border-black flex items-center justify-center text-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-primary hover:text-white transition-colors"
+                  whileHover={{ scale: 1.06, rotate: i % 2 === 0 ? 3 : -3 }}
+                  whileTap={{ scale: 0.94 }}
+                  transition={springSnappy}
+                  className="w-12 h-12 sm:w-14 sm:h-14 bg-card text-card-foreground border-4 border-border flex items-center justify-center text-xl sm:text-2xl shadow-cartoon-sm hover:bg-primary hover:text-primary-foreground transition-colors duration-200 rounded-[var(--radius-sticker)]"
                 >
                   {social.icon}
                 </motion.a>
               ))}
             </div>
-            <div className="bg-black text-white px-3 py-1 font-black text-[10px] uppercase italic tracking-widest">
-                Full-Stack_Maverick
+            <div className="bg-foreground text-background px-3 py-1 font-black text-[10px] uppercase italic tracking-widest border-2 border-border rounded-[var(--radius-sticker)]">
+              Full-Stack_Maverick
             </div>
           </div>
 
-          {/* RIGHT: Time & Plunger Button */}
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-6 sm:gap-8">
             <div className="text-right">
-              <span className="text-[10px] font-black uppercase tracking-tighter text-primary">Local_Timestamp</span>
-              <div className="bg-zinc-100 dark:bg-zinc-800 border-[4px] border-black px-4 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <span className="text-2xl font-black font-mono">
-                   {mounted ? formatTime(currentTime) : "00:00:00"}
+              <span className="text-[10px] font-black uppercase tracking-tight text-primary">Local_Timestamp</span>
+              <div className="bg-muted border-4 border-border px-3 py-2 shadow-cartoon-sm rounded-[var(--radius-sticker)] mt-1">
+                <span className="text-xl sm:text-2xl font-black font-mono tabular-nums">
+                  {mounted ? formatTime(currentTime) : "00:00:00"}
                 </span>
               </div>
             </div>
 
             <motion.button
-              whileHover={{ y: -5, boxShadow: "12px 12px 0px 0px rgba(0,0,0,1)" }}
-              whileTap={{ y: 5, boxShadow: "none" }}
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: 0.96 }}
+              transition={springSnappy}
               onClick={scrollToTop}
-              className="p-5 bg-primary border-[4px] border-black text-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
+              className="p-4 sm:p-5 bg-primary text-primary-foreground border-4 border-border shadow-cartoon-md hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-200 rounded-[var(--radius-sticker)]"
               aria-label="Scroll to top"
             >
-              <FaArrowUp size={24} className="stroke-[20px]" />
+              <FaArrowUp size={22} />
             </motion.button>
           </div>
         </div>
 
-        {/* Bottom Banner */}
-        <div className="mt-16 pt-8 border-t-[4px] border-black/5 flex flex-col items-center gap-2">
-            <p className="text-[10px] font-black text-black/20 uppercase tracking-[1em]">
-                EndOfLine
-            </p>
+        <div className="mt-12 pt-6 border-t-2 border-border/30 flex flex-col items-center gap-2">
+          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">EndOfLine</p>
         </div>
       </div>
     </footer>

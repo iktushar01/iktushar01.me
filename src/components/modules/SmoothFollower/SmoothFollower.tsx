@@ -1,50 +1,47 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { springSoft, springSoftPhysics } from "@/lib/motion";
 
 export default function SmoothFollower() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
-  // Mouse position motion values
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Spring configurations for smooth movement
-  const springConfig = { damping: 25, stiffness: 200, mass: 0.5 };
-  const dotX = useSpring(mouseX, springConfig);
-  const dotY = useSpring(mouseY, springConfig);
+  const dotX = useSpring(mouseX, springSoftPhysics);
+  const dotY = useSpring(mouseY, springSoftPhysics);
 
-  const borderSpringConfig = { damping: 20, stiffness: 100, mass: 0.8 };
-  const borderX = useSpring(mouseX, borderSpringConfig);
-  const borderY = useSpring(mouseY, borderSpringConfig);
+  const borderX = useSpring(mouseX, { stiffness: 180, damping: 22, mass: 0.75 });
+  const borderY = useSpring(mouseY, { stiffness: 180, damping: 22, mass: 0.75 });
 
   useEffect(() => {
-    // Check if the device has a fine pointer (mouse)
-    const mediaQuery = window.matchMedia('(pointer: fine)');
+    const mediaQuery = window.matchMedia("(pointer: fine)");
     const checkVisibility = () => {
       setIsVisible(mediaQuery.matches);
     };
 
     checkVisibility();
-    mediaQuery.addEventListener('change', checkVisibility);
+    mediaQuery.addEventListener("change", checkVisibility);
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
 
-      // Check if hovering over interactive element using event delegation approach
       const target = e.target as HTMLElement;
-      const isInteractive = !!target.closest('a, button, input, textarea, select, [role="button"], .interactive');
+      const isInteractive = !!target.closest(
+        "a, button, input, textarea, select, [role=\"button\"], .interactive",
+      );
       setIsHovering(isInteractive);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      mediaQuery.removeEventListener('change', checkVisibility);
-      window.removeEventListener('mousemove', handleMouseMove);
+      mediaQuery.removeEventListener("change", checkVisibility);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, [mouseX, mouseY]);
 
@@ -52,43 +49,38 @@ export default function SmoothFollower() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden">
-      {/* Small center dot */}
       <motion.div
-        className="absolute h-2 w-2 rounded-full bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.5)]"
+        className="absolute h-2 w-2 rounded-full bg-accent ring-2 ring-primary/25"
         style={{
           x: dotX,
           y: dotY,
-          translateX: '-50%',
-          translateY: '-50%',
+          translateX: "-50%",
+          translateY: "-50%",
         }}
       />
 
-      {/* Outer border circle */}
       <motion.div
-        className="absolute rounded-full border border-yellow-400/50 bg-yellow-400/5"
+        className="absolute rounded-full border-2 border-primary/40 bg-primary/5"
         animate={{
-          width: isHovering ? 60 : 32,
-          height: isHovering ? 60 : 32,
-          backgroundColor: isHovering ? 'rgba(250, 204, 21, 0.1)' : 'rgba(250, 204, 21, 0.05)',
+          width: isHovering ? 52 : 30,
+          height: isHovering ? 52 : 30,
         }}
-        transition={{ type: 'spring', damping: 20, stiffness: 150 }}
+        transition={springSoft}
         style={{
           x: borderX,
           y: borderY,
-          translateX: '-50%',
-          translateY: '-50%',
+          translateX: "-50%",
+          translateY: "-50%",
         }}
       >
-        {/* Subtle inner glow when hovering */}
         {isHovering && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute inset-0 rounded-full bg-yellow-400/10 blur-md"
+            className="absolute inset-0 rounded-full bg-primary/10 blur-md"
           />
         )}
       </motion.div>
     </div>
   );
 }
-

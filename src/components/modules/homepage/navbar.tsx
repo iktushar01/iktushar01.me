@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
+import { springDrawer, springSnappy, springSoft } from "@/lib/motion";
 
 interface NavItem {
     icon: React.ElementType;
@@ -34,8 +35,8 @@ export default function Navbar() {
 
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
+        stiffness: 260,
+        damping: 28,
         restDelta: 0.001
     });
 
@@ -75,26 +76,25 @@ export default function Navbar() {
         <>
             <nav
                 className={cn(
-                    "fixed top-0 w-full z-[60] transition-all duration-500",
-                    scrolled ? "py-3 px-4" : "py-6 px-6"
+                    "fixed top-0 w-full z-[60] transition-[padding] duration-300 ease-out",
+                    scrolled ? "py-3 px-4" : "py-6 px-4 sm:px-6"
                 )}
             >
                 <div className={cn(
-                    "max-w-7xl mx-auto px-4 md:px-8 h-16 md:h-20 flex items-center justify-between transition-all duration-500 rounded-[24px] border-2",
+                    "relative max-w-6xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between rounded-[var(--radius-cartoon-lg)] border-4 border-border transition-colors duration-300",
                     scrolled
-                        ? "bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]"
-                        : "bg-transparent border-transparent"
+                        ? "bg-card/90 backdrop-blur-md shadow-cartoon-md"
+                        : "bg-transparent border-transparent shadow-none"
                 )}>
-                    {/* Progress Bar */}
                     <motion.div
-                        className="absolute bottom-0 left-6 right-6 h-[3px] bg-primary origin-left rounded-full"
+                        className="absolute bottom-0 left-6 right-6 h-1 bg-primary origin-left rounded-full"
                         style={{ scaleX }}
                     />
 
-                    {/* Logo */}
                     <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        transition={springSnappy}
                         className="cursor-pointer shrink-0"
                         onClick={() => scrollToSection("home")}
                     >
@@ -108,12 +108,9 @@ export default function Navbar() {
                         />
                     </motion.div>
 
-
-
-                    {/* Right Side Actions */}
                     <div className="flex items-center gap-2 md:gap-3">
                         <Button
-                            className="hidden sm:flex rounded-full border-2 border-black dark:border-transparent bg-white dark:bg-zinc-800 text-black dark:text-white font-black uppercase italic shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 active:scale-95 transition-all px-6"
+                            className="hidden sm:flex rounded-full border-4 border-border bg-card text-foreground font-black uppercase italic shadow-cartoon-sm hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 active:scale-[0.98] transition-all duration-200 ease-out px-6"
                             onClick={() => scrollToSection("contact")}
                         >
                             Hire Me
@@ -126,7 +123,7 @@ export default function Navbar() {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="h-10 w-10 md:h-12 md:w-12 rounded-2xl border-2 border-black dark:border-white bg-yellow-400 text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all shrink-0"
+                            className="h-10 w-10 md:h-12 md:w-12 rounded-[var(--radius-sticker)] border-4 border-border bg-accent text-accent-foreground shadow-cartoon-sm hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-200 ease-out shrink-0"
                             onClick={() => setIsOpen(true)}
                         >
                             <Menu className="h-5 w-5 md:h-6 md:w-6 stroke-[3px]" />
@@ -135,7 +132,6 @@ export default function Navbar() {
                 </div>
             </nav>
 
-            {/* Sidebar remains the same high-quality build */}
             <AnimatePresence>
                 {isOpen && (
                     <div className="fixed inset-0 z-[100] flex justify-end p-4">
@@ -143,41 +139,42 @@ export default function Navbar() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
                             onClick={() => setIsOpen(false)}
-                            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+                            className="absolute inset-0 bg-foreground/30 backdrop-blur-sm"
                         />
                         <motion.div
-                            initial={{ x: "110%", scale: 0.95 }}
+                            initial={{ x: "110%", scale: 0.96 }}
                             animate={{ x: 0, scale: 1 }}
-                            exit={{ x: "110%", scale: 0.95 }}
-                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            className="relative w-full max-w-sm bg-white dark:bg-zinc-900 border-4 border-black h-full rounded-[32px] p-8 flex flex-col shadow-2xl shadow-black"
+                            exit={{ x: "110%", scale: 0.96 }}
+                            transition={springDrawer}
+                            className="relative w-full max-w-sm bg-card text-card-foreground border-4 border-border h-full max-h-[calc(100dvh-2rem)] rounded-[var(--radius-cartoon-lg)] p-8 flex flex-col shadow-cartoon-md"
                         >
-                            <div className="flex justify-between items-center mb-10">
-                                <h2 className="text-2xl font-black uppercase italic tracking-tighter">Navigation</h2>
+                            <div className="flex justify-between items-center mb-8">
+                                <h2 className="text-2xl font-black uppercase italic tracking-tight">Navigation</h2>
                                 <Button
                                     variant="ghost"
                                     size="icon"
                                     onClick={() => setIsOpen(false)}
-                                    className="rounded-xl border-2 border-black hover:bg-red-500 hover:text-white transition-all"
+                                    className="rounded-[var(--radius-sticker)] border-4 border-border hover:bg-destructive hover:text-destructive-foreground transition-colors duration-200"
                                 >
                                     <X className="h-5 w-5 stroke-[3px]" />
                                 </Button>
                             </div>
 
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-3 overflow-y-auto">
                                 {NAV_ITEMS.map((item, idx) => (
                                     <motion.button
                                         key={item.id}
-                                        initial={{ opacity: 0, y: 15 }}
+                                        initial={{ opacity: 0, y: 12 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: idx * 0.05 }}
+                                        transition={{ ...springSoft, delay: idx * 0.04 }}
                                         onClick={() => scrollToSection(item.id)}
                                         className={cn(
-                                            "group flex items-center justify-between w-full p-4 rounded-2xl border-2 transition-all font-black uppercase italic",
+                                            "group flex items-center justify-between w-full p-4 rounded-[var(--radius-sticker)] border-4 transition-all duration-200 font-black uppercase italic",
                                             activeItem === item.id
-                                                ? "bg-primary text-white border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                                                : "bg-zinc-50 dark:bg-zinc-800 border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white hover:translate-x-1"
+                                                ? "bg-primary text-primary-foreground border-border shadow-cartoon-sm"
+                                                : "bg-muted/60 border-border/40 hover:border-border hover:bg-muted"
                                         )}
                                     >
                                         <div className="flex items-center gap-4">
@@ -185,7 +182,7 @@ export default function Navbar() {
                                             <span className="text-lg tracking-tight">{item.label}</span>
                                         </div>
                                         <ArrowRight className={cn(
-                                            "h-5 w-5 transition-transform group-hover:translate-x-1",
+                                            "h-5 w-5 transition-transform duration-200 group-hover:translate-x-1",
                                             activeItem === item.id ? "opacity-100" : "opacity-0"
                                         )} />
                                     </motion.button>

@@ -3,21 +3,17 @@
 import React, { useRef, ReactNode } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import {
-  FaReact, FaNodeJs, FaGitAlt, FaFire, FaPython
+  FaReact, FaNodeJs, FaFire, FaPython
 } from "react-icons/fa";
 import {
-  SiTailwindcss, SiExpress, SiMongodb, SiJsonwebtokens, SiTypescript, SiNextdotjs, SiPostgresql, 
+  SiTailwindcss, SiExpress, SiMongodb, SiJsonwebtokens, SiTypescript, SiNextdotjs, SiPostgresql,
   SiPrisma
 } from "react-icons/si";
 import { FiZap, FiCode, FiDatabase } from "react-icons/fi";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { cn } from "@/lib/utils";
+import { springSoft, tiltSpring } from "@/lib/motion";
+import { SectionHeader } from "@/components/modules/homepage/section-header";
 
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-// ─── Interfaces ──────────────────────────────────────────────────────────────
 interface Skill {
   name: string;
   icon: ReactNode;
@@ -29,7 +25,7 @@ interface SkillGroup {
   id: number;
   category: string;
   icon: ReactNode;
-  color: string;
+  panelClass: string;
   description: string;
   skills: Skill[];
 }
@@ -39,7 +35,7 @@ const skillsData: SkillGroup[] = [
     id: 1,
     category: "Frontend",
     icon: <FiCode />,
-    color: "#3B82F6", 
+    panelClass: "bg-primary text-primary-foreground",
     description: "Architecting snappy, pixel-perfect interfaces with modern React sorcery.",
     skills: [
       { name: "React", icon: <FaReact />, color: "#61DAFB", level: 90 },
@@ -52,7 +48,7 @@ const skillsData: SkillGroup[] = [
     id: 2,
     category: "Backend",
     icon: <FiZap />,
-    color: "#EF4444", 
+    panelClass: "bg-secondary text-secondary-foreground",
     description: "The logic engine that handles data flows and keeps the machine humming.",
     skills: [
       { name: "Node.js", icon: <FaNodeJs />, color: "#68A063", level: 85 },
@@ -65,7 +61,7 @@ const skillsData: SkillGroup[] = [
     id: 3,
     category: "Data",
     icon: <FiDatabase />,
-    color: "#10B981", 
+    panelClass: "bg-accent text-accent-foreground",
     description: "Scaling databases and organizing complexity into structured power.",
     skills: [
       { name: "Postgres", icon: <SiPostgresql />, color: "#4169E1", level: 80 },
@@ -76,13 +72,12 @@ const skillsData: SkillGroup[] = [
   },
 ];
 
-// ─── Tilt Card Component ────────────────────────────────────────────────────
 const TiltCard: React.FC<{ children: ReactNode; className?: string }> = ({ children, className }) => {
   const ref = useRef<HTMLDivElement>(null);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 300, damping: 20 });
-  const sry = useSpring(ry, { stiffness: 300, damping: 20 });
+  const srx = useSpring(rx, tiltSpring);
+  const sry = useSpring(ry, tiltSpring);
 
   const move = (e: React.MouseEvent) => {
     if (!ref.current || window.innerWidth < 768) return;
@@ -104,40 +99,42 @@ const TiltCard: React.FC<{ children: ReactNode; className?: string }> = ({ child
   );
 };
 
-// ─── Skill Sticker Component ────────────────────────────────────────────────
 const SkillSticker: React.FC<{ skill: Skill; delay: number }> = ({ skill, delay }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -8, rotate: -2 }}
+      whileHover={{ y: -4 }}
       viewport={{ once: true }}
-      transition={{ type: "spring", stiffness: 200, delay }}
-      className="group bg-white dark:bg-zinc-800 border-[3px] border-black p-4 rounded-2xl shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center gap-3"
+      transition={{ ...springSoft, delay }}
+      className="group bg-card text-card-foreground border-4 border-border p-4 rounded-[var(--radius-sticker)] shadow-cartoon-sm flex flex-col items-center gap-3 transition-shadow duration-200"
     >
-      <div className="text-4xl drop-shadow-[2px_2px_0_rgba(0,0,0,1)] transition-transform group-hover:scale-110" style={{ color: skill.color }}>
+      <div
+        className="text-4xl drop-shadow-cartoon transition-transform duration-200 group-hover:scale-105"
+        style={{ color: skill.color }}
+      >
         {skill.icon}
       </div>
-      <span className="text-xs font-black uppercase italic tracking-tighter">{skill.name}</span>
-      
-      {/* Arcade Style Progress Bar */}
-      <div className="w-full h-4 bg-zinc-100 dark:bg-zinc-900 border-[2px] border-black rounded-lg overflow-hidden relative">
-        <motion.div 
+      <span className="text-[10px] sm:text-xs font-black uppercase italic tracking-tight text-center">
+        {skill.name}
+      </span>
+
+      <div className="w-full h-3.5 bg-muted border-2 border-border rounded-md overflow-hidden relative">
+        <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${skill.level}%` }}
-          transition={{ duration: 1.5, delay: delay + 0.2, type: "spring" }}
-          className="h-full border-r-[2px] border-black relative"
+          viewport={{ once: true }}
+          transition={{ ...springSoft, delay: delay + 0.08 }}
+          className="h-full border-r-2 border-border relative"
           style={{ backgroundColor: skill.color }}
         >
-          {/* Diagonal Stripes Pattern */}
-          <div className="absolute inset-0 opacity-30 bg-[linear-gradient(45deg,rgba(255,255,255,0.4)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.4)_50%,rgba(255,255,255,0.4)_75%,transparent_75%,transparent)] bg-[length:12px_12px]" />
+          <div className="absolute inset-0 opacity-30 bg-[linear-gradient(45deg,rgba(255,255,255,0.45)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.45)_50%,rgba(255,255,255,0.45)_75%,transparent_75%,transparent)] bg-[length:10px_10px]" />
         </motion.div>
       </div>
     </motion.div>
   );
 };
 
-// ─── Skill Group Section ────────────────────────────────────────────────────
 const SkillGroupSection: React.FC<{ group: SkillGroup; index: number }> = ({ group, index }) => {
   const isEven = index % 2 === 0;
 
@@ -146,35 +143,37 @@ const SkillGroupSection: React.FC<{ group: SkillGroup; index: number }> = ({ gro
       "flex flex-col gap-8 sm:gap-12 lg:flex-row items-center",
       isEven ? "lg:flex-row" : "lg:flex-row-reverse"
     )}>
-      {/* Category Badge */}
       <motion.div
-        initial={{ scale: 0.8, rotate: isEven ? -10 : 10, opacity: 0 }}
-        whileInView={{ scale: 1, rotate: isEven ? -5 : 5, opacity: 1 }}
-        className="w-48 h-48 sm:w-56 sm:h-56 shrink-0 rounded-[3rem] border-[6px] border-black flex flex-col items-center justify-center shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
-        style={{ backgroundColor: group.color }}
+        initial={{ scale: 0.94, rotate: isEven ? -6 : 6, opacity: 0 }}
+        whileInView={{ scale: 1, rotate: isEven ? -3 : 3, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={springSoft}
+        className={cn(
+          "w-44 h-44 sm:w-52 sm:h-52 shrink-0 rounded-[var(--radius-cartoon-lg)] border-4 border-border flex flex-col items-center justify-center shadow-cartoon-md",
+          group.panelClass,
+        )}
       >
-        <div className="text-7xl text-white drop-shadow-[5px_5px_0_rgba(0,0,0,1)] mb-2">{group.icon}</div>
-        <span className="font-black text-white uppercase italic tracking-tighter text-lg drop-shadow-[3px_3px_0_rgba(0,0,0,1)]">
+        <div className="text-6xl sm:text-7xl drop-shadow-cartoon mb-1">{group.icon}</div>
+        <span className="font-black uppercase italic tracking-tight text-sm sm:text-base">
           {group.category}
         </span>
       </motion.div>
 
-      {/* Main Content Box */}
       <div className="flex-1 w-full">
         <TiltCard>
-          <div className="bg-white dark:bg-zinc-900 border-[5px] border-black rounded-[3rem] p-6 sm:p-10 shadow-[15px_15px_0px_0px_rgba(0,0,0,1)]">
+          <div className="bg-card text-card-foreground border-4 border-border rounded-[var(--radius-cartoon-lg)] p-6 sm:p-10 shadow-cartoon-md">
             <div className="mb-8">
-              <h3 className="text-4xl sm:text-5xl font-black uppercase italic mb-4 tracking-tight leading-none">
+              <h3 className="text-3xl sm:text-4xl font-black uppercase italic mb-3 tracking-tight leading-none">
                 {group.category} <span className="text-primary italic">Arsenal</span>
               </h3>
-              <p className="text-lg sm:text-xl font-bold text-muted-foreground max-w-2xl">
+              <p className="text-base sm:text-lg font-semibold text-muted-foreground max-w-2xl leading-relaxed">
                 {group.description}
               </p>
             </div>
-            
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {group.skills.map((skill, i) => (
-                <SkillSticker key={skill.name} skill={skill} delay={i * 0.1} />
+                <SkillSticker key={skill.name} skill={skill} delay={i * 0.06} />
               ))}
             </div>
           </div>
@@ -184,55 +183,52 @@ const SkillGroupSection: React.FC<{ group: SkillGroup; index: number }> = ({ gro
   );
 };
 
-// ─── Main Component ─────────────────────────────────────────────────────────
 const Skills: React.FC = () => {
+  const footStats = [
+    { label: "Weapon Classes", value: "03", surface: "bg-primary text-primary-foreground" },
+    { label: "Unlocked Gear", value: "20+", surface: "bg-accent text-accent-foreground" },
+    { label: "Server Uptime", value: "99%", surface: "bg-secondary text-secondary-foreground" },
+  ];
+
   return (
-    <section id="skills" className="relative py-24 px-4 sm:px-10 bg-background overflow-hidden">
-      {/* Background Polka Dots */}
-      <div 
-        className="absolute inset-0 opacity-[0.1] dark:opacity-[0.05] pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(#000 3px, transparent 3px)", backgroundSize: "40px 40px" }}
-      />
+    <section id="skills" className="lp-section">
+      <div className="absolute inset-0 opacity-[0.07] dark:opacity-[0.05] pointer-events-none lp-dots" />
 
-      <div className="relative z-10 container mx-auto max-w-7xl">
-        <header className="text-center mb-24">
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            className="inline-block px-8 py-3 border-[4px] border-black bg-pink-500 text-white font-black text-sm uppercase italic mb-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] -rotate-3"
-          >
-            Capabilities Loaded! 💾
-          </motion.div>
-          <h2 className="text-7xl sm:text-9xl font-black uppercase italic tracking-tighter leading-none drop-shadow-[10px_10px_0_rgba(0,0,0,1)] dark:drop-shadow-[10px_10px_0_rgba(255,255,255,0.1)]">
-            TECH <span className="text-primary">STACK</span>
-          </h2>
-        </header>
+      <div className="lp-container">
+        <SectionHeader
+          kicker="Capabilities Loaded! 💾"
+          kickerTone="primary"
+          kickerRotate="-rotate-2"
+          title={
+            <>
+              TECH <span className="text-primary">STACK</span>
+            </>
+          }
+        />
 
-        <div className="space-y-32 sm:space-y-48">
+        <div className="space-y-24 sm:space-y-32">
           {skillsData.map((group, index) => (
             <SkillGroupSection key={group.id} group={group} index={index} />
           ))}
         </div>
 
-        {/* Floating Stats Section */}
-        <div className="mt-40 grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            { label: "Weapon Classes", value: "03", color: "bg-cyan-400" },
-            { label: "Unlocked Gear", value: "20+", color: "bg-lime-400" },
-            { label: "Server Uptime", value: "99%", color: "bg-orange-400" },
-          ].map((stat, i) => (
+        <div className="mt-24 sm:mt-32 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          {footStats.map((stat) => (
             <motion.div
-              key={i}
-              whileHover={{ scale: 1.05, rotate: i % 2 === 0 ? 1 : -1 }}
+              key={stat.label}
+              whileHover={{ scale: 1.02 }}
+              transition={springSoft}
               className={cn(
-                "p-10 rounded-[2.5rem] border-[5px] border-black text-center shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]",
-                stat.color
+                "p-8 sm:p-10 rounded-[var(--radius-cartoon)] border-4 border-border text-center shadow-cartoon-md",
+                stat.surface,
               )}
             >
-              <div className="text-7xl font-black text-black italic drop-shadow-[4px_4px_0_rgba(255,255,255,0.5)] mb-2">
+              <div className="text-5xl sm:text-6xl font-black italic mb-2 drop-shadow-cartoon">
                 {stat.value}
               </div>
-              <div className="text-xs font-black uppercase tracking-widest text-black/70 italic">{stat.label}</div>
+              <div className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-80 italic">
+                {stat.label}
+              </div>
             </motion.div>
           ))}
         </div>

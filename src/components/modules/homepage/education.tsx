@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useRef, ReactNode } from "react";
+import Image from "next/image";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { FiCalendar, FiAward, FiZap, FiBookOpen } from "react-icons/fi";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import { cn } from "@/lib/utils";
+import { springSoft, tiltSpring } from "@/lib/motion";
+import { SectionHeader } from "@/components/modules/homepage/section-header";
 
 interface EducationItem {
   id: number;
@@ -21,7 +19,6 @@ interface EducationItem {
   gpa?: string;
   icon: ReactNode;
   skills: string[];
-  color: string;
 }
 
 const UTTARA_LOGO = "https://res.cloudinary.com/dfoqasqnw/image/upload/UttaraUniversityLogo_bf6z7s.jpg";
@@ -38,20 +35,18 @@ const educationData: EducationItem[] = [
     current: true,
     gpa: "In Progress",
     icon: <FiZap />,
-    color: "#FACC15",
     skills: ["React.js", "MERN Stack", "Node.js"],
   },
   {
     id: 2,
     degree: "Higher Secondary (HSC)",
-    institution: "Rajuk Uttara Model College",
+    institution: "Rajendrapur Cantonment Public School and College",
     duration: "2021 - 2023",
     description: "Built a solid foundation in Science and Mathematics with excellence.",
     logo: RCPSC_LOGO,
     current: false,
     gpa: "5.00",
     icon: <FiAward />,
-    color: "#60A5FA",
     skills: ["HTML/CSS", "Photoshop", "Physics"],
   },
 ];
@@ -60,8 +55,8 @@ const TiltCard: React.FC<{ children: ReactNode }> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 300, damping: 20 });
-  const sry = useSpring(ry, { stiffness: 300, damping: 20 });
+  const srx = useSpring(rx, tiltSpring);
+  const sry = useSpring(ry, tiltSpring);
 
   const move = (e: React.MouseEvent) => {
     if (!ref.current || window.innerWidth < 768) return;
@@ -88,71 +83,82 @@ const EducationPostcard: React.FC<{ item: EducationItem; index: number }> = ({ i
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, ease: "circOut" }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ ...springSoft, delay: index * 0.06 }}
       className={cn(
         "relative flex flex-col lg:flex-row items-center gap-8 lg:gap-16",
         isEven ? "lg:flex-row" : "lg:flex-row-reverse"
       )}
     >
-      {/* Sticker Badge */}
       <div className="relative z-20 shrink-0">
         <motion.div
-          whileHover={{ scale: 1.05, rotate: isEven ? 8 : -8 }}
-          className="w-28 h-28 lg:w-40 lg:h-40 rounded-full border-[4px] lg:border-[6px] border-black p-2 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
+          whileHover={{ scale: 1.04 }}
+          transition={springSoft}
+          className="relative w-28 h-28 lg:w-36 lg:h-36 rounded-full border-4 border-border p-2 bg-card shadow-cartoon-md overflow-hidden"
         >
-          <img src={item.logo} alt="Logo" className="w-full h-full object-contain rounded-full" />
+          <Image
+            src={item.logo}
+            alt={`${item.institution} logo`}
+            fill
+            sizes="(max-width: 1024px) 112px, 144px"
+            className="object-contain p-1"
+          />
         </motion.div>
-        
-        <div className={cn(
-          "absolute -top-3 -right-3 p-3 rounded-2xl border-[3px] border-black text-white shadow-md",
-          item.current ? "bg-black animate-pulse" : "bg-zinc-800"
-        )}>
-            {item.icon}
+
+        <div
+          className={cn(
+            "absolute -top-2 -right-2 p-2.5 rounded-[var(--radius-sticker)] border-4 border-border text-primary-foreground shadow-cartoon-sm",
+            item.current ? "bg-primary animate-pulse" : "bg-muted text-foreground",
+          )}
+        >
+          {item.icon}
         </div>
       </div>
 
-      {/* The Postcard */}
       <TiltCard>
-        <div className="relative bg-white dark:bg-zinc-900 border-[4px] lg:border-[5px] border-black p-6 lg:p-10 rounded-[2.5rem] shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_rgba(255,255,255,0.1)] transition-transform hover:-translate-y-1">
-          {/* Status Flag */}
-          <div className={cn(
-            "absolute -top-3 right-8 px-4 py-1 border-[3px] border-black font-black uppercase text-[10px] tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
-            item.current ? "bg-yellow-400 rotate-2" : "bg-emerald-400 -rotate-2"
-          )}>
+        <div className="relative bg-card text-card-foreground border-4 border-border p-6 lg:p-10 rounded-[var(--radius-cartoon-lg)] shadow-cartoon-md transition-transform duration-200 hover:-translate-y-0.5">
+          <div
+            className={cn(
+              "absolute -top-3 right-8 px-3 py-1 border-4 border-border font-black uppercase text-[10px] tracking-widest shadow-cartoon-sm",
+              item.current ? "bg-accent text-accent-foreground rotate-1" : "bg-secondary text-secondary-foreground -rotate-1",
+            )}
+          >
             {item.current ? "Ongoing" : "Completed"}
           </div>
 
-          <div className="flex flex-col gap-5">
-            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-               <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 border-2 border-black rounded-xl text-[11px] font-black flex items-center gap-2 uppercase">
-                 <FiCalendar className="text-primary" /> {item.duration}
-               </span>
-               {item.gpa && (
-                 <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 border-2 border-black rounded-xl text-[11px] font-black flex items-center gap-2 uppercase">
-                 <FiAward className="text-orange-500" /> GPA: {item.gpa}
-               </span>
-               )}
+          <div className="flex flex-col gap-4 pt-2">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="px-3 py-1 bg-muted border-2 border-border rounded-[var(--radius-sticker)] text-[10px] sm:text-[11px] font-black flex items-center gap-2 uppercase">
+                <FiCalendar className="text-primary" /> {item.duration}
+              </span>
+              {item.gpa && (
+                <span className="px-3 py-1 bg-muted border-2 border-border rounded-[var(--radius-sticker)] text-[10px] sm:text-[11px] font-black flex items-center gap-2 uppercase">
+                  <FiAward className="text-primary" /> GPA: {item.gpa}
+                </span>
+              )}
             </div>
 
             <div>
-              <h3 className="text-3xl lg:text-5xl font-black uppercase italic tracking-tighter leading-none mb-2">
+              <h3 className="text-2xl lg:text-4xl font-black uppercase italic tracking-tight leading-none mb-2">
                 {item.degree}
               </h3>
-              <h4 className="text-lg lg:text-xl font-black text-primary underline decoration-black decoration-[3px] underline-offset-4">
+              <h4 className="text-base lg:text-lg font-black text-primary underline decoration-border decoration-4 underline-offset-4">
                 @{item.institution}
               </h4>
             </div>
-            
-            <p className="text-black/80 dark:text-white/80 font-bold leading-snug lg:leading-relaxed text-base lg:text-lg max-w-2xl">
+
+            <p className="text-foreground/85 font-semibold leading-relaxed text-sm sm:text-base lg:text-lg max-w-2xl">
               {item.description}
             </p>
 
-            <div className="flex flex-wrap gap-2 pt-2">
-              {item.skills.map((s, i) => (
-                <span key={i} className="px-3 py-1.5 bg-white dark:bg-zinc-800 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-[10px] font-black uppercase hover:bg-primary transition-colors cursor-default">
+            <div className="flex flex-wrap gap-2 pt-1">
+              {item.skills.map((s) => (
+                <span
+                  key={s}
+                  className="px-3 py-1.5 bg-card border-2 border-border shadow-cartoon-sm text-[10px] font-black uppercase hover:bg-primary hover:text-primary-foreground transition-colors duration-200 cursor-default rounded-[var(--radius-sticker)]"
+                >
                   {s}
                 </span>
               ))}
@@ -165,61 +171,47 @@ const EducationPostcard: React.FC<{ item: EducationItem; index: number }> = ({ i
 };
 
 const Education: React.FC = () => (
-  <section id="education" className="relative py-24 lg:py-32 px-4 lg:px-8 bg-background overflow-hidden">
-    <div 
-      className="absolute inset-0 opacity-[0.05] pointer-events-none"
-      style={{ backgroundImage: "radial-gradient(#000 2px, transparent 2px)", backgroundSize: "30px 30px" }}
-    />
+  <section id="education" className="lp-section">
+    <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.04] pointer-events-none lp-dots" />
 
-    <div className="relative z-10 container mx-auto max-w-5xl">
-      <header className="flex flex-col items-center mb-20 lg:mb-32">
-        <motion.span 
-          initial={{ rotate: -5, scale: 0.9 }}
-          whileInView={{ rotate: 3, scale: 1 }}
-          className="bg-primary px-4 py-1 border-[3px] border-black font-black text-xs uppercase mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-        >
-          My Academic Journey 📖
-        </motion.span>
-        <h2 className="text-6xl lg:text-9xl font-black uppercase italic tracking-tighter text-center">
-          LEVELED <span className="text-primary text-outline">UP</span>
-        </h2>
-      </header>
+    <div className="lp-container">
+      <SectionHeader
+        kicker="My Academic Journey 📖"
+        kickerTone="primary"
+        kickerRotate="rotate-1"
+        showTitleDropShadow={false}
+        title={
+          <>
+            LEVELED <span className="text-outline">UP</span>
+          </>
+        }
+      />
 
       <div className="relative">
-        {/* Modern Vertical Spine (Hidden on mobile) */}
-        <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-1 bg-black/10 -translate-x-1/2" />
+        <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-border -translate-x-1/2 rounded-full" />
 
-        <div className="flex flex-col gap-24 lg:gap-40">
+        <div className="flex flex-col gap-20 lg:gap-28">
           {educationData.map((item, index) => (
             <EducationPostcard key={item.id} item={item} index={index} />
           ))}
         </div>
       </div>
 
-      <motion.div 
-        whileInView={{ y: [20, 0], opacity: [0, 1] }}
-        className="mt-32 flex flex-col items-center gap-6"
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={springSoft}
+        className="mt-24 flex flex-col items-center gap-4"
       >
-        <div className="w-20 h-20 bg-yellow-400 border-[4px] border-black rounded-full flex items-center justify-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-6">
-            <FiBookOpen size={32} />
+        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-accent text-accent-foreground border-4 border-border rounded-full flex items-center justify-center shadow-cartoon-md rotate-3">
+          <FiBookOpen size={28} />
         </div>
-        <p className="font-black uppercase tracking-widest text-center text-sm lg:text-base">
+        <p className="font-black uppercase tracking-widest text-center text-xs sm:text-sm text-muted-foreground">
           Always Learning. Always Growing.
         </p>
       </motion.div>
     </div>
-
-    <style jsx global>{`
-      .text-outline {
-        -webkit-text-stroke: 2px black;
-        color: var(--primary);
-      }
-      @media (min-width: 1024px) {
-        .text-outline {
-          -webkit-text-stroke: 3px black;
-        }
-      }
-    `}</style>
   </section>
 );
 
