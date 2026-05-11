@@ -2,8 +2,8 @@
 
 import React, { useState, useRef, ReactNode } from "react";
 import { motion, useMotionValue, useSpring, Variants } from "framer-motion";
-import { FaCode, FaPaintBrush, FaBook } from "react-icons/fa";
-import { FiZap, FiTarget, FiTrendingUp } from "react-icons/fi";
+import { FaCode, FaPaintBrush, FaBook, FaGamepad } from "react-icons/fa";
+import { FiZap, FiTarget, FiStar } from "react-icons/fi";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface StoryItem {
@@ -17,38 +17,32 @@ interface ApproachItem {
   skill: string;
   level: number;
   colorClass: string;
-  icon: ReactNode;
 }
 
-interface FunFactItem {
-  emoji: string;
-  text: string;
-}
-
-// ─── BG Polka Dots (Cartoon Style) ──────────────────────────────────────────
+// ─── Background Polka Dots ──────────────────────────────────────────────────
 const BgDots: React.FC = () => (
   <div 
-    className="absolute inset-0 pointer-events-none opacity-[0.15]"
+    className="absolute inset-0 pointer-events-none opacity-[0.1] dark:opacity-[0.05]"
     style={{ 
-      backgroundImage: "radial-gradient(#000 2px, transparent 2px)", 
-      backgroundSize: "30px 30px" 
+      backgroundImage: "radial-gradient(circle, #000 2px, transparent 2px)", 
+      backgroundSize: "40px 40px" 
     }} 
   />
 );
 
-// ─── Tilt Card (Enhanced for Cartoon) ────────────────────────────────────────
+// ─── Enhanced Tilt Card ─────────────────────────────────────────────────────
 const TiltCard: React.FC<{ children: ReactNode; className?: string }> = ({ children, className }) => {
   const ref = useRef<HTMLDivElement>(null);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 300, damping: 15 }); // Snappier
-  const sry = useSpring(ry, { stiffness: 300, damping: 15 });
+  const srx = useSpring(rx, { stiffness: 300, damping: 20 });
+  const sry = useSpring(ry, { stiffness: 300, damping: 20 });
 
   const move = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
+    if (!ref.current || window.innerWidth < 768) return; // Disable tilt on mobile for better UX
     const r = ref.current.getBoundingClientRect();
-    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 15);
-    ry.set(((e.clientX - r.left) / r.width - 0.5) * 15);
+    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 10);
+    ry.set(((e.clientX - r.left) / r.width - 0.5) * 10);
   };
 
   const leave = () => {
@@ -69,25 +63,27 @@ const TiltCard: React.FC<{ children: ReactNode; className?: string }> = ({ child
   );
 };
 
-// ─── Story card (Sticker Look) ────────────────────────────────────────────────
+// ─── Story Card Component ───────────────────────────────────────────────────
 const StoryCard: React.FC<{ item: StoryItem; index: number }> = ({ item, index }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-      whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+      initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      transition={{ type: "spring", stiffness: 260, damping: 20, delay: index * 0.1 }}
+      transition={{ type: "spring", stiffness: 100, delay: index * 0.1 }}
     >
       <TiltCard>
-        <div className="relative rounded-3xl border-4 border-black bg-white dark:bg-zinc-900 p-6 flex gap-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
-          <div className={`flex-shrink-0 w-14 h-14 rounded-2xl border-4 border-black flex items-center justify-center text-2xl ${item.colorClass} text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}>
+        <div className="group relative rounded-[2rem] border-[4px] border-black bg-white dark:bg-zinc-900 p-5 sm:p-7 flex flex-col sm:flex-row gap-5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+          <div className={`flex-shrink-0 w-16 h-16 rounded-2xl border-[4px] border-black flex items-center justify-center text-3xl ${item.colorClass} text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:rotate-12 transition-transform`}>
             {item.icon}
           </div>
-          <div className="flex-1">
-            <h3 className="text-xl font-black mb-1 font-handwritten italic tracking-wide drop-shadow-sm">
+          <div>
+            <h3 className="text-2xl font-black mb-2 uppercase italic tracking-tighter">
               {item.title}
             </h3>
-            <p className="text-sm font-bold opacity-80 leading-snug">{item.content}</p>
+            <p className="text-base font-bold text-muted-foreground leading-tight">
+              {item.content}
+            </p>
           </div>
         </div>
       </TiltCard>
@@ -95,92 +91,98 @@ const StoryCard: React.FC<{ item: StoryItem; index: number }> = ({ item, index }
   );
 };
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// ─── Main About Section ─────────────────────────────────────────────────────
 const AboutMe: React.FC = () => {
   const stories: StoryItem[] = [
     {
       icon: <FaCode />,
       colorClass: "bg-blue-500",
-      title: "My Coding Journey",
-      content: "Started with a simple 'Hello World', now I'm architecting full-scale MERN adventures!",
+      title: "The Code Smith",
+      content: "Building digital kingdoms with the MERN stack. I turn coffee into clean, scalable architectures.",
     },
     {
       icon: <FaPaintBrush />,
       colorClass: "bg-pink-500",
-      title: "Design & Logic",
-      content: "I believe code should work perfectly and look like a masterpiece at the same time.",
+      title: "UI Artisan",
+      content: "Aesthetics meet logic. I obsess over pixels, ensuring every interaction feels like a breeze.",
     },
     {
-      icon: <FaBook />,
+      icon: <FaGamepad />,
       colorClass: "bg-yellow-500",
-      title: "Gamer Spirit",
-      content: "When the IDE closes, the gaming rig glows. Valorant and PUBG fuel my competitive edge.",
+      title: "Level 99 Gamer",
+      content: "Tactical precision in Valorant, survival instincts in PUBG. Gaming fuels my strategic thinking.",
     },
   ];
 
   const approaches: ApproachItem[] = [
-    { skill: "Clean Code", level: 90, colorClass: "bg-blue-500", icon: <FiZap /> },
-    { skill: "Problem Solving", level: 85, colorClass: "bg-red-500", icon: <FiTarget /> },
-    { skill: "Modern UI", level: 95, colorClass: "bg-purple-500", icon: <FaPaintBrush /> },
+    { skill: "Logic Crafting", level: 92, colorClass: "bg-cyan-400" },
+    { skill: "Pixel Perfection", level: 88, colorClass: "bg-purple-500" },
+    { skill: "Data Sorcery", level: 85, colorClass: "bg-emerald-400" },
   ];
 
   return (
-    <section id="about" className="relative py-24 px-6 bg-background overflow-hidden">
+    <section id="about" className="relative py-20 sm:py-32 px-4 overflow-hidden bg-background">
       <BgDots />
       
-      {/* Cartoon Glow Blobs */}
-      <div className="absolute top-1/4 -right-20 w-64 h-64 bg-primary/30 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -left-20 w-64 h-64 bg-secondary/30 rounded-full blur-3xl pointer-events-none" />
+      {/* Decorative Blur Orbs */}
+      <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-primary/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-secondary/20 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
-        {/* Section Header */}
-        <motion.div
-          className="text-center mb-20"
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ type: "spring" }}
-        >
-          <span className="inline-block px-4 py-1 border-2 border-black bg-white font-black text-xs uppercase mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            — The Player Profile
-          </span>
-          <h2 className="text-6xl md:text-8xl font-black font-handwritten drop-shadow-[6px_6px_0_rgba(0,0,0,1)]">
-            ABOUT <span className="text-primary italic">ME!</span>
+        
+        {/* Section Title */}
+        <div className="text-center mb-16 sm:mb-24">
+          <motion.div
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            className="inline-block px-6 py-2 border-[3px] border-black bg-yellow-400 text-black font-black uppercase italic text-sm mb-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] -rotate-2"
+          >
+            Who is this guy?
+          </motion.div>
+          <h2 className="text-6xl sm:text-8xl lg:text-9xl font-black tracking-tighter uppercase italic leading-none drop-shadow-[6px_6px_0_rgba(0,0,0,1)]">
+            ABOUT <span className="text-primary">ME!</span>
           </h2>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column: Story Cards */}
-          <div className="space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+          
+          {/* Left Column: Story Timeline (7 cols) */}
+          <div className="lg:col-span-7 space-y-8 sm:space-y-10">
             {stories.map((item, index) => (
               <StoryCard key={index} item={item} index={index} />
             ))}
           </div>
 
-          {/* Right Column: Stats & Fun Facts */}
-          <div className="space-y-10">
+          {/* Right Column: Stats & Meta (5 cols) */}
+          <div className="lg:col-span-5 space-y-8">
             <TiltCard>
-              <div className="bg-white dark:bg-zinc-900 border-4 border-black rounded-[2.5rem] p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-12 h-12 rounded-full bg-secondary border-4 border-black flex items-center justify-center text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
-                    <FiTarget size={24} />
+              <div className="bg-white dark:bg-zinc-900 border-[4px] border-black rounded-[2.5rem] p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="w-14 h-14 rounded-full bg-black dark:bg-white flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(234,179,8,1)]">
+                    <FiStar className="text-yellow-400 text-2xl" />
                   </div>
-                  <h3 className="text-3xl font-black font-handwritten uppercase tracking-tighter">My Stats</h3>
+                  <h3 className="text-3xl font-black uppercase italic">Skill Levels</h3>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {approaches.map((item, index) => (
-                    <div key={index} className="space-y-2">
-                      <div className="flex justify-between font-black uppercase text-sm">
-                        <span>{item.skill}</span>
-                        <span>{item.level}%</span>
+                    <div key={index} className="group">
+                      <div className="flex justify-between font-black uppercase text-sm mb-3">
+                        <span className="tracking-widest">{item.skill}</span>
+                        <span className="bg-black text-white dark:bg-white dark:text-black px-2 py-0.5 rounded italic">
+                          {item.level}%
+                        </span>
                       </div>
-                      <div className="h-6 w-full bg-zinc-200 dark:bg-zinc-800 border-4 border-black rounded-full overflow-hidden shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                      <div className="h-8 w-full bg-zinc-100 dark:bg-zinc-800 border-[3px] border-black rounded-xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                         <motion.div
-                          className={`h-full ${item.colorClass} border-r-4 border-black`}
+                          className={`h-full ${item.colorClass} border-r-[3px] border-black relative`}
                           initial={{ width: 0 }}
                           whileInView={{ width: `${item.level}%` }}
-                          transition={{ type: "spring", bounce: 0.4, duration: 1.5, delay: index * 0.1 }}
-                        />
+                          transition={{ type: "spring", bounce: 0.3, duration: 2, delay: index * 0.2 }}
+                        >
+                          {/* Striped Pattern Overlay */}
+                          <div className="absolute inset-0 opacity-20 bg-[linear-gradient(45deg,rgba(0,0,0,0.1)_25%,transparent_25%,transparent_50%,rgba(0,0,0,0.1)_50%,rgba(0,0,0,0.1)_75%,transparent_75%,transparent)] bg-[length:20px_20px]" />
+                        </motion.div>
                       </div>
                     </div>
                   ))}
@@ -188,38 +190,38 @@ const AboutMe: React.FC = () => {
               </div>
             </TiltCard>
 
-            {/* Fun Fact Stickers */}
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-2 gap-5">
               {[
-                { emoji: "🎮", text: "Gamer", color: "bg-green-400" },
-                { emoji: "🌍", text: "BD", color: "bg-blue-400" },
-                { emoji: "🎓", text: "CSE", color: "bg-yellow-400" },
-                { emoji: "🏆", text: "GPA 5", color: "bg-orange-400" },
-              ].map((fact, i) => (
+                { label: "XP Points", value: "1.5y", color: "bg-orange-400" },
+                { label: "Missions", value: "12+", color: "bg-green-400" },
+                { label: "Stamina", value: "100%", color: "bg-blue-400" },
+                { label: "Rank", value: "PRO", color: "bg-pink-400" },
+              ].map((stat, i) => (
                 <motion.div
                   key={i}
-                  whileHover={{ scale: 1.1, rotate: i % 2 === 0 ? 5 : -5 }}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-2xl border-4 border-black ${fact.color} font-black text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
+                  whileHover={{ y: -5, rotate: i % 2 === 0 ? 2 : -2 }}
+                  className={`${stat.color} border-[4px] border-black p-4 rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]`}
                 >
-                  <span>{fact.emoji}</span> {fact.text}
+                  <p className="text-[10px] font-black uppercase text-black/60">{stat.label}</p>
+                  <p className="text-3xl font-black text-black italic leading-none">{stat.value}</p>
                 </motion.div>
               ))}
             </div>
 
-            {/* Big Stat Boxes */}
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { val: "1+", lab: "YEARS" },
-                { val: "10+", lab: "TOOLS" },
-                { val: "3+", lab: "PROJECTS" },
-              ].map((stat, i) => (
-                <div key={i} className="bg-white dark:bg-zinc-900 border-4 border-black p-4 rounded-2xl text-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:scale-105 transition-transform">
-                  <div className="text-3xl font-black text-primary font-handwritten">{stat.val}</div>
-                  <div className="text-[10px] font-black uppercase tracking-tighter">{stat.lab}</div>
-                </div>
+            {/* Fun Tags */}
+            <div className="flex flex-wrap gap-3 justify-center">
+              {["Coffee Addict", "Night Owl", "Fast Learner", "Team Player"].map((tag, i) => (
+                <span 
+                  key={i}
+                  className="bg-zinc-100 dark:bg-zinc-800 border-[3px] border-black px-4 py-1.5 rounded-full font-black text-xs uppercase shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+                >
+                  #{tag}
+                </span>
               ))}
             </div>
           </div>
+
         </div>
       </div>
     </section>

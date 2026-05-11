@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, ReactNode } from "react";
+import React, { useRef, ReactNode } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { FiCalendar, FiAward, FiZap, FiBookOpen } from "react-icons/fi";
 import { clsx, type ClassValue } from "clsx";
@@ -10,7 +10,6 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// ─── Interfaces ──────────────────────────────────────────────────────────────
 interface EducationItem {
   id: number;
   degree: string;
@@ -25,7 +24,6 @@ interface EducationItem {
   color: string;
 }
 
-// ─── Constants ───────────────────────────────────────────────────────────────
 const UTTARA_LOGO = "https://res.cloudinary.com/dfoqasqnw/image/upload/UttaraUniversityLogo_bf6z7s.jpg";
 const RCPSC_LOGO = "https://res.cloudinary.com/dfoqasqnw/image/upload/rcpscLogo_f6ccxs.png";
 
@@ -40,7 +38,7 @@ const educationData: EducationItem[] = [
     current: true,
     gpa: "In Progress",
     icon: <FiZap />,
-    color: "#FACC15", // Yellow
+    color: "#FACC15",
     skills: ["React.js", "MERN Stack", "Node.js"],
   },
   {
@@ -53,25 +51,23 @@ const educationData: EducationItem[] = [
     current: false,
     gpa: "5.00",
     icon: <FiAward />,
-    color: "#60A5FA", // Blue
+    color: "#60A5FA",
     skills: ["HTML/CSS", "Photoshop", "Physics"],
   },
 ];
-
-// ─── Sub-Components ──────────────────────────────────────────────────────────
 
 const TiltCard: React.FC<{ children: ReactNode }> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 300, damping: 15 });
-  const sry = useSpring(ry, { stiffness: 300, damping: 15 });
+  const srx = useSpring(rx, { stiffness: 300, damping: 20 });
+  const sry = useSpring(ry, { stiffness: 300, damping: 20 });
 
   const move = (e: React.MouseEvent) => {
-    if (!ref.current) return;
+    if (!ref.current || window.innerWidth < 768) return;
     const r = ref.current.getBoundingClientRect();
-    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 15);
-    ry.set(((e.clientX - r.left) / r.width - 0.5) * 15);
+    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 12);
+    ry.set(((e.clientX - r.left) / r.width - 0.5) * 12);
   };
 
   return (
@@ -80,6 +76,7 @@ const TiltCard: React.FC<{ children: ReactNode }> = ({ children }) => {
       onMouseMove={move}
       onMouseLeave={() => { rx.set(0); ry.set(0); }}
       style={{ rotateX: srx, rotateY: sry, transformStyle: "preserve-3d", perspective: 1000 }}
+      className="w-full"
     >
       {children}
     </motion.div>
@@ -91,122 +88,138 @@ const EducationPostcard: React.FC<{ item: EducationItem; index: number }> = ({ i
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8, ease: "circOut" }}
       className={cn(
-        "relative flex flex-col lg:flex-row items-center gap-12",
+        "relative flex flex-col lg:flex-row items-center gap-8 lg:gap-16",
         isEven ? "lg:flex-row" : "lg:flex-row-reverse"
       )}
     >
-      {/* ── Sticker Badge ── */}
-      <div className="relative z-20 flex justify-center lg:w-1/4">
+      {/* Sticker Badge */}
+      <div className="relative z-20 shrink-0">
         <motion.div
-          whileHover={{ scale: 1.1, rotate: isEven ? 5 : -5 }}
-          className="w-32 h-32 lg:w-40 lg:h-40 rounded-full border-[6px] border-black p-2 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
+          whileHover={{ scale: 1.05, rotate: isEven ? 8 : -8 }}
+          className="w-28 h-28 lg:w-40 lg:h-40 rounded-full border-[4px] lg:border-[6px] border-black p-2 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden"
         >
           <img src={item.logo} alt="Logo" className="w-full h-full object-contain rounded-full" />
         </motion.div>
         
-        {/* Floating Icon Tag */}
-        <div className="absolute -top-2 -right-2 bg-black text-white p-3 rounded-full border-4 border-white shadow-lg animate-bounce">
+        <div className={cn(
+          "absolute -top-3 -right-3 p-3 rounded-2xl border-[3px] border-black text-white shadow-md",
+          item.current ? "bg-black animate-pulse" : "bg-zinc-800"
+        )}>
             {item.icon}
         </div>
       </div>
 
-      {/* ── The Postcard ── */}
-      <div className="w-full lg:w-3/4">
-        <TiltCard>
-          <div className="relative bg-white dark:bg-zinc-900 border-[5px] border-black p-8 rounded-3xl shadow-[15px_15px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-            {/* Stamp / Badge */}
-            <div className={cn(
-              "absolute -top-2 -right-4 px-8 py-2 border-4 border-black font-black uppercase text-xs -rotate-12 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
-              item.current ? "bg-green-400" : "bg-red-400"
-            )}>
-              {item.current ? "In Progress" : "Certified"}
+      {/* The Postcard */}
+      <TiltCard>
+        <div className="relative bg-white dark:bg-zinc-900 border-[4px] lg:border-[5px] border-black p-6 lg:p-10 rounded-[2.5rem] shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_rgba(255,255,255,0.1)] transition-transform hover:-translate-y-1">
+          {/* Status Flag */}
+          <div className={cn(
+            "absolute -top-3 right-8 px-4 py-1 border-[3px] border-black font-black uppercase text-[10px] tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+            item.current ? "bg-yellow-400 rotate-2" : "bg-emerald-400 -rotate-2"
+          )}>
+            {item.current ? "Ongoing" : "Completed"}
+          </div>
+
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+               <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 border-2 border-black rounded-xl text-[11px] font-black flex items-center gap-2 uppercase">
+                 <FiCalendar className="text-primary" /> {item.duration}
+               </span>
+               {item.gpa && (
+                 <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 border-2 border-black rounded-xl text-[11px] font-black flex items-center gap-2 uppercase">
+                 <FiAward className="text-orange-500" /> GPA: {item.gpa}
+               </span>
+               )}
             </div>
 
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-wrap items-center gap-3">
-                 <span className="px-3 py-1 bg-zinc-100 border-2 border-black rounded-full text-[10px] font-black flex items-center gap-1">
-                   <FiCalendar /> {item.duration}
-                 </span>
-                 {item.gpa && (
-                   <span className="px-3 py-1 bg-zinc-100 border-2 border-black rounded-full text-[10px] font-black flex items-center gap-1">
-                   <FiAward className="text-yellow-500" /> GPA: {item.gpa}
-                 </span>
-                 )}
-              </div>
-
-              <h3 className="text-3xl md:text-4xl font-black tracking-tight leading-none italic uppercase">
+            <div>
+              <h3 className="text-3xl lg:text-5xl font-black uppercase italic tracking-tighter leading-none mb-2">
                 {item.degree}
               </h3>
-              
-              <h4 className="text-xl font-bold text-primary italic">@{item.institution}</h4>
-              
-              <p className="text-zinc-600 dark:text-zinc-400 font-bold leading-relaxed max-w-xl">
-                {item.description}
-              </p>
+              <h4 className="text-lg lg:text-xl font-black text-primary underline decoration-black decoration-[3px] underline-offset-4">
+                @{item.institution}
+              </h4>
+            </div>
+            
+            <p className="text-black/80 dark:text-white/80 font-bold leading-snug lg:leading-relaxed text-base lg:text-lg max-w-2xl">
+              {item.description}
+            </p>
 
-              <div className="flex flex-wrap gap-2 mt-2">
-                {item.skills.map((s, i) => (
-                  <span key={i} className="px-3 py-1 bg-white border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-[10px] font-black uppercase hover:-translate-y-1 transition-transform cursor-default">
-                    {s}
-                  </span>
-                ))}
-              </div>
+            <div className="flex flex-wrap gap-2 pt-2">
+              {item.skills.map((s, i) => (
+                <span key={i} className="px-3 py-1.5 bg-white dark:bg-zinc-800 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-[10px] font-black uppercase hover:bg-primary transition-colors cursor-default">
+                  {s}
+                </span>
+              ))}
             </div>
           </div>
-        </TiltCard>
-      </div>
+        </div>
+      </TiltCard>
     </motion.div>
   );
 };
 
 const Education: React.FC = () => (
-  <section id="education" className="relative py-32 px-6 bg-background overflow-hidden">
-    {/* Polka Dot Background */}
+  <section id="education" className="relative py-24 lg:py-32 px-4 lg:px-8 bg-background overflow-hidden">
     <div 
-      className="absolute inset-0 opacity-[0.1] pointer-events-none"
-      style={{ backgroundImage: "radial-gradient(#000 3px, transparent 3px)", backgroundSize: "40px 40px" }}
+      className="absolute inset-0 opacity-[0.05] pointer-events-none"
+      style={{ backgroundImage: "radial-gradient(#000 2px, transparent 2px)", backgroundSize: "30px 30px" }}
     />
 
-    <div className="relative z-10 container mx-auto max-w-6xl">
-      <header className="text-center mb-24">
-        <motion.div
-           initial={{ y: -20, opacity: 0 }}
-           whileInView={{ y: 0, opacity: 1 }}
-           className="inline-block px-4 py-1 border-[3px] border-black bg-pink-400 font-black text-xs uppercase mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rotate-3"
+    <div className="relative z-10 container mx-auto max-w-5xl">
+      <header className="flex flex-col items-center mb-20 lg:mb-32">
+        <motion.span 
+          initial={{ rotate: -5, scale: 0.9 }}
+          whileInView={{ rotate: 3, scale: 1 }}
+          className="bg-primary px-4 py-1 border-[3px] border-black font-black text-xs uppercase mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         >
-          Learning Quest! 🎒
-        </motion.div>
-        <h2 className="text-6xl md:text-9xl font-black uppercase italic tracking-tighter drop-shadow-[10px_10px_0_rgba(0,0,0,1)]">
-          MY <span className="text-primary">PATH</span>
+          My Academic Journey 📖
+        </motion.span>
+        <h2 className="text-6xl lg:text-9xl font-black uppercase italic tracking-tighter text-center">
+          LEVELED <span className="text-primary text-outline">UP</span>
         </h2>
       </header>
 
       <div className="relative">
-        {/* Cartoon Dashed Path (Desktop only) */}
-        <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-1 border-l-[6px] border-dashed border-black/20 -translate-x-1/2 -z-0" />
+        {/* Modern Vertical Spine (Hidden on mobile) */}
+        <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-1 bg-black/10 -translate-x-1/2" />
 
-        <div className="space-y-32">
+        <div className="flex flex-col gap-24 lg:gap-40">
           {educationData.map((item, index) => (
             <EducationPostcard key={item.id} item={item} index={index} />
           ))}
         </div>
       </div>
 
-      <motion.footer 
-        whileHover={{ scale: 1.1 }}
-        className="mt-32 flex flex-col items-center gap-4"
+      <motion.div 
+        whileInView={{ y: [20, 0], opacity: [0, 1] }}
+        className="mt-32 flex flex-col items-center gap-6"
       >
-        <div className="w-16 h-16 bg-yellow-400 border-4 border-black rounded-full flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] animate-bounce">
-            <FiBookOpen size={24} className="text-black" />
+        <div className="w-20 h-20 bg-yellow-400 border-[4px] border-black rounded-full flex items-center justify-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-6">
+            <FiBookOpen size={32} />
         </div>
-        <p className="font-black uppercase tracking-tighter text-sm italic">Never Stop Leveling Up!</p>
-      </motion.footer>
+        <p className="font-black uppercase tracking-widest text-center text-sm lg:text-base">
+          Always Learning. Always Growing.
+        </p>
+      </motion.div>
     </div>
+
+    <style jsx global>{`
+      .text-outline {
+        -webkit-text-stroke: 2px black;
+        color: var(--primary);
+      }
+      @media (min-width: 1024px) {
+        .text-outline {
+          -webkit-text-stroke: 3px black;
+        }
+      }
+    `}</style>
   </section>
 );
 
