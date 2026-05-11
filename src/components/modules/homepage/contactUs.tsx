@@ -220,7 +220,7 @@ export default function ContactUs() {
       <style jsx global>{`
         .text-outline {
           -webkit-text-stroke: 1px black;
-          color: transparent;
+          color: var(--primary);
         }
         @media (min-width: 768px) {
           .text-outline {

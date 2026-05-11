@@ -17,90 +17,75 @@
   --color-secondary: var(--secondary);
   --color-border: var(--border);
   --color-ring: var(--ring);
-  /* Add gaming specific utilities if needed */
 }
 
 :root {
-  /* LIGHT MODE: Navy Blue & White with Red accents */
-  --background: oklch(1 0 0);
-  /* White */
-  --foreground: oklch(0.25 0.05 260);
-  /* Deep Navy Text */
+  /* PREMIUM LIGHT: Paper White & Midnight Black */
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.15 0.02 250); /* Midnight Blue-Black */
+  
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.25 0.05 260);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.25 0.05 260);
+  --card-foreground: oklch(0.15 0.02 250);
+  
+  --primary: oklch(0.6 0.22 260); /* Electric Royal Blue - Sophisticated but Bold */
+  --primary-foreground: oklch(0.99 0 0);
 
-  --primary: oklch(0.35 0.12 260);
-  /* Navy Blue */
-  --primary-foreground: oklch(1 0 0);
-  /* White text on Navy */
+  --secondary: oklch(0.92 0.03 260); /* Soft Blue-Gray for depth */
+  --secondary-foreground: oklch(0.2 0.05 260);
 
-  --secondary: oklch(0.6 0.25 25);
-  /* Accent Red (Gaming Red) */
-  --secondary-foreground: oklch(1 0 0);
-
-  --muted: oklch(0.95 0.02 260);
-  /* Very faint Navy tint */
+  --muted: oklch(0.96 0.01 260);
   --muted-foreground: oklch(0.45 0.05 260);
 
-  --accent: oklch(0.6 0.25 25);
-  /* Red for highlights */
-  --accent-foreground: oklch(1 0 0);
+  --accent: oklch(0.85 0.2 100); /* Lime/Electric Yellow for "Comic" pops */
+  --accent-foreground: oklch(0.15 0.02 250);
 
-  --destructive: oklch(0.5 0.2 25);
-  --border: oklch(0.9 0.05 260);
-  /* Navy-tinted light border */
-  --input: oklch(0.9 0.05 260);
-  --ring: oklch(0.6 0.25 25);
-  /* Red ring for focus */
+  --destructive: oklch(0.55 0.22 25);
+  --border: oklch(0.15 0.02 250); /* Strong Black Borders for Brutalist feel */
+  --input: oklch(0.15 0.02 250);
+  --ring: oklch(0.6 0.22 260);
 
-  --radius: 0.625rem;
+  --radius: 1rem; /* More rounded for that "Premium" feel */
 }
 
 .dark {
-  /* DARK MODE: Pitch Black & Aggressive Red */
-  --background: oklch(0.12 0 0);
-  /* Almost pure black */
-  --foreground: oklch(0.95 0 0);
-  /* Near white */
-  --card: oklch(0.16 0.01 0);
-  /* Slightly lighter black */
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.12 0 0);
-  --popover-foreground: oklch(0.95 0 0);
+  /* PREMIUM DARK: Deep Carbon & Neon Violet */
+  --background: oklch(0.14 0.02 255); /* Deep Charcoal-Navy */
+  --foreground: oklch(0.98 0.01 255);
+  
+  --card: oklch(0.18 0.03 255);
+  --card-foreground: oklch(0.98 0.01 255);
 
-  --primary: oklch(0.62 0.25 25);
-  /* Vivid "Vibrant" Red */
-  --primary-foreground: oklch(0.12 0 0);
-  /* Black text on Red */
+  --primary: oklch(0.7 0.25 310); /* Electric Violet-Purple */
+  --primary-foreground: oklch(0.1 0.02 255);
 
-  --secondary: oklch(0.22 0.02 0);
-  /* Dark Charcoal */
-  --secondary-foreground: oklch(0.95 0 0);
+  --secondary: oklch(0.25 0.04 255);
+  --secondary-foreground: oklch(0.98 0.01 255);
 
-  --muted: oklch(0.2 0.02 0);
-  --muted-foreground: oklch(0.6 0 0);
-  /* Grayed out red/white */
+  --muted: oklch(0.22 0.03 255);
+  --muted-foreground: oklch(0.7 0.02 255);
 
-  --accent: oklch(0.62 0.25 25);
-  /* Red glow accent */
+  --accent: oklch(0.7 0.25 310);
   --accent-foreground: oklch(1 0 0);
 
-  --destructive: oklch(0.4 0.2 25);
-  --border: oklch(0.25 0.02 0);
-  /* Dark border */
-  --input: oklch(0.25 0.02 0);
-  --ring: oklch(0.62 0.25 25);
-  /* Red focus ring */
+  --destructive: oklch(0.5 0.2 25);
+  --border: oklch(0.98 0.01 255); /* White borders in dark mode for contrast */
+  --input: oklch(0.98 0.01 255);
+  --ring: oklch(0.7 0.25 310);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    /* Bold borders are essential for the style */
+    @apply border-border/20 outline-ring/50;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased font-dm-sans;
+    /* This adds the subtle "grain" often seen in premium Brutalist designs */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: 200px;
+    background-repeat: repeat;
+    opacity: 0.98;
   }
 }

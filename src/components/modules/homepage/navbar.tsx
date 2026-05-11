@@ -81,8 +81,8 @@ export default function Navbar() {
             >
                 <div className={cn(
                     "max-w-7xl mx-auto px-4 md:px-8 h-16 md:h-20 flex items-center justify-between transition-all duration-500 rounded-[24px] border-2",
-                    scrolled 
-                        ? "bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]" 
+                    scrolled
+                        ? "bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]"
                         : "bg-transparent border-transparent"
                 )}>
                     {/* Progress Bar */}
@@ -113,7 +113,7 @@ export default function Navbar() {
                     {/* Right Side Actions */}
                     <div className="flex items-center gap-2 md:gap-3">
                         <Button
-                            className="hidden sm:flex rounded-full border-2 border-black dark:border-white bg-white dark:bg-zinc-800 text-black dark:text-white font-black uppercase italic shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 active:scale-95 transition-all px-6"
+                            className="hidden sm:flex rounded-full border-2 border-black dark:border-transparent bg-white dark:bg-zinc-800 text-black dark:text-white font-black uppercase italic shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 active:scale-95 transition-all px-6"
                             onClick={() => scrollToSection("contact")}
                         >
                             Hire Me
@@ -155,10 +155,10 @@ export default function Navbar() {
                         >
                             <div className="flex justify-between items-center mb-10">
                                 <h2 className="text-2xl font-black uppercase italic tracking-tighter">Navigation</h2>
-                                <Button 
-                                    variant="ghost" 
-                                    size="icon" 
-                                    onClick={() => setIsOpen(false)} 
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => setIsOpen(false)}
                                     className="rounded-xl border-2 border-black hover:bg-red-500 hover:text-white transition-all"
                                 >
                                     <X className="h-5 w-5 stroke-[3px]" />
