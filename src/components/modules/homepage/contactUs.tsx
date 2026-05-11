@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, ReactNode } from "react";
-import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaCopy, FaCheck } from "react-icons/fa";
 import { Send, User, Mail, MessageSquare, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,7 @@ const MagneticButton = ({ children, disabled, status }: { children: ReactNode, d
   const sy = useSpring(y, { stiffness: 400, damping: 15 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
+    if (!ref.current || window.innerWidth < 768) return;
     const { left, top, width, height } = ref.current.getBoundingClientRect();
     x.set((e.clientX - left - width / 2) * 0.3);
     y.set((e.clientY - top - height / 2) * 0.3);
@@ -39,11 +39,12 @@ const MagneticButton = ({ children, disabled, status }: { children: ReactNode, d
       className="w-full"
     >
       <Button 
+        type="submit"
         disabled={disabled}
         className={cn(
-          "w-full py-8 border-[5px] border-black text-2xl font-black uppercase italic transition-all",
+          "w-full py-6 sm:py-8 border-[4px] sm:border-[6px] border-black text-xl sm:text-2xl font-black uppercase italic transition-all",
           status === "sent" ? "bg-green-400 text-black" : "bg-primary text-primary-foreground",
-          "shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1"
+          "shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 active:scale-95"
         )}
       >
         {children}
@@ -62,7 +63,7 @@ export default function ContactUs() {
     setCopied(label);
     setTimeout(() => setCopied(null), 2000);
     toast.success(`${label} copied!`, {
-        className: "border-4 border-black font-black uppercase italic shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        className: "border-4 border-black font-black uppercase italic shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white"
     });
   };
 
@@ -79,33 +80,38 @@ export default function ContactUs() {
   };
 
   return (
-    <section id="contact" className="relative py-32 px-6 bg-background overflow-hidden">
-      {/* Polka Dot Canvas */}
+    <section id="contact" className="relative py-20 sm:py-32 px-4 sm:px-6 bg-background overflow-hidden">
+      {/* Background Dots */}
       <div 
-        className="absolute inset-0 opacity-[0.1] pointer-events-none"
-        style={{ backgroundImage: "radial-gradient(#000 3px, transparent 3px)", backgroundSize: "40px 40px" }}
+        className="absolute inset-0 opacity-[0.05] pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(#000 2px, transparent 2px)", backgroundSize: "30px 30px" }}
       />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
-        <header className="text-center mb-24">
+        {/* Header Section */}
+        <header className="text-center mb-16 sm:mb-24">
           <motion.div
             initial={{ scale: 0, rotate: 10 }}
-            whileInView={{ scale: 1, rotate: 3 }}
-            className="inline-block px-6 py-2 border-[4px] border-black bg-yellow-400 font-black text-sm uppercase mb-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+            whileInView={{ scale: 1, rotate: -3 }}
+            viewport={{ once: true }}
+            className="inline-block px-4 py-1.5 border-[3px] border-black bg-yellow-400 font-black text-xs sm:text-sm uppercase mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           >
             Let's Collab! 🤝
           </motion.div>
-          <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter drop-shadow-[10px_10px_0_rgba(0,0,0,1)]">
-            SAY <span className="text-primary">HELLO</span>
+          <h2 className="text-5xl sm:text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-none drop-shadow-[5px_5px_0_rgba(0,0,0,1)] md:drop-shadow-[10px_10px_0_rgba(0,0,0,1)]">
+            SAY <span className="text-primary text-outline">HELLO</span>
           </h2>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           
-          {/* Left Side: Contact Cards */}
-          <div className="space-y-8">
-            <h3 className="text-4xl font-black uppercase italic mb-8 underline decoration-8 decoration-primary/30">Quick Access</h3>
-            <div className="grid gap-6">
+          {/* Contact Details Column */}
+          <div className="space-y-6 sm:space-y-8">
+            <h3 className="text-3xl sm:text-4xl font-black uppercase italic underline underline-offset-8 decoration-[6px] sm:decoration-8 decoration-primary/30">
+              Quick Access
+            </h3>
+            
+            <div className="grid gap-4 sm:gap-6">
               {[
                 { icon: <FaMapMarkerAlt />, val: "Gazipur, Dhaka", label: "Base", color: "bg-blue-400" },
                 { icon: <FaWhatsapp />, val: "+880 1756650014", label: "Ping", color: "bg-green-400" },
@@ -113,60 +119,62 @@ export default function ContactUs() {
               ].map((item, i) => (
                 <motion.div 
                   key={item.label}
-                  initial={{ x: -50, opacity: 0 }}
+                  initial={{ x: -30, opacity: 0 }}
                   whileInView={{ x: 0, opacity: 1 }}
                   transition={{ delay: i * 0.1 }}
                   onClick={() => handleCopy(item.val, item.label)}
-                  className="group relative flex items-center gap-6 p-6 bg-white dark:bg-zinc-900 border-[5px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-2 transition-all cursor-pointer"
+                  className="group relative flex items-center gap-4 sm:gap-6 p-4 sm:p-6 bg-white dark:bg-zinc-900 border-[4px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all cursor-pointer"
                 >
-                  <div className={cn("w-16 h-16 border-[4px] border-black flex items-center justify-center text-2xl text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]", item.color)}>
+                  <div className={cn("shrink-0 w-12 h-12 sm:w-16 sm:h-16 border-[3px] border-black flex items-center justify-center text-xl sm:text-2xl text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]", item.color)}>
                     {item.icon}
                   </div>
-                  <div className="flex-1">
-                    <p className="font-black uppercase text-xs text-primary">{item.label}</p>
-                    <p className="text-xl font-black truncate">{item.val}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-black uppercase text-[10px] text-primary">{item.label}</p>
+                    <p className="text-lg sm:text-xl font-black truncate">{item.val}</p>
                   </div>
-                  <div className="text-black/20 group-hover:text-primary transition-colors">
-                    {copied === item.label ? <FaCheck className="text-green-500" /> : <FaCopy />}
+                  <div className="text-black/30 group-hover:text-black dark:group-hover:text-white transition-colors">
+                    {copied === item.label ? <FaCheck className="text-green-500" /> : <FaCopy size={18} />}
                   </div>
                 </motion.div>
               ))}
             </div>
           </div>
 
-          {/* Right Side: The Massive Form */}
+          {/* Form Column */}
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            className="bg-white dark:bg-zinc-900 border-[8px] border-black p-10 shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] relative"
+            viewport={{ once: true }}
+            className="bg-white dark:bg-zinc-900 border-[6px] sm:border-[8px] border-black p-6 sm:p-10 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] sm:shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] relative"
           >
-            <div className="absolute -top-6 -right-6 bg-red-500 text-white border-[4px] border-black px-4 py-2 font-black italic rotate-12 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            {/* Cartoon Badge */}
+            <div className="absolute -top-5 -right-3 sm:-top-6 sm:-right-6 bg-red-500 text-white border-[3px] border-black px-3 py-1 sm:px-4 sm:py-2 font-black italic rotate-12 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-xs sm:text-base">
                 URGENT!
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="grid sm:grid-cols-2 gap-8">
-                <div className="space-y-3">
-                  <label className="font-black uppercase italic text-sm">Citizen Name</label>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black" />
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+              <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
+                <div className="space-y-2">
+                  <label className="font-black uppercase italic text-xs">Citizen Name</label>
+                  <div className="relative group">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black z-10" />
                     <Input 
                       required
-                      className="h-14 border-[4px] border-black bg-zinc-50 dark:bg-zinc-800 pl-12 font-bold focus:bg-yellow-100 dark:focus:bg-zinc-700 transition-colors rounded-none" 
+                      className="h-14 border-[3px] border-black bg-zinc-50 dark:bg-zinc-800 pl-12 font-bold focus:ring-0 focus:bg-yellow-100 dark:focus:bg-zinc-700 transition-colors rounded-none placeholder:text-zinc-400" 
                       placeholder="e.g. Bruce Wayne"
                       value={form.name}
                       onChange={(e) => setForm({...form, name: e.target.value})}
                     />
                   </div>
                 </div>
-                <div className="space-y-3">
-                  <label className="font-black uppercase italic text-sm">Digital Address</label>
+                <div className="space-y-2">
+                  <label className="font-black uppercase italic text-xs">Digital Address</label>
                   <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black z-10" />
                     <Input 
                       type="email" 
                       required
-                      className="h-14 border-[4px] border-black bg-zinc-50 dark:bg-zinc-800 pl-12 font-bold focus:bg-cyan-100 dark:focus:bg-zinc-700 transition-colors rounded-none" 
+                      className="h-14 border-[3px] border-black bg-zinc-50 dark:bg-zinc-800 pl-12 font-bold focus:ring-0 focus:bg-cyan-100 dark:focus:bg-zinc-700 transition-colors rounded-none placeholder:text-zinc-400" 
                       placeholder="batman@cave.com"
                       value={form.email}
                       onChange={(e) => setForm({...form, email: e.target.value})}
@@ -175,14 +183,14 @@ export default function ContactUs() {
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <label className="font-black uppercase italic text-sm">The Secret Message</label>
+              <div className="space-y-2">
+                <label className="font-black uppercase italic text-xs">The Secret Message</label>
                 <div className="relative">
-                  <MessageSquare className="absolute left-4 top-5 w-5 h-5 text-black" />
+                  <MessageSquare className="absolute left-4 top-5 w-5 h-5 text-black z-10" />
                   <Textarea 
                     required
                     rows={4}
-                    className="border-[4px] border-black bg-zinc-50 dark:bg-zinc-800 pl-12 pt-4 font-bold focus:bg-pink-100 dark:focus:bg-zinc-700 transition-colors rounded-none resize-none" 
+                    className="border-[3px] border-black bg-zinc-50 dark:bg-zinc-800 pl-12 pt-4 font-bold focus:ring-0 focus:bg-pink-100 dark:focus:bg-zinc-700 transition-colors rounded-none resize-none placeholder:text-zinc-400" 
                     placeholder="Drop your project details here..."
                     value={form.message}
                     onChange={(e) => setForm({...form, message: e.target.value})}
@@ -193,20 +201,33 @@ export default function ContactUs() {
               <MagneticButton disabled={status !== "idle"} status={status}>
                 <div className="flex items-center justify-center gap-3">
                     {status === "sending" ? (
-                      <Loader2 className="animate-spin" size={28} />
+                      <Loader2 className="animate-spin" size={24} />
                     ) : status === "sent" ? (
-                      <FaCheck size={28} />
+                      <FaCheck size={24} />
                     ) : (
-                      <Send size={28} />
+                      <Send size={24} />
                     )}
-                    <span>{status === "sending" ? "Transmitting..." : status === "sent" ? "Dispatched!" : "Launch Message"}</span>
+                    <span className="tracking-tight">
+                        {status === "sending" ? "Transmitting..." : status === "sent" ? "Dispatched!" : "Launch Message"}
+                    </span>
                 </div>
               </MagneticButton>
             </form>
           </motion.div>
-
         </div>
       </div>
+
+      <style jsx global>{`
+        .text-outline {
+          -webkit-text-stroke: 1px black;
+          color: transparent;
+        }
+        @media (min-width: 768px) {
+          .text-outline {
+            -webkit-text-stroke: 3px black;
+          }
+        }
+      `}</style>
     </section>
   );
 }

@@ -42,7 +42,7 @@ export default function Navbar() {
     const scrollToSection = useCallback((id: string) => {
         const element = document.getElementById(id);
         if (element) {
-            const offset = 100;
+            const offset = 80;
             const elementPosition = element.getBoundingClientRect().top + window.scrollY;
             window.scrollTo({
                 top: elementPosition - offset,
@@ -75,121 +75,121 @@ export default function Navbar() {
         <>
             <nav
                 className={cn(
-                    "fixed top-0 w-full z-[60] transition-all duration-300 px-6",
-                    scrolled ? "py-4" : "py-8"
+                    "fixed top-0 w-full z-[60] transition-all duration-500",
+                    scrolled ? "py-3 px-4" : "py-6 px-6"
                 )}
             >
                 <div className={cn(
-                    "max-w-7xl mx-auto px-6 h-20 flex items-center justify-between border-[4px] border-black transition-all",
+                    "max-w-7xl mx-auto px-4 md:px-8 h-16 md:h-20 flex items-center justify-between transition-all duration-500 rounded-[24px] border-2",
                     scrolled 
-                        ? "bg-white dark:bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" 
+                        ? "bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.1)]" 
                         : "bg-transparent border-transparent"
                 )}>
-                    {/* Progress Bar (Cartoon Style) */}
+                    {/* Progress Bar */}
                     <motion.div
-                        className="absolute bottom-[-4px] left-0 right-0 h-[8px] bg-primary border-x-[4px] border-black origin-left"
+                        className="absolute bottom-0 left-6 right-6 h-[3px] bg-primary origin-left rounded-full"
                         style={{ scaleX }}
                     />
 
-                    {/* Logo Section */}
-                    <div
-    className="cursor-pointer"
-    onClick={() => scrollToSection("home")}
->
-    <Image
-        src="https://res.cloudinary.com/dfoqasqnw/image/upload/logo_msrkwi.png"
-        alt="Logo"
-        width={200}
-        height={320}
-        className="h-14 w-auto"
-        priority
-    />
-</div>
+                    {/* Logo */}
+                    <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="cursor-pointer shrink-0"
+                        onClick={() => scrollToSection("home")}
+                    >
+                        <Image
+                            src="https://res.cloudinary.com/dfoqasqnw/image/upload/logo_msrkwi.png"
+                            alt="Logo"
+                            width={140}
+                            height={100}
+                            className="h-10 md:h-12 w-auto"
+                            priority
+                        />
+                    </motion.div>
 
-                    {/* Actions Section */}
-                    <div className="flex items-center gap-4">
+
+
+                    {/* Right Side Actions */}
+                    <div className="flex items-center gap-2 md:gap-3">
                         <Button
-                            className="hidden md:flex bg-yellow-400 hover:bg-yellow-500 text-black border-[3px] border-black font-black uppercase italic shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all rounded-none"
+                            className="hidden sm:flex rounded-full border-2 border-black dark:border-white bg-white dark:bg-zinc-800 text-black dark:text-white font-black uppercase italic shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 active:scale-95 transition-all px-6"
                             onClick={() => scrollToSection("contact")}
                         >
-                            Hire Me!
+                            Hire Me
                         </Button>
 
-                        <ModeToggle />
+                        <div className="scale-90 md:scale-100">
+                            <ModeToggle />
+                        </div>
 
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="h-12 w-12 border-[3px] border-black bg-primary text-primary-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-primary active:shadow-none active:translate-x-1 active:translate-y-1 transition-all rounded-none"
+                            className="h-10 w-10 md:h-12 md:w-12 rounded-2xl border-2 border-black dark:border-white bg-yellow-400 text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all shrink-0"
                             onClick={() => setIsOpen(true)}
                         >
-                            <Menu className="h-6 w-6 stroke-[3px]" />
+                            <Menu className="h-5 w-5 md:h-6 md:w-6 stroke-[3px]" />
                         </Button>
                     </div>
                 </div>
             </nav>
 
-            {/* Cartoon Mobile Sidebar */}
+            {/* Sidebar remains the same high-quality build */}
             <AnimatePresence>
                 {isOpen && (
-                    <div className="fixed inset-0 z-[100] flex justify-end">
+                    <div className="fixed inset-0 z-[100] flex justify-end p-4">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsOpen(false)}
-                            className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
+                            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                         />
-
                         <motion.div
-                            initial={{ x: "100%" }}
-                            animate={{ x: 0 }}
-                            exit={{ x: "100%" }}
-                            transition={{ type: "spring", damping: 20, stiffness: 150 }}
-                            className="relative w-full max-w-sm bg-white dark:bg-zinc-900 border-l-[8px] border-black h-full p-10 flex flex-col shadow-[-20px_0px_0px_0px_rgba(0,0,0,0.2)]"
+                            initial={{ x: "110%", scale: 0.95 }}
+                            animate={{ x: 0, scale: 1 }}
+                            exit={{ x: "110%", scale: 0.95 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            className="relative w-full max-w-sm bg-white dark:bg-zinc-900 border-4 border-black h-full rounded-[32px] p-8 flex flex-col shadow-2xl shadow-black"
                         >
-                            <div className="flex justify-between items-center mb-16">
-                                <h2 className="text-3xl font-black uppercase italic tracking-tighter">Menu</h2>
+                            <div className="flex justify-between items-center mb-10">
+                                <h2 className="text-2xl font-black uppercase italic tracking-tighter">Navigation</h2>
                                 <Button 
                                     variant="ghost" 
                                     size="icon" 
                                     onClick={() => setIsOpen(false)} 
-                                    className="border-[3px] border-black rounded-none hover:bg-red-500 hover:text-white transition-colors"
+                                    className="rounded-xl border-2 border-black hover:bg-red-500 hover:text-white transition-all"
                                 >
-                                    <X className="h-6 w-6 stroke-[3px]" />
+                                    <X className="h-5 w-5 stroke-[3px]" />
                                 </Button>
                             </div>
 
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-3">
                                 {NAV_ITEMS.map((item, idx) => (
                                     <motion.button
                                         key={item.id}
-                                        initial={{ opacity: 0, x: 50 }}
-                                        animate={{ opacity: 1, x: 0 }}
+                                        initial={{ opacity: 0, y: 15 }}
+                                        animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: idx * 0.05 }}
                                         onClick={() => scrollToSection(item.id)}
                                         className={cn(
-                                            "group flex items-center justify-between w-full p-5 border-[4px] border-black font-black uppercase italic transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1",
+                                            "group flex items-center justify-between w-full p-4 rounded-2xl border-2 transition-all font-black uppercase italic",
                                             activeItem === item.id
-                                                ? "bg-primary text-white"
-                                                : "bg-white dark:bg-zinc-800 text-black dark:text-white"
+                                                ? "bg-primary text-white border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                                                : "bg-zinc-50 dark:bg-zinc-800 border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white hover:translate-x-1"
                                         )}
                                     >
                                         <div className="flex items-center gap-4">
-                                            <item.icon className="h-6 w-6" />
-                                            <span className="text-xl">{item.label}</span>
+                                            <item.icon className="h-5 w-5" />
+                                            <span className="text-lg tracking-tight">{item.label}</span>
                                         </div>
                                         <ArrowRight className={cn(
-                                            "h-6 w-6 transition-transform group-hover:translate-x-2",
-                                            activeItem === item.id ? "opacity-100" : "opacity-30"
+                                            "h-5 w-5 transition-transform group-hover:translate-x-1",
+                                            activeItem === item.id ? "opacity-100" : "opacity-0"
                                         )} />
                                     </motion.button>
                                 ))}
-                            </div>
-
-                            <div className="mt-auto text-center border-[4px] border-black p-4 bg-zinc-100 dark:bg-zinc-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                                <p className="font-black uppercase text-xs">Ibrahim Khalil Tushar</p>
-                                <p className="text-[10px] font-bold opacity-50">v2.0.26_STABLE</p>
                             </div>
                         </motion.div>
                     </div>
