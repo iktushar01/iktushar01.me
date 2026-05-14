@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import { FaFileDownload, FaEye, FaReact, FaNodeJs } from "react-icons/fa";
@@ -8,10 +8,23 @@ import { SiMongodb, SiTailwindcss } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { springSnappy, springSoft, easeInOut } from "@/lib/motion";
+import { useTheme } from "next-themes";
 
 const RESUME_PDF_PATH = "/resume.pdf";
+
 const CV_DOC_URL =
   "https://docs.google.com/document/d/1ztbC17xOWptwf2VrMfnj8E_hO7D9JQKyt7wfhGdNC1U/edit?usp=sharing";
+
+/** Hero photo — light theme (full color). */
+const HEADER_IMAGE_LIGHT =
+  "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778717897/Untitled_design_3_lknubo.png";
+
+/**
+ * Dark theme variant: same asset with Cloudinary transforms so `src` is always a valid URL.
+ * Replace with a separate upload URL if you add a dedicated dark-mode portrait.
+ */
+const HEADER_IMAGE_DARK =
+  "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778472274/ChatGPT_Image_May_11_2026_10_03_45_AM_wpab42.png";
 
 const cartoonFloat: Variants = {
   animate: (i: number) => ({
@@ -26,6 +39,17 @@ const cartoonFloat: Variants = {
 };
 
 const Header: React.FC = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Before mount, `resolvedTheme` is undefined — always use a valid https URL for `next/image`.
+  const imageSrc =
+    mounted && resolvedTheme === "dark" ? HEADER_IMAGE_DARK : HEADER_IMAGE_LIGHT;
+
   return (
     <motion.header
       id="home"
@@ -41,10 +65,30 @@ const Header: React.FC = () => {
 
       <div className="absolute inset-0 pointer-events-none z-10 hidden lg:block overflow-hidden">
         {[
-          { Icon: FaReact, color: "text-primary/45", pos: "top-[15%] left-[5%]", size: "text-7xl" },
-          { Icon: SiMongodb, color: "text-primary/35", pos: "bottom-[20%] left-[8%]", size: "text-5xl" },
-          { Icon: SiTailwindcss, color: "text-primary/40", pos: "top-[12%] right-[10%]", size: "text-6xl" },
-          { Icon: FaNodeJs, color: "text-primary/35", pos: "bottom-[15%] right-[5%]", size: "text-8xl" },
+          {
+            Icon: FaReact,
+            color: "text-primary/45",
+            pos: "top-[15%] left-[5%]",
+            size: "text-7xl",
+          },
+          {
+            Icon: SiMongodb,
+            color: "text-primary/35",
+            pos: "bottom-[20%] left-[8%]",
+            size: "text-5xl",
+          },
+          {
+            Icon: SiTailwindcss,
+            color: "text-primary/40",
+            pos: "top-[12%] right-[10%]",
+            size: "text-6xl",
+          },
+          {
+            Icon: FaNodeJs,
+            color: "text-primary/35",
+            pos: "bottom-[15%] right-[5%]",
+            size: "text-8xl",
+          },
         ].map((item, i) => (
           <motion.div
             key={i}
@@ -65,12 +109,12 @@ const Header: React.FC = () => {
           transition={springSnappy}
           className="relative w-full max-w-[320px] sm:max-w-md lg:max-w-lg"
         >
-          <div className="relative z-20 overflow-hidden rounded-[var(--radius-cartoon-lg)] ">
+          <div className="relative z-20 overflow-hidden rounded-[var(--radius-cartoon-lg)] border-4 border-border shadow-cartoon-md bg-card">
             <Image
-              src="https://res.cloudinary.com/dfoqasqnw/image/upload/v1778719513/output-onlinepngtools_1_gok904.png"
+              src={imageSrc}
               alt="Tushar"
               width={600}
-              height={800}
+              height={600}
               className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-500 ease-out"
               priority
             />
@@ -96,7 +140,8 @@ const Header: React.FC = () => {
             </Badge>
 
             <h1 className="text-6xl sm:text-8xl lg:text-[9rem] font-black tracking-tighter leading-[0.88] mb-6 drop-shadow-cartoon">
-              <span className="text-yellow-400">TUSHAR</span><span className="text-primary italic">!</span>
+              <span className="text-yellow-400">TUSHAR</span>
+              <span className="text-primary italic">!</span>
             </h1>
 
             <div className="bg-card text-card-foreground border-4 border-border p-6 sm:p-10 rounded-[var(--radius-cartoon-lg)] shadow-cartoon-md relative">
@@ -105,38 +150,55 @@ const Header: React.FC = () => {
               <h3 className="text-2xl sm:text-3xl font-black mb-3 uppercase italic tracking-tight">
                 The Fullstack Wizard
               </h3>
+
               <p className="text-base sm:text-lg font-semibold leading-relaxed text-muted-foreground">
                 I craft{" "}
                 <span className="text-foreground underline decoration-accent decoration-4 underline-offset-2">
                   extraordinary
                 </span>{" "}
-                digital experiences. Focusing on pixel-perfect designs and code that
+                digital experiences. Focusing on pixel-perfect designs and code
+                that
                 <span className="text-primary italic"> actually</span> works!
               </p>
             </div>
           </motion.div>
 
           <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-6 pt-2">
-            <motion.div whileHover={{ scale: 1.02, rotate: -1 }} whileTap={{ scale: 0.98 }} transition={springSnappy}>
+            <motion.div
+              whileHover={{ scale: 1.02, rotate: -1 }}
+              whileTap={{ scale: 0.98 }}
+              transition={springSnappy}
+            >
               <Button
                 asChild
                 size="lg"
                 className="w-full sm:w-auto bg-primary text-primary-foreground border-4 border-border rounded-[var(--radius-sticker)] px-10 h-16 sm:h-[4.5rem] font-black text-xl shadow-cartoon-md hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-200 ease-out"
               >
-                <a href={RESUME_PDF_PATH} download="Ibrahim Khalil Tushar.pdf">
+                <a
+                  href={RESUME_PDF_PATH}
+                  download="Ibrahim Khalil Tushar.pdf"
+                >
                   RESUME <FaFileDownload className="ml-3" />
                 </a>
               </Button>
             </motion.div>
 
-            <motion.div whileHover={{ scale: 1.02, rotate: 1 }} whileTap={{ scale: 0.98 }} transition={springSnappy}>
+            <motion.div
+              whileHover={{ scale: 1.02, rotate: 1 }}
+              whileTap={{ scale: 0.98 }}
+              transition={springSnappy}
+            >
               <Button
                 asChild
                 variant="outline"
                 size="lg"
                 className="w-full sm:w-auto bg-card text-card-foreground border-4 border-border rounded-[var(--radius-sticker)] px-10 h-16 sm:h-[4.5rem] font-black text-xl shadow-cartoon-md hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-200 ease-out"
               >
-                <a href={CV_DOC_URL} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={CV_DOC_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   VIEW CV <FaEye className="ml-3" />
                 </a>
               </Button>
