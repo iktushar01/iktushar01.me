@@ -136,7 +136,7 @@ const AboutMe: React.FC = () => {
           kickerTone="accent"
           title={
             <>
-              ABOUT <span className="text-primary">ME!</span>
+              <span className="text-yellow-400 ">ABOUT</span> <span className="text-primary">ME!</span>
             </>
           }
         />

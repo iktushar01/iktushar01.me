@@ -175,17 +175,16 @@ const Education: React.FC = () => (
     <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.04] pointer-events-none lp-dots" />
 
     <div className="lp-container">
-      <SectionHeader
-        kicker="My Academic Journey 📖"
-        kickerTone="primary"
-        kickerRotate="rotate-1"
-        showTitleDropShadow={false}
-        title={
-          <>
-            LEVELED <span className="text-outline">UP</span>
-          </>
-        }
-      />
+            <SectionHeader
+              kicker="My Academic Journey 📖"
+              kickerTone="primary"
+              kickerRotate="-rotate-2"
+              title={
+                <>
+                  <span className="text-yellow-400">LEVELED</span> <span className="text-primary">UP</span>
+                </>
+              }
+            />
 
       <div className="relative">
         <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-border -translate-x-1/2 rounded-full" />

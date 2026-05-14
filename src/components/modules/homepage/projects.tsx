@@ -122,7 +122,7 @@ const Projects: React.FC = () => {
           kickerTone="secondary"
           title={
             <>
-              CRAFTED <span className="text-primary">WORKS</span>
+               <span className="text-yellow-400">CRAFTED </span> <span className="text-primary">WORKS</span>
             </>
           }
         />

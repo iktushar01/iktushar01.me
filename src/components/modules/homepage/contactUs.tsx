@@ -93,17 +93,17 @@ export default function ContactUs() {
     <section id="contact" className="lp-section">
       <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.04] pointer-events-none lp-dots" />
 
-      <div className="lp-container">
-        <SectionHeader
-          kicker="Let's Collab! 🤝"
-          kickerTone="accent"
-          showTitleDropShadow={false}
-          title={
-            <>
-              SAY <span className="text-outline">HELLO</span>
-            </>
-          }
-        />
+     <div className="lp-container">
+             <SectionHeader
+               kicker="Capabilities Loaded! 💾"
+               kickerTone="primary"
+               kickerRotate="-rotate-2"
+               title={
+                 <>
+                   <span className="text-yellow-400">Contact</span> <span className="text-primary">me</span>
+                 </>
+               }
+             />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <div className="space-y-6">
@@ -149,7 +149,7 @@ export default function ContactUs() {
             transition={springSoft}
             className="bg-card text-card-foreground border-4 sm:border-[5px] border-border p-6 sm:p-9 shadow-cartoon-md rounded-[var(--radius-cartoon-lg)] relative"
           >
-            <div className="absolute -top-4 -right-2 sm:-top-5 sm:-right-4 bg-destructive text-white border-4 border-border px-3 py-1 font-black italic rotate-6 shadow-cartoon-sm text-xs sm:text-sm rounded-[var(--radius-sticker)]">
+            <div className="absolute -top-4 -right-2 sm:-top-5 sm:-right-4 bg-destructive border-4 border-border px-3 py-1 font-black italic rotate-6 shadow-cartoon-sm text-xs sm:text-sm rounded-[var(--radius-sticker)] bg-yellow-400 text-black">
               URGENT!
             </div>
 

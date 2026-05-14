@@ -65,12 +65,12 @@ const Header: React.FC = () => {
           transition={springSnappy}
           className="relative w-full max-w-[320px] sm:max-w-md lg:max-w-lg"
         >
-          <div className="relative z-20 overflow-hidden rounded-[var(--radius-cartoon-lg)] border-4 border-border shadow-cartoon-md bg-card">
+          <div className="relative z-20 overflow-hidden rounded-[var(--radius-cartoon-lg)] ">
             <Image
-              src="https://res.cloudinary.com/dfoqasqnw/image/upload/v1778472274/ChatGPT_Image_May_11_2026_10_03_45_AM_wpab42.png"
+              src="https://res.cloudinary.com/dfoqasqnw/image/upload/v1778719513/output-onlinepngtools_1_gok904.png"
               alt="Tushar"
               width={600}
-              height={600}
+              height={800}
               className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-500 ease-out"
               priority
             />
@@ -96,7 +96,7 @@ const Header: React.FC = () => {
             </Badge>
 
             <h1 className="text-6xl sm:text-8xl lg:text-[9rem] font-black tracking-tighter leading-[0.88] mb-6 drop-shadow-cartoon">
-              TUSHAR<span className="text-primary italic">!</span>
+              <span className="text-yellow-400">TUSHAR</span><span className="text-primary italic">!</span>
             </h1>
 
             <div className="bg-card text-card-foreground border-4 border-border p-6 sm:p-10 rounded-[var(--radius-cartoon-lg)] shadow-cartoon-md relative">

@@ -53,7 +53,7 @@ export default function Certificates() {
           kickerTone="primary"
           title={
             <>
-              CERTIF<span className="text-primary">ICATES</span>
+               <span className="text-yellow-400">CERTIF</span><span className="text-primary">ICATES</span>
             </>
           }
         />

@@ -201,10 +201,11 @@ const Skills: React.FC = () => {
           kickerRotate="-rotate-2"
           title={
             <>
-              TECH <span className="text-primary">STACK</span>
+              <span className="text-yellow-400">TECH</span> <span className="text-primary">STACK</span>
             </>
           }
         />
+        
 
         <div className="space-y-24 sm:space-y-32">
           {skillsData.map((group, index) => (
