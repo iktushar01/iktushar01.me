@@ -135,6 +135,26 @@ html[data-app-ready="true"] #initial-loader {
   display: none;
 }
 
+/* Sonner toasts should follow the active app theme instead of browser defaults. */
+[data-sonner-toast] {
+  border: 4px solid var(--border) !important;
+  background: var(--card) !important;
+  color: var(--card-foreground) !important;
+  box-shadow: 8px 8px 0 0 var(--cartoon-shadow) !important;
+}
+
+[data-sonner-toast] [data-title] {
+  color: var(--card-foreground) !important;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+}
+
+[data-sonner-toast] [data-description] {
+  color: var(--muted-foreground) !important;
+  font-weight: 600;
+}
+
 /* Sticker / neo-brutalist shadows (two levels only) */
 @utility shadow-cartoon-sm {
   box-shadow: 4px 4px 0 0 var(--cartoon-shadow);

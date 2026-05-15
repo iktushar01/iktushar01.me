@@ -86,8 +86,8 @@ export default function ContactUs() {
   };
 
   const contactRows = [
-    { icon: <FaMapMarkerAlt />, val: "Gazipur, Dhaka", label: "Base", surface: "bg-primary text-primary-foreground" },
-    { icon: <FaWhatsapp />, val: "+880 1756650014", label: "Ping", surface: "bg-accent text-accent-foreground" },
+    { icon: <FaMapMarkerAlt />, val: "Rajendrapur Cantonment, Gazipur", label: "Current Location", surface: "bg-primary text-primary-foreground" },
+    { icon: <FaWhatsapp />, val: "+880 1756650014", label: "Whatsapp & call", surface: "bg-accent text-accent-foreground" },
     { icon: <FaEnvelope />, val: "iktushar01@gmail.com", label: "Mail", surface: "bg-secondary text-secondary-foreground" },
   ];
 
@@ -95,18 +95,18 @@ export default function ContactUs() {
     <section id="contact" className="lp-section">
       <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.04] pointer-events-none lp-dots" />
 
-     <div className="lp-container">
-             <SectionHeader
-               kicker="Capabilities Loaded!"
-               kickerIcon={<MessageSquare size={18} />}
-               kickerTone="primary"
-               kickerRotate="-rotate-2"
-               title={
-                 <>
-                   <span className="text-yellow-400">Contact</span> <span className="text-primary">me</span>
-                 </>
-               }
-             />
+      <div className="lp-container">
+        <SectionHeader
+          kicker="Capabilities Loaded!"
+          kickerIcon={<MessageSquare size={18} />}
+          kickerTone="primary"
+          kickerRotate="-rotate-2"
+          title={
+            <>
+              <span className="text-yellow-400">Contact</span> <span className="text-primary">me</span>
+            </>
+          }
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <div className="space-y-6">
@@ -212,7 +212,7 @@ export default function ContactUs() {
                     <Send size={22} />
                   )}
                   <span className="tracking-tight">
-                    {status === "sending" ? "Transmitting..." : status === "sent" ? "Dispatched!" : "Launch Message"}
+                    {status === "sending" ? "Transmitting..." : status === "sent" ? "Dispatched!" : " Message"}
                   </span>
                 </div>
               </MagneticButton>

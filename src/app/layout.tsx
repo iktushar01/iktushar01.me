@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Fredoka, Bubblegum_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "sonner";
+import { ThemedToaster } from "@/components/themed-toaster";
 import SmoothFollowerClient from "@/components/SmoothFollowerClient";
 import AppReadyClient from "@/components/AppReadyClient";
 
@@ -79,7 +79,7 @@ export default function RootLayout({
         >
           {children}
           <SmoothFollowerClient />
-          <Toaster position="top-center" richColors />
+          <ThemedToaster />
         </ThemeProvider>
       </body>
     </html>
