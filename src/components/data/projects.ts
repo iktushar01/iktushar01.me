@@ -75,8 +75,8 @@ export const projectsData: Project[] = [
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815021/Screenshot_2026-05-15_091339_nspgjj.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815021/Screenshot_2026-05-15_091432_ynabtv.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815021/Screenshot_2026-05-15_091506_kc5ip6.png",
-      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465777/four_aou7so.png",
-      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465777/five_df5ly5.png",
+      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815779/Screenshot_2026-05-15_092913_tbzomn.png",
+      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815927/Screenshot_2026-05-15_093024_y9cblf.png",
     ],
 
     description:
