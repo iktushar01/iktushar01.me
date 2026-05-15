@@ -94,6 +94,38 @@
   body {
     @apply bg-background text-foreground antialiased font-cartoon;
   }
+
+  ::selection {
+    background: var(--foreground);
+    color: var(--background);
+  }
+
+  :is(
+    a,
+    button,
+    label,
+    summary,
+    select,
+    [role="button"],
+    [type="button"],
+    [type="submit"],
+    [type="reset"],
+    [data-slot="button"],
+    .interactive
+  ) {
+    cursor: pointer;
+  }
+
+  :is(
+    button,
+    [role="button"],
+    [type="button"],
+    [type="submit"],
+    [type="reset"],
+    [data-slot="button"]
+  ):disabled {
+    cursor: not-allowed;
+  }
 }
 
 /* Initial reload loader (renders before hydration) */
