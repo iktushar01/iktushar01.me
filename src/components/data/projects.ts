@@ -68,13 +68,13 @@ export const projectsData: Project[] = [
 
   {
     id: 2,
-    title: "Store-Xen POS Management System",
+    title: "RetailFlow POS Management System",
     tag: "Full Stack",
 
     images: [
-      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465777/one_fxfz1x.png",
-      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465778/two_uriwyl.png",
-      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465778/three_mumxzd.png",
+      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815021/Screenshot_2026-05-15_091339_nspgjj.png",
+      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815021/Screenshot_2026-05-15_091432_ynabtv.png",
+      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815021/Screenshot_2026-05-15_091506_kc5ip6.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465777/four_aou7so.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465777/five_df5ly5.png",
     ],
@@ -93,13 +93,13 @@ export const projectsData: Project[] = [
       "SweetAlert2",
     ],
 
-    liveLink: "https://store-xen.vercel.app/",
+    liveLink: "https://retail-flow-client.vercel.app/dashboard/overview",
 
     frontendLink:
-      "https://github.com/iktushar01/Store-Xen-Client.git",
+      "https://github.com/iktushar01/RetailFlow-client.git",
 
     backendLink:
-      "https://github.com/iktushar01/Store-Xen-Server.git",
+      "https://github.com/iktushar01/RetailFlow-server.git",
 
     challenges: [
       "Implementing secure session management",

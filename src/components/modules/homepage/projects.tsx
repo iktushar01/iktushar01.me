@@ -13,6 +13,8 @@ import {
   FiX,
   FiEye,
   FiGithub,
+  FiChevronLeft,
+  FiChevronRight,
 } from "react-icons/fi";
 
 import { projectsData, type Project } from "@/components/data/projects";
@@ -173,6 +175,33 @@ const Projects: React.FC = () => {
   const [selectedProject, setSelectedProject] =
     useState<Project | null>(null);
 
+  const [activeImage, setActiveImage] = useState(0);
+
+  const openProject = (project: Project) => {
+    setSelectedProject(project);
+    setActiveImage(0);
+  };
+
+  const nextImage = () => {
+    if (!selectedProject) return;
+
+    setActiveImage((prev) =>
+      prev === selectedProject.images.length - 1
+        ? 0
+        : prev + 1
+    );
+  };
+
+  const prevImage = () => {
+    if (!selectedProject) return;
+
+    setActiveImage((prev) =>
+      prev === 0
+        ? selectedProject.images.length - 1
+        : prev - 1
+    );
+  };
+
   return (
     <section id="projects" className="lp-section">
       <div className="absolute inset-0 opacity-[0.07] dark:opacity-[0.05] pointer-events-none lp-dots" />
@@ -199,7 +228,7 @@ const Projects: React.FC = () => {
               key={project.id}
               project={project}
               index={index}
-              onOpen={() => setSelectedProject(project)}
+              onOpen={() => openProject(project)}
             />
           ))}
         </div>
@@ -257,20 +286,90 @@ const Projects: React.FC = () => {
 
               {/* CONTENT */}
               <div className="p-6 sm:p-8 overflow-y-auto lp-scrollbar">
-                <div className="relative aspect-video border-4 border-border shadow-cartoon-sm bg-muted mb-6 rounded-[var(--radius-sticker)] overflow-hidden">
-                  <Image
-                    src={selectedProject.images[0]}
-                    alt={selectedProject.title}
-                    fill
-                    className="object-cover"
-                  />
+                {/* MAIN IMAGE */}
+                <div className="relative aspect-video border-4 border-border shadow-cartoon-sm bg-muted mb-4 rounded-[var(--radius-sticker)] overflow-hidden">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeImage}
+                      initial={{
+                        opacity: 0,
+                        scale: 1.04,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        scale: 0.98,
+                      }}
+                      transition={{
+                        duration: 0.3,
+                      }}
+                      className="absolute inset-0"
+                    >
+                      <Image
+                        src={
+                          selectedProject.images[
+                            activeImage
+                          ]
+                        }
+                        alt={selectedProject.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+
+                  {/* LEFT BTN */}
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-3 bg-card border-4 border-border rounded-full shadow-cartoon-sm hover:scale-105 transition-all duration-200"
+                  >
+                    <FiChevronLeft size={20} />
+                  </button>
+
+                  {/* RIGHT BTN */}
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-3 bg-card border-4 border-border rounded-full shadow-cartoon-sm hover:scale-105 transition-all duration-200"
+                  >
+                    <FiChevronRight size={20} />
+                  </button>
+                </div>
+
+                {/* THUMBNAILS */}
+                <div className="flex gap-3 overflow-x-auto pb-2 mb-8 lp-scrollbar">
+                  {selectedProject.images.map(
+                    (img, index) => (
+                      <button
+                        key={index}
+                        onClick={() =>
+                          setActiveImage(index)
+                        }
+                        className={cn(
+                          "relative min-w-[100px] h-[70px] overflow-hidden rounded-[var(--radius-sticker)] border-4 transition-all duration-200 shadow-cartoon-sm",
+                          activeImage === index
+                            ? "border-primary scale-105"
+                            : "border-border opacity-70 hover:opacity-100"
+                        )}
+                      >
+                        <Image
+                          src={img}
+                          alt={`preview-${index}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </button>
+                    )
+                  )}
                 </div>
 
                 <h2 className="text-3xl sm:text-4xl font-black italic uppercase mb-5 tracking-tight">
                   {selectedProject.title}
                 </h2>
 
-                {/* 3 BUTTONS */}
+                {/* BUTTONS */}
                 <div className="flex flex-wrap gap-4 mb-8">
                   <ActionButton
                     href={selectedProject.frontendLink}
