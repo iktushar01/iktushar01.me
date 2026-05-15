@@ -86,7 +86,7 @@ export default function ContactUs() {
   };
 
   const contactRows = [
-    { icon: <FaMapMarkerAlt />, val: "Rajendrapur Cantonment, Gazipur", label: "Current Location", surface: "bg-primary text-primary-foreground" },
+    { icon: <FaMapMarkerAlt />, val: "Gazipur, Dhaka", label: "Current Location", surface: "bg-primary text-primary-foreground" },
     { icon: <FaWhatsapp />, val: "+880 1756650014", label: "Whatsapp & call", surface: "bg-accent text-accent-foreground" },
     { icon: <FaEnvelope />, val: "iktushar01@gmail.com", label: "Mail", surface: "bg-secondary text-secondary-foreground" },
   ];
