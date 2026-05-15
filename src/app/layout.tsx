@@ -25,8 +25,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tushar's protfolio",
-  description: "full stack devloper.",
+  metadataBase: new URL("https://www.iktushar01.me"),
+  title: "Tushar's Portfolio",
+  description: "Full-stack developer crafting pixel-perfect digital experiences.",
+  icons: {
+    icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
+    shortcut: ["/favicon.ico"],
+  },
 };
 
 export default function RootLayout({

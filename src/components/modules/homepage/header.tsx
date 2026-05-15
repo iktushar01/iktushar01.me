@@ -43,7 +43,8 @@ const Header: React.FC = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   // Before mount, `resolvedTheme` is undefined — always use a valid https URL for `next/image`.
