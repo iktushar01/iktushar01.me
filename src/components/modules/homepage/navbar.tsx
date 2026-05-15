@@ -125,22 +125,22 @@ export default function Navbar() {
                         style={{ scaleX }}
                     />
 
-                    <motion.div
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        transition={springSnappy}
-                        className="cursor-pointer shrink-0"
-                        onClick={() => scrollToSection("home")}
-                    >
-                        <Image
-                            src="https://res.cloudinary.com/dfoqasqnw/image/upload/logo_msrkwi.png"
-                            alt="Logo"
-                            width={140}
-                            height={100}
-                            className="h-10 md:h-12 w-auto"
-                            priority
-                        />
-                    </motion.div>
+                 <motion.div
+    whileHover={{ scale: 1.03 }}
+    whileTap={{ scale: 0.97 }}
+    transition={springSnappy}
+    className="cursor-pointer shrink-0"
+    onClick={() => scrollToSection("home")}
+>
+    <Image
+        src="https://res.cloudinary.com/dfoqasqnw/image/upload/logo_msrkwi.png"
+        alt="Logo"
+        width={140}
+        height={100}
+        className="h-10 md:h-12 w-auto [filter:drop-shadow(2px_0_0_black)_drop-shadow(-2px_0_0_black)_drop-shadow(0_2px_0_black)_drop-shadow(0_-2px_0_black)]"
+        priority
+    />
+</motion.div>
 
                     <div className="flex items-center gap-2 md:gap-3">
                         <Button
