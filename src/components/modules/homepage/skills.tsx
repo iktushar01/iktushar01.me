@@ -48,7 +48,7 @@ const skillsData: SkillGroup[] = [
     id: 2,
     category: "Backend",
     icon: <FiZap />,
-    panelClass: "bg-secondary text-secondary-foreground",
+    panelClass: "dark:bg-secondary bg-black/80 dark:text-secondary-foreground text-white",
     description: "The logic engine that handles data flows and keeps the machine humming.",
     skills: [
       { name: "Node.js", icon: <FaNodeJs />, color: "#68A063", level: 85 },
@@ -61,7 +61,7 @@ const skillsData: SkillGroup[] = [
     id: 3,
     category: "Data",
     icon: <FiDatabase />,
-    panelClass: "bg-accent text-accent-foreground",
+    panelClass: "bg-accent text-white dark:text-black ",
     description: "Scaling databases and organizing complexity into structured power.",
     skills: [
       { name: "Postgres", icon: <SiPostgresql />, color: "#4169E1", level: 80 },
@@ -110,7 +110,7 @@ const SkillSticker: React.FC<{ skill: Skill; delay: number }> = ({ skill, delay 
       className="group bg-card text-card-foreground border-4 border-border p-4 rounded-[var(--radius-sticker)] shadow-cartoon-sm flex flex-col items-center gap-3 transition-shadow duration-200"
     >
       <div
-        className="text-4xl drop-shadow-cartoon transition-transform duration-200 group-hover:scale-105"
+        className="text-4xl  transition-transform duration-200 group-hover:scale-105"
         style={{ color: skill.color }}
       >
         {skill.icon}
@@ -186,8 +186,8 @@ const SkillGroupSection: React.FC<{ group: SkillGroup; index: number }> = ({ gro
 const Skills: React.FC = () => {
   const footStats = [
     { label: "Weapon Classes", value: "03", surface: "bg-primary text-primary-foreground" },
-    { label: "Unlocked Gear", value: "20+", surface: "bg-accent text-accent-foreground" },
-    { label: "Server Uptime", value: "99%", surface: "bg-secondary text-secondary-foreground" },
+    { label: "Unlocked Gear", value: "20+", surface: "bg-accent text-white dark:text-accent-foreground" },
+    { label: "Server Uptime", value: "99%", surface: "dark:bg-secondary bg-black/80 dark:text-secondary-foreground text-white" },
   ];
 
   return (

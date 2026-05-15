@@ -86,7 +86,7 @@ export default function ContactUs() {
   const contactRows = [
     { icon: <FaMapMarkerAlt />, val: "Gazipur, Dhaka", label: "Base", surface: "bg-primary text-primary-foreground" },
     { icon: <FaWhatsapp />, val: "+880 1756650014", label: "Ping", surface: "bg-accent text-accent-foreground" },
-    { icon: <FaEnvelope />, val: "hello@tushar.dev", label: "Mail", surface: "bg-secondary text-secondary-foreground" },
+    { icon: <FaEnvelope />, val: "iktushar01@gmail.com", label: "Mail", surface: "bg-secondary text-secondary-foreground" },
   ];
 
   return (

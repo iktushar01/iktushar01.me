@@ -21,7 +21,7 @@ interface EducationItem {
   skills: string[];
 }
 
-const UTTARA_LOGO = "https://res.cloudinary.com/dfoqasqnw/image/upload/UttaraUniversityLogo_bf6z7s.jpg";
+const UTTARA_LOGO = "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778809068/cropped_circle_image_ic9c2j.png";
 const RCPSC_LOGO = "https://res.cloudinary.com/dfoqasqnw/image/upload/rcpscLogo_f6ccxs.png";
 
 const educationData: EducationItem[] = [
@@ -102,7 +102,7 @@ const EducationPostcard: React.FC<{ item: EducationItem; index: number }> = ({ i
             src={item.logo}
             alt={`${item.institution} logo`}
             fill
-            sizes="(max-width: 1024px) 112px, 144px"
+            sizes="(max-width: 024px) 112px, 144px"
             className="object-contain p-1"
           />
         </motion.div>
