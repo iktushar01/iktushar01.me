@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { springSnappy, springSoft, easeInOut } from "@/lib/motion";
 import { useTheme } from "next-themes";
+import { Hand, Rocket } from "lucide-react";
 
 const RESUME_PDF_PATH = "/resume.pdf";
 
@@ -124,9 +125,9 @@ const Header: React.FC = () => {
           <motion.div
             animate={{ rotate: [10, 6, 10] }}
             transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-            className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-accent text-accent-foreground px-5 py-2.5 sm:px-6 sm:py-3 border-4 border-border rounded-[var(--radius-sticker)] font-black text-base sm:text-xl shadow-cartoon-sm z-30 select-none"
+            className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-accent text-accent-foreground px-5 py-2.5 sm:px-6 sm:py-3 border-4 border-border rounded-[var(--radius-sticker)] font-black text-base sm:text-xl shadow-cartoon-sm z-30 select-none inline-flex items-center gap-2"
           >
-            HI THERE! 👋
+            HI THERE! <Hand className="size-5 sm:size-6" strokeWidth={3} />
           </motion.div>
         </motion.div>
 
@@ -136,8 +137,8 @@ const Header: React.FC = () => {
             animate={{ x: 0, opacity: 1 }}
             transition={{ ...springSoft, delay: 0.12 }}
           >
-            <Badge className="px-5 py-2 border-4 border-border bg-primary text-primary-foreground mb-6 font-black text-xs uppercase tracking-widest shadow-cartoon-sm hover:bg-primary/90 transition-colors duration-200 rounded-[var(--radius-sticker)]">
-              AVAILABLE FOR HIRE 🚀
+            <Badge className="px-5 py-2 border-4 border-border bg-primary text-primary-foreground mb-6 font-black text-xs uppercase tracking-widest shadow-cartoon-sm hover:bg-primary/90 transition-colors duration-200 rounded-[var(--radius-sticker)] gap-2">
+              AVAILABLE FOR HIRE <Rocket className="size-4" strokeWidth={3} />
             </Badge>
 
             <h1 className="text-6xl sm:text-8xl lg:text-[9rem] font-black tracking-tighter leading-[0.88] mb-6 drop-shadow-cartoon">

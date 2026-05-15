@@ -15,6 +15,7 @@ export type SectionKickerTone = keyof typeof kickerToneClass;
 
 type SectionHeaderProps = {
   kicker: string;
+  kickerIcon?: ReactNode;
   kickerTone?: SectionKickerTone;
   /** Slight sticker rotation; keep small for consistency */
   kickerRotate?: string;
@@ -26,6 +27,7 @@ type SectionHeaderProps = {
 
 export function SectionHeader({
   kicker,
+  kickerIcon,
   kickerTone = "accent",
   kickerRotate = "-rotate-2",
   title,
@@ -40,11 +42,12 @@ export function SectionHeader({
         viewport={{ once: true }}
         transition={springSoft}
         className={cn(
-          "inline-block px-4 py-2 sm:px-5 sm:py-2.5 border-4 border-border font-black text-xs sm:text-sm uppercase tracking-wide mb-6 shadow-cartoon-sm",
+          "inline-flex items-center justify-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 border-4 border-border font-black text-xs sm:text-sm uppercase tracking-wide mb-6 shadow-cartoon-sm",
           kickerToneClass[kickerTone],
           kickerRotate,
         )}
       >
+        {kickerIcon && <span className="text-base sm:text-lg">{kickerIcon}</span>}
         {kicker}
       </motion.div>
       <div

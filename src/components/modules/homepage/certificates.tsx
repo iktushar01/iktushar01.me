@@ -85,7 +85,8 @@ export default function Certificates() {
 
       <div className="lp-container">
         <SectionHeader
-          kicker="Skill Badges Unlocked! 🏆"
+          kicker="Skill Badges Unlocked!"
+          kickerIcon={<FiAward />}
           kickerTone="primary"
           title={
             <>

@@ -196,7 +196,8 @@ const Skills: React.FC = () => {
 
       <div className="lp-container">
         <SectionHeader
-          kicker="Capabilities Loaded! 💾"
+          kicker="Capabilities Loaded!"
+          kickerIcon={<FiDatabase />}
           kickerTone="primary"
           kickerRotate="-rotate-2"
           title={

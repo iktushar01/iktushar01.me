@@ -15,6 +15,7 @@ import {
   FiGithub,
   FiChevronLeft,
   FiChevronRight,
+  FiPackage,
 } from "react-icons/fi";
 
 import { projectsData, type Project } from "@/components/data/projects";
@@ -208,7 +209,8 @@ const Projects: React.FC = () => {
 
       <div className="lp-container">
         <SectionHeader
-          kicker="Portfolio Lab 🧪"
+          kicker="Portfolio Lab"
+          kickerIcon={<FiPackage />}
           kickerTone="secondary"
           title={
             <>

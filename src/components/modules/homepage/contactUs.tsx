@@ -76,7 +76,9 @@ export default function ContactUs() {
     setStatus("sending");
     await new Promise((r) => setTimeout(r, 1500));
     setStatus("sent");
-    toast.success("Message Dispatched! 🚀");
+    toast.success("Message Dispatched!", {
+      icon: <Send size={18} />,
+    });
     setTimeout(() => {
       setStatus("idle");
       setForm({ name: "", email: "", message: "" });
@@ -95,7 +97,8 @@ export default function ContactUs() {
 
      <div className="lp-container">
              <SectionHeader
-               kicker="Capabilities Loaded! 💾"
+               kicker="Capabilities Loaded!"
+               kickerIcon={<MessageSquare size={18} />}
                kickerTone="primary"
                kickerRotate="-rotate-2"
                title={

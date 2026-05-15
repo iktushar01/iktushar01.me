@@ -176,7 +176,8 @@ const Education: React.FC = () => (
 
     <div className="lp-container">
             <SectionHeader
-              kicker="My Academic Journey 📖"
+              kicker="My Academic Journey"
+              kickerIcon={<FiBookOpen />}
               kickerTone="primary"
               kickerRotate="-rotate-2"
               title={
