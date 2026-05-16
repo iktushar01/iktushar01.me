@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import { FaFileDownload, FaEye, FaReact, FaNodeJs } from "react-icons/fa";
-import { SiMongodb, SiTailwindcss } from "react-icons/si";
+import { SiMongodb, SiTailwindcss, SiTypescript } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { springSnappy, springSoft, easeInOut } from "@/lib/motion";
@@ -91,6 +91,12 @@ const Header: React.FC = () => {
             pos: "bottom-[15%] right-[5%]",
             size: "text-8xl",
           },
+          {
+            Icon: SiTypescript,
+            color: "text-primary/30",
+            pos: "top-[40%] right-[3%]",
+            size: "text-5xl",
+          },
         ].map((item, i) => (
           <motion.div
             key={i}
@@ -150,17 +156,17 @@ const Header: React.FC = () => {
               <div className="absolute -top-4 left-1/2 md:left-12 -translate-x-1/2 md:translate-x-0 w-10 h-10 bg-card border-l-4 border-t-4 border-border rotate-45" />
 
               <h3 className="text-2xl sm:text-3xl font-black mb-3 uppercase italic tracking-tight">
-                The Fullstack Wizard
+                Fullstack MERN & Next.js Dev
               </h3>
 
               <p className="text-base sm:text-lg font-semibold leading-relaxed text-muted-foreground">
-                I craft{" "}
+                I architect{" "}
                 <span className="text-foreground underline decoration-accent decoration-4 underline-offset-2">
-                  extraordinary
+                  high-performance
                 </span>{" "}
-                digital experiences. Focusing on pixel-perfect designs and code
-                that
-                <span className="text-primary italic"> actually</span> works!
+                web applications. Specialist in crafting pixel-perfect UIs with
+                <span className="text-primary italic"> Next.js</span> & scalable
+                backends with <span className="text-primary italic">Node.js</span>.
               </p>
             </div>
           </motion.div>
