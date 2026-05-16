@@ -74,15 +74,40 @@ export default function ContactUs() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-    await new Promise((r) => setTimeout(r, 1500));
-    setStatus("sent");
-    toast.success("Message Dispatched!", {
-      icon: <Send size={18} />,
-    });
-    setTimeout(() => {
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to send message");
+      }
+
+      setStatus("sent");
+      toast.success("Message Received on Tushar's inbox! I'll get back to you soon.😎", {
+        icon: <Send size={18} />,
+      });
+
+      // Reset form after success 
+      setTimeout(() => {
+        setStatus("idle");
+        setForm({ name: "", email: "", message: "" });
+      }, 3000);
+    } catch (error: any) {
+      console.error("Submission Error:", error);
       setStatus("idle");
-      setForm({ name: "", email: "", message: "" });
-    }, 3000);
+      toast.error("Transmission Failed!", {
+        description: error.message || "Please try again later or use direct contact.",
+        className: "border-4 border-destructive bg-card",
+      });
+    }
   };
 
   const contactRows = [
