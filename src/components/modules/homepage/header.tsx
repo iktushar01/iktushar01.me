@@ -14,7 +14,7 @@ import { Hand, Rocket } from "lucide-react";
 const RESUME_PDF_PATH = "/resume.pdf";
 
 const CV_DOC_URL =
-  "https://docs.google.com/document/d/1ztbC17xOWptwf2VrMfnj8E_hO7D9JQKyt7wfhGdNC1U/edit?usp=sharing";
+  "https://drive.google.com/file/d/1kDBaB5KUNH5UAQdH_rf_ps6SyojpBALF/view?usp=sharing";
 
 /** Hero photo — light theme (full color). */
 const HEADER_IMAGE_LIGHT =
