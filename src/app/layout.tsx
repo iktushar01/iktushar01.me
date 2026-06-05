@@ -43,33 +43,39 @@ export default function RootLayout({
     <html
       lang="en" 
       suppressHydrationWarning
-      // Apply the new variables here
       className={`${fredoka.variable} ${bubblegum.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-cartoon">
-        <div id="initial-loader" aria-label="Loading">
-          <div className="fixed inset-0 flex items-center justify-center bg-background">
-  <div className="fixed inset-0 flex items-center justify-center bg-background z-[100]">
-  <div id="initial-loader-card" className="w-full max-w-sm p-8 text-center bg-card border-4 border-black dark:border-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_rgba(255,255,255,0.1)] rounded-[32px] mx-4">
-    
+        
+        {/* Borderless Cartoon Spinner Loader */}
+        <div id="initial-loader" aria-label="Loading" className="relative z-[100]">
+          <div className="fixed inset-0 flex flex-col items-center justify-center bg-background select-none gap-4">
+            
+            {/* Spinning Element */}
+            <div className="text-5xl animate-[cartoonSpin_1.5s_linear_infinite]">
+              🌀
+            </div>
+            
+            {/* Bouncing Text Indicator */}
+            <h2 className="text-xl font-black uppercase tracking-widest italic text-foreground/80 animate-[cartoonPulse_1.2s_ease-in-out_infinite]">
+              Loading...
+            </h2>
 
-    {/* Text Content */}
-    <div className="space-y-4">
-      <div className="inline-block px-4 py-1 bg-accent border-2 border-black dark:border-white -rotate-2 mb-2">
-        <h2 className="text-xl font-black uppercase italic tracking-tighter text-accent-foreground">
-          Initializing...
-        </h2>
-      </div>
-      
-      {/* Brutalist Progress Bar */}
-      
-
-      
-    </div>
-  </div>
-</div>
-</div>
+          </div>
         </div>
+
+        {/* Instant injection keyframes */}
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes cartoonSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          @keyframes cartoonPulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+          }
+        `}} />
+
         <AppReadyClient />
         <ThemeProvider
           attribute="class"
