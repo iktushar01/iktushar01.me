@@ -56,26 +56,27 @@ const TiltCard: React.FC<{ children: ReactNode; className?: string }> = ({ child
 const StoryCard: React.FC<{ item: StoryItem; index: number }> = ({ item, index }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-64px" }}
-      transition={{ ...springSoft, delay: index * 0.08 }}
+      transition={{ ...springSoft, delay: index * 0.06 }}
+      className="h-full"
     >
-      <TiltCard>
-        <div className="group relative rounded-[var(--radius-cartoon)] border-4 border-border bg-card text-card-foreground p-6 sm:p-8 flex flex-col sm:flex-row gap-6 shadow-cartoon-md hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-200 ease-out">
+      <TiltCard className="h-full">
+        <div className="group relative h-full rounded-[var(--radius-cartoon)] border-4 border-border bg-card text-card-foreground p-6 flex flex-col gap-4 shadow-cartoon-sm hover:shadow-cartoon-md hover:-translate-x-1 hover:-translate-y-1 transition-all duration-200 ease-out">
           <div
             className={cn(
-              "flex-shrink-0 w-16 h-16 rounded-[var(--radius-sticker)] border-4 border-border flex items-center justify-center text-3xl text-primary-foreground shadow-cartoon-sm group-hover:rotate-6 transition-transform duration-200",
+              "w-12 h-12 rounded-[var(--radius-sticker)] border-4 border-border flex items-center justify-center text-xl text-primary-foreground shadow-cartoon-sm group-hover:rotate-6 transition-transform duration-200",
               item.iconSurface,
             )}
           >
             {item.icon}
           </div>
           <div>
-            <h3 className="text-xl sm:text-2xl font-black mb-2 uppercase italic tracking-tight">
+            <h3 className="text-lg sm:text-xl font-black mb-1.5 uppercase italic tracking-tight">
               {item.title}
             </h3>
-            <p className="text-sm sm:text-base font-semibold text-muted-foreground leading-snug">
+            <p className="text-xs sm:text-sm font-semibold text-muted-foreground leading-relaxed">
               {item.content}
             </p>
           </div>
@@ -86,41 +87,44 @@ const StoryCard: React.FC<{ item: StoryItem; index: number }> = ({ item, index }
 };
 
 const AboutMe: React.FC = () => {
+  // Personalized stories mapped to your portfolio architecture focus
   const stories: StoryItem[] = [
     {
       icon: <FaCode />,
       iconSurface: "bg-primary",
-      title: "The Code Smith",
+      title: "MERN Stack Engineer",
       content:
-        "Building digital kingdoms with the MERN stack. I turn coffee into clean, scalable architectures.",
+        "Architecting robust systems using MongoDB, Express, React, and Node.js. Obsessed with clean code architecture and aggressive performance layouts.",
     },
     {
       icon: <FaPaintBrush />,
       iconSurface: "bg-accent text-accent-foreground",
-      title: "UI Artisan",
+      title: "UI/UX & Optimization",
       content:
-        "Aesthetics meet logic. I obsess over pixels, ensuring every interaction feels like a breeze.",
+        "Bridging elegant frontend layout systems with strict logical rules. Crafting production interfaces prioritizing responsive layouts and absolute pixel-perfection.",
     },
     {
-      icon: <FaGamepad />,
+      icon: <FiStar />,
       iconSurface: "bg-secondary text-secondary-foreground",
-      title: "Level 99 Gamer",
+      title: "Next & Systems Grind",
       content:
-        "Tactical precision in Valorant, survival instincts in PUBG. Gaming fuels my strategic thinking.",
+        "Actively expanding structural pipelines into high-scale setups using Next.js frameworks, Go compilers, and reliable relational SQL platforms.",
     },
   ];
 
+  // Actual skills from your toolkit
   const approaches: ApproachItem[] = [
-    { skill: "Logic Crafting", level: 92, barClass: "bg-primary" },
-    { skill: "Pixel Perfection", level: 88, barClass: "bg-accent" },
-    { skill: "Data Sorcery", level: 85, barClass: "bg-secondary" },
+    { skill: "Frontend Architecture (React/Next)", level: 92, barClass: "bg-primary" },
+    { skill: "Backend Layouts (Node/Express/Go)", level: 85, barClass: "bg-accent" },
+    { skill: "Database Optimization (SQL/NoSQL)", level: 80, barClass: "bg-secondary" },
   ];
 
+  // Milestone data points transformed into metrics
   const stats: { label: string; value: string; surface: string }[] = [
-    { label: "XP Points", value: "1.5y", surface: "bg-accent text-accent-foreground" },
-    { label: "Missions", value: "12+", surface: "bg-primary text-primary-foreground" },
-    { label: "Stamina", value: "100%", surface: "bg-secondary text-secondary-foreground" },
-    { label: "Rank", value: "PRO", surface: "bg-muted text-foreground" },
+    { label: "Built Projects", value: "6+", surface: "bg-accent text-accent-foreground" },
+    { label: "Tech Infrastructure Nodes", value: "12+", surface: "bg-primary text-primary-foreground" },
+    { label: "System Stamina", value: "100%", surface: "bg-secondary text-secondary-foreground" },
+    { label: "Developer Tier", value: "PRO", surface: "bg-muted text-foreground" },
   ];
 
   return (
@@ -141,41 +145,65 @@ const AboutMe: React.FC = () => {
           }
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-          <div className="lg:col-span-7 space-y-8">
-            {stories.map((item, index) => (
-              <StoryCard key={item.title} item={item} index={index} />
-            ))}
+        {/* Brand New Modern Bento Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 items-stretch">
+          
+          {/* Main Context Box: Introduction card spanning half the bento layout */}
+          <div className="lg:col-span-6 flex flex-col justify-between p-6 sm:p-8 bg-card border-4 border-border rounded-[var(--radius-cartoon-lg)] shadow-cartoon-md">
+            <div className="space-y-4">
+              <span className="bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md border-2 border-border">
+                Core Identity
+              </span>
+              <h3 className="text-2xl sm:text-4xl font-black uppercase tracking-tight leading-none">
+                Md. Ibrahim Khalil Tushar
+              </h3>
+              <p className="text-sm sm:text-base font-semibold text-muted-foreground leading-relaxed">
+                Full-stack software developer pursuing a B.Sc. in Computer Science and Engineering at Uttara University. Focused on translating clean modular paradigms into fast web user spaces.
+              </p>
+            </div>
+
+            {/* Quick-firing dynamic anchor reference badges referencing your ecosystem highlights */}
+            <div className="flex flex-wrap gap-2 pt-6 mt-6 border-t-4 border-dashed border-border/40">
+              {["#Acadex", "#Store-Xen", "#Medquix", "#DocScheduleBD"].map((project) => (
+                <span
+                  key={project}
+                  className="bg-muted text-foreground border-2 border-border px-2.5 py-1 rounded-md font-black text-[10px] uppercase shadow-cartoon-sm"
+                >
+                  {project}
+                </span>
+              ))}
+            </div>
           </div>
 
-          <div className="lg:col-span-5 space-y-8">
-            <TiltCard>
-              <div className="bg-card text-card-foreground border-4 border-border rounded-[var(--radius-cartoon-lg)] p-8 shadow-cartoon-md">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-14 h-14 rounded-full bg-foreground text-background flex items-center justify-center border-4 border-border shadow-cartoon-sm">
-                    <FiStar className="text-accent text-2xl" />
+          {/* Skill Matrix Box (Spans 6 units on desktop) */}
+          <div className="lg:col-span-6">
+            <TiltCard className="h-full">
+              <div className="h-full bg-card text-card-foreground border-4 border-border rounded-[var(--radius-cartoon-lg)] p-6 sm:p-8 shadow-cartoon-md flex flex-col justify-center">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center border-4 border-border shadow-cartoon-sm">
+                    <FiStar className="text-accent text-lg" />
                   </div>
-                  <h3 className="text-2xl sm:text-3xl font-black uppercase italic tracking-tight">Skill Levels</h3>
+                  <h3 className="text-xl sm:text-2xl font-black uppercase italic tracking-tight">System Matrix</h3>
                 </div>
 
-                <div className="space-y-8">
+                <div className="space-y-5">
                   {approaches.map((item, index) => (
                     <div key={item.skill} className="group">
-                      <div className="flex justify-between font-black uppercase text-xs sm:text-sm mb-2 tracking-wide">
+                      <div className="flex justify-between font-black uppercase text-[10px] sm:text-xs mb-1.5 tracking-wide">
                         <span>{item.skill}</span>
-                        <span className="bg-foreground text-background px-2 py-0.5 rounded-md italic border-2 border-border">
+                        <span className="bg-foreground text-background px-1.5 py-0.5 rounded text-[10px] font-bold border border-border">
                           {item.level}%
                         </span>
                       </div>
-                      <div className="h-7 sm:h-8 w-full bg-muted border-4 border-border rounded-[var(--radius-sticker)] overflow-hidden shadow-cartoon-sm">
+                      <div className="h-6 w-full bg-muted border-4 border-border rounded-[var(--radius-sticker)] overflow-hidden shadow-cartoon-sm">
                         <motion.div
                           className={cn("h-full border-r-4 border-border relative", item.barClass)}
                           initial={{ width: 0 }}
                           whileInView={{ width: `${item.level}%` }}
                           viewport={{ once: true }}
-                          transition={{ ...springSoft, delay: index * 0.12 }}
+                          transition={{ ...springSoft, delay: index * 0.1 }}
                         >
-                          <div className="absolute inset-0 opacity-20 bg-[linear-gradient(45deg,rgba(0,0,0,0.12)_25%,transparent_25%,transparent_50%,rgba(0,0,0,0.12)_50%,rgba(0,0,0,0.12)_75%,transparent_75%,transparent)] bg-[length:16px_16px]" />
+                          <div className="absolute inset-0 opacity-15 bg-[linear-gradient(45deg,rgba(0,0,0,0.12)_25%,transparent_25%,transparent_50%,rgba(0,0,0,0.12)_50%,rgba(0,0,0,0.12)_75%,transparent_75%,transparent)] bg-[length:12px_12px]" />
                         </motion.div>
                       </div>
                     </div>
@@ -183,35 +211,33 @@ const AboutMe: React.FC = () => {
                 </div>
               </div>
             </TiltCard>
-
-            <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat) => (
-                <motion.div
-                  key={stat.label}
-                  whileHover={{ y: -4 }}
-                  transition={springSoft}
-                  className={cn(
-                    "border-4 border-border p-4 rounded-[var(--radius-sticker)] shadow-cartoon-sm",
-                    stat.surface,
-                  )}
-                >
-                  <p className="text-[10px] font-black uppercase opacity-80">{stat.label}</p>
-                  <p className="text-2xl sm:text-3xl font-black italic leading-none">{stat.value}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
-              {["Coffee Addict", "Night Owl", "Fast Learner", "Team Player"].map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-muted/80 border-4 border-border px-3 py-1.5 rounded-full font-black text-[10px] sm:text-xs uppercase shadow-cartoon-sm"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
           </div>
+
+          {/* Three Column Dynamic Story Card Track Block */}
+          {stories.map((item, index) => (
+            <div key={item.title} className="lg:col-span-4 md:col-span-1">
+              <StoryCard item={item} index={index} />
+            </div>
+          ))}
+
+          {/* Numerical Status Metrics Panel Footer Grid Block */}
+          <div className="lg:col-span-12 grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
+            {stats.map((stat) => (
+              <motion.div
+                key={stat.label}
+                whileHover={{ y: -4, scale: 1.02 }}
+                transition={springSoft}
+                className={cn(
+                  "border-4 border-border p-4 rounded-[var(--radius-sticker)] shadow-cartoon-sm flex flex-col justify-center",
+                  stat.surface,
+                )}
+              >
+                <p className="text-[9px] font-black uppercase opacity-75 tracking-wider mb-1">{stat.label}</p>
+                <p className="text-xl sm:text-2xl font-black italic leading-none">{stat.value}</p>
+              </motion.div>
+            ))}
+          </div>
+
         </div>
       </div>
     </section>

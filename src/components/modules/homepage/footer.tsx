@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, JSX } from "react";
 import { motion } from "framer-motion";
-import { FaGithub, FaFacebook, FaArrowUp } from "react-icons/fa";
+import { FaGithub, FaFacebook, FaArrowUp, FaLinkedinIn } from "react-icons/fa";
 import { springSnappy } from "@/lib/motion";
 
 interface SocialLink {
@@ -37,8 +37,10 @@ const Footer: React.FC = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // LinkedIn link successfully appended with matching username parameters
   const socialLinks: SocialLink[] = [
     { icon: <FaGithub />, link: "https://github.com/iktushar01" },
+    { icon: <FaLinkedinIn />, link: "https://linkedin.com/in/iktushar01" },
     { icon: <FaFacebook />, link: "https://facebook.com/iktushar01" },
   ];
 

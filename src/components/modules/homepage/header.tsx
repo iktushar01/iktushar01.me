@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { motion, Variants } from "framer-motion";
-import { FaFileDownload, FaEye, FaReact, FaNodeJs, FaCode } from "react-icons/fa";
+import { FaFileDownload, FaEye, FaReact, FaNodeJs, FaCode, FaGithub, FaFacebook, FaLinkedinIn, FaInstagram, FaYoutube } from "react-icons/fa";
 import { SiTailwindcss, SiNextdotjs } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -168,6 +168,14 @@ const Header: React.FC = () => {
     return `[${"■".repeat(filledBars)}${".".repeat(emptyBars)}] ${installProgress}%`;
   };
 
+  const inlineSocials = [
+  { Icon: FaGithub, url: "https://github.com/iktushar01", label: "GitHub" },
+  { Icon: FaLinkedinIn, url: "https://linkedin.com/in/iktushar01", label: "LinkedIn" },
+  { Icon: FaFacebook, url: "https://facebook.com/iktushar01", label: "Facebook" },
+  { Icon: FaInstagram, url: "https://instagram.com/iktushar01", label: "Instagram" },
+  { Icon: FaYoutube, url: "https://youtube.com/@iktushar01", label: "YouTube" },
+];
+
   return (
     <>
       <style jsx global>{`
@@ -216,7 +224,7 @@ const Header: React.FC = () => {
           <div className="absolute top-1/2 left-1/2 w-[min(90vw,600px)] h-[min(90vw,600px)] bg-primary/10 rounded-full animate-aura-infinite" />
         </div>
 
-        {/* Floating Icons Canvas */}
+        {/* Floating Background Ambient Design Icons */}
         <div className="absolute inset-0 pointer-events-none z-10 hidden xl:block overflow-hidden">
           {[
             { Icon: FaReact, color: "text-primary/30", pos: "top-[15%] left-[8%]", size: "text-6xl" },
@@ -274,8 +282,27 @@ const Header: React.FC = () => {
               </div>
             </motion.div>
 
+            {/* Social Icons Strip Before Buttons */}
+            <div className="flex items-center justify-center lg:justify-start gap-4 pt-2">
+              {inlineSocials.map((social, i) => (
+                <motion.a
+                  key={social.label}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  whileHover={{ scale: 1.15, rotate: i % 2 === 0 ? 6 : -6 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={springSnappy}
+                  className="w-12 h-12 bg-card text-card-foreground border-4 border-border flex items-center justify-center text-xl shadow-cartoon-sm hover:bg-primary hover:text-primary-foreground transition-colors duration-150 rounded-[var(--radius-sticker)]"
+                >
+                  <social.Icon />
+                </motion.a>
+              ))}
+            </div>
+
             {/* Actions CTA Bars */}
-            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-2">
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 pt-1">
               <motion.div whileHover={{ scale: 1.02, rotate: -1 }} whileTap={{ scale: 0.98 }} transition={springSnappy} className="w-full sm:w-auto">
                 <Button
                   asChild
@@ -303,9 +330,9 @@ const Header: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: Real-time Installer with Custom Scroller Class */}
+          {/* Right Column: Fixed Large-Sized Real-time Terminal */}
           <motion.div 
-            className="flex-1 w-full max-w-lg hidden lg:block relative cursor-text"
+            className="flex-1 w-full max-w-xl hidden lg:block relative cursor-text"
             initial={{ x: 30, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ ...springSoft, delay: 0.15 }}
@@ -313,7 +340,7 @@ const Header: React.FC = () => {
           >
             <div className="absolute inset-0 bg-primary border-4 border-border rounded-[var(--radius-cartoon-lg)] translate-x-3 translate-y-3" />
             
-            <div className="w-full h-[380px] bg-[#1e1e2e] text-[#cdd6f4] border-4 border-border rounded-[var(--radius-cartoon-lg)] p-5 relative z-10 shadow-cartoon-md font-mono text-sm leading-relaxed flex flex-col justify-between">
+            <div className="w-full h-[420px] bg-[#1e1e2e] text-[#cdd6f4] border-4 border-border rounded-[var(--radius-cartoon-lg)] p-5 relative z-10 shadow-cartoon-md font-mono text-sm leading-relaxed flex flex-col justify-between">
               
               <div>
                 {/* Header Window Controller */}
@@ -331,7 +358,7 @@ const Header: React.FC = () => {
                 {/* Internal Render Display Area with Custom Scrollbar Class applied */}
                 <div 
                   ref={containerRef}
-                  className="space-y-1 text-xs sm:text-sm font-medium max-h-[240px] overflow-y-auto pr-1 custom-terminal-scrollbar"
+                  className="space-y-1 text-xs sm:text-sm font-medium max-h-[280px] overflow-y-auto pr-1 custom-terminal-scrollbar"
                 >
                   {isInstalling ? (
                     <div className="space-y-3 pt-4">
