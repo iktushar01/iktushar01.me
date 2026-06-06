@@ -45,7 +45,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${fredoka.variable} ${bubblegum.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-cartoon">
+      <body suppressHydrationWarning className="min-h-full flex flex-col font-cartoon">
         
         {/* Borderless Cartoon Spinner Loader */}
         <div id="initial-loader" aria-label="Loading" className="relative z-[100]">
