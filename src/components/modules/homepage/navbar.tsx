@@ -9,8 +9,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/mode-toggle";
 import { springDrawer, springSnappy, springSoft } from "@/lib/motion";
+import { AnimatedThemeTogglerDemo } from "@/components/mode-toggle";
 
 interface NavItem {
     icon: React.ElementType;
@@ -151,7 +151,7 @@ export default function Navbar() {
                         </Button>
 
                         <div className="scale-90 md:scale-100">
-                            <ModeToggle />
+                        <AnimatedThemeTogglerDemo />
                         </div>
 
                         <Button

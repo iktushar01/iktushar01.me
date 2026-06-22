@@ -243,3 +243,8 @@ html[data-app-ready="true"] #initial-loader {
   background: var(--foreground);
   border-radius: 0;
 }
+
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
