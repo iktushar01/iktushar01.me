@@ -1,30 +1,100 @@
-import { RefreshCw } from "lucide-react";
+"use client";
 
-export default function Loading() {
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+const GREETINGS = [
+    { word: "Hello", lang: "English" },
+    { word: "Bonjour", lang: "French" },
+    { word: "Hola", lang: "Spanish" },
+    { word: "Ciao", lang: "Italian" },
+    { word: "Hallo", lang: "German" },
+    { word: "Olá", lang: "Portuguese" },
+    { word: "こんにちは", lang: "Japanese" },
+    { word: "안녕하세요", lang: "Korean" },
+    { word: "你好", lang: "Chinese" },
+    { word: "নমস্কার", lang: "Bengali" },
+    { word: "مرحبا", lang: "Arabic" },
+    { word: "Привет", lang: "Russian" },
+    { word: "नमस्ते", lang: "Hindi" },
+    { word: "Merhaba", lang: "Turkish" },
+    { word: "Hej", lang: "Swedish" },
+  ];
+
+const WORD_INTERVAL = 150;
+
+function markAppReady() {
+  document.documentElement.dataset.appReady = "true";
+}
+
+export default function InitialLoader() {
+  const [index, setIndex] = useState(0);
+  const [hidden, setHidden] = useState(false);
+  const [exiting, setExiting] = useState(false);
+
+  useEffect(() => {
+    if (index >= GREETINGS.length - 1) {
+      const exitTimer = setTimeout(() => setExiting(true), WORD_INTERVAL + 200);
+      return () => clearTimeout(exitTimer);
+    }
+    const timer = setTimeout(() => setIndex((i) => i + 1), WORD_INTERVAL);
+    return () => clearTimeout(timer);
+  }, [index]);
+
+  if (hidden) return null;
+
+  const current = GREETINGS[index];
+
   return (
-    <main className="min-h-[100dvh] flex flex-col items-center justify-center bg-background text-foreground select-none gap-4">
-      
-      {/* High-Impact Borderless Spinner */}
-      <div className="relative flex items-center justify-center">
-        <RefreshCw 
-          className="size-10 text-primary animate-[spin_1.2s_linear_infinite]" 
-          strokeWidth={3.5} 
-        />
-      </div>
+    <AnimatePresence
+      onExitComplete={() => {
+        setHidden(true);
+        markAppReady();
+      }}
+    >
+      {!exiting && (
+        <motion.div
+          id="initial-loader"
+          aria-label="Loading"
+          aria-live="polite"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-3 bg-background text-foreground"
+        >
+          <div className="relative h-12 flex items-center justify-center min-w-[16rem]">
+            <AnimatePresence mode="popLayout">
+              {/* Pure Soft Fade & Scale */}
+              <motion.p
+                key={current.word}
+                initial={{ opacity: 0, scale: 0.94 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.04 }}
+                transition={{ 
+                  duration: 0.3, 
+                  ease: [0.25, 1, 0.5, 1] // Smooth ease-out curve 
+                }}
+                className="absolute text-3xl sm:text-4xl font-normal tracking-tight text-center"
+              >
+                {current.word}
+              </motion.p>
+            </AnimatePresence>
+          </div>
 
-      {/* Simplified Cartoon Status Text */}
-      <h2 className="text-xl font-black uppercase tracking-widest italic text-foreground/80 animate-[cartoonPulse_1.2s_ease-in-out_infinite]">
-        Loading...
-      </h2>
-
-      {/* Minimal Keyframe Injector for Text Scaling */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes cartoonPulse {
-          0%, 100% { transform: scale(1); opacity: 0.7; }
-          50% { transform: scale(1.06); opacity: 1; }
-        }
-      `}} />
-
-    </main>
+          {/* Simple matching fade for language text */}
+          <AnimatePresence mode="popLayout">
+            <motion.span
+              key={current.lang}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.35 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="text-[11px] font-mono tracking-widest text-muted-foreground uppercase"
+            >
+              {current.lang}
+            </motion.span>
+          </AnimatePresence>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

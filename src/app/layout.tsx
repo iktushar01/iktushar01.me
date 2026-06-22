@@ -5,7 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemedToaster } from "@/components/themed-toaster";
 import SmoothFollowerClient from "@/components/SmoothFollowerClient";
-import AppReadyClient from "@/components/AppReadyClient";
+import Loading from "./loading";
 
 const fredoka = Fredoka({
   variable: "--font-fredoka",
@@ -47,45 +47,19 @@ export default function RootLayout({
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col font-cartoon">
         
-        {/* Borderless Cartoon Spinner Loader */}
-        <div id="initial-loader" aria-label="Loading" className="relative z-[100]">
-          <div className="fixed inset-0 flex flex-col items-center justify-center bg-background select-none gap-4">
-            
-            {/* Spinning Element */}
-            <div className="text-5xl animate-[cartoonSpin_1.5s_linear_infinite]">
-              🌀
-            </div>
-            
-            {/* Bouncing Text Indicator */}
-            <h2 className="text-xl font-black uppercase tracking-widest italic text-foreground/80 animate-[cartoonPulse_1.2s_ease-in-out_infinite]">
-              Loading...
-            </h2>
+        <Loading />
 
-          </div>
-        </div>
-
-        {/* Instant injection keyframes */}
-        <style dangerouslySetInnerHTML={{__html: `
-          @keyframes cartoonSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-          @keyframes cartoonPulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.05); opacity: 1; }
-          }
-        `}} />
-
-        <AppReadyClient />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <SmoothFollowerClient />
-          <ThemedToaster />
+          <div data-app-content className="flex flex-1 flex-col min-h-full">
+            {children}
+            <SmoothFollowerClient />
+            <ThemedToaster />
+          </div>
         </ThemeProvider>
       </body>
     </html>

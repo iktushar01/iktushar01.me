@@ -114,15 +114,7 @@ const Skills: React.FC = () => {
 
   return (
     <section id="skills" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
-      <SectionHeader
-        kicker="What I work with"
-        kickerTone="primary"
-        title={
-          <>
-            <span className="text-primary">TECH</span> <span className="text-foreground">STACK</span>
-          </>
-        }
-      />
+      <SectionHeader kicker="What I work with" title="Tech Stack" />
 
       <div className="mt-12">
         {skillsData.map((group, index) => (

@@ -19,15 +19,7 @@ export default function Certificates() {
 
   return (
     <section id="certificates" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
-      <SectionHeader
-        kicker="Credentials"
-        kickerTone="primary"
-        title={
-          <>
-            <span className="text-primary">CERTIFICATES</span>
-          </>
-        }
-      />
+      <SectionHeader kicker="Credentials" title="Certificates" />
 
       <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
         {certificatesData.map((cert: Certificate, index: number) => (

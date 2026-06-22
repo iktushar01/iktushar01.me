@@ -46,15 +46,7 @@ const AboutMe: React.FC = () => {
 
   return (
     <section id="about" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
-      <SectionHeader
-        kicker="Who is this guy?"
-        kickerTone="accent"
-        title={
-          <>
-            <span className="text-primary">ABOUT</span> <span className="text-foreground">ME</span>
-          </>
-        }
-      />
+      <SectionHeader kicker="Who is this guy?" title="About Me" />
 
       <div className="mt-14 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
         {/* Left: fixed label, running paragraph */}

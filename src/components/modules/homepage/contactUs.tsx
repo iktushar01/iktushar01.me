@@ -69,15 +69,7 @@ export default function ContactUs() {
 
   return (
     <section id="contact" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
-      <SectionHeader
-        kicker="Get in touch"
-        kickerTone="primary"
-        title={
-          <>
-            <span className="text-primary">CONTACT</span>
-          </>
-        }
-      />
+      <SectionHeader kicker="Get in touch" title="Contact" />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start mt-12">
         {/* Left: direct contact list */}

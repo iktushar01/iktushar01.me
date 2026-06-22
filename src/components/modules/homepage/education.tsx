@@ -102,15 +102,7 @@ const EducationRow: React.FC<{ item: EducationItem; idx: number }> = ({ item, id
 
 const Education: React.FC = () => (
   <section id="education" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
-    <SectionHeader
-      kicker="Academic background"
-      kickerTone="primary"
-      title={
-        <>
-          <span className="text-primary">EDUCATION</span>
-        </>
-      }
-    />
+    <SectionHeader kicker="Academic background" title="Education" />
 
     <div className="mt-12">
       {educationData.map((item, idx) => (

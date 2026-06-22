@@ -136,15 +136,7 @@ const Projects: React.FC = () => {
 
   return (
     <section id="projects" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
-      <SectionHeader
-        kicker="Selected work"
-        kickerTone="secondary"
-        title={
-          <>
-            <span className="text-primary">PROJECTS</span>
-          </>
-        }
-      />
+      <SectionHeader kicker="Selected work" title="Projects" />
 
       <div className="mt-12">
         {projectsData.map((project, index) => (
