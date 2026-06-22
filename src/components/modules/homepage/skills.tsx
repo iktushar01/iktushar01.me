@@ -2,9 +2,7 @@
 
 import React, { useRef, ReactNode } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import {
-  FaReact, FaNodeJs, FaFire, FaPython
-} from "react-icons/fa";
+import { FaReact, FaNodeJs, FaFire, FaPython } from "react-icons/fa";
 import {
   SiTailwindcss, SiExpress, SiMongodb, SiJsonwebtokens, SiTypescript, SiNextdotjs, SiPostgresql,
   SiPrisma
@@ -35,12 +33,12 @@ const skillsData: SkillGroup[] = [
     id: 1,
     category: "Frontend",
     icon: <FiCode />,
-    panelClass: "bg-primary text-primary-foreground",
-    description: "Architecting snappy, pixel-perfect interfaces with modern React sorcery.",
+    panelClass: "bg-primary/10 text-primary border-primary/20",
+    description: "Architecting snappy, component-driven modular systems with fine-tuned micro-interactions.",
     skills: [
       { name: "React", icon: <FaReact />, color: "#61DAFB", level: 90 },
       { name: "Next.js", icon: <SiNextdotjs />, color: "#000000", level: 85 },
-      { name: "TS", icon: <SiTypescript />, color: "#3178C6", level: 80 },
+      { name: "TypeScript", icon: <SiTypescript />, color: "#3178C6", level: 80 },
       { name: "Tailwind", icon: <SiTailwindcss />, color: "#38BDF8", level: 85 },
     ],
   },
@@ -48,23 +46,23 @@ const skillsData: SkillGroup[] = [
     id: 2,
     category: "Backend",
     icon: <FiZap />,
-    panelClass: "dark:bg-secondary bg-black/80 dark:text-secondary-foreground text-white",
-    description: "The logic engine that handles data flows and keeps the machine humming.",
+    panelClass: "bg-accent/10 text-accent-foreground border-accent/20",
+    description: "The background engine structuring business logic layer abstractions and scaling data flows securely.",
     skills: [
       { name: "Node.js", icon: <FaNodeJs />, color: "#68A063", level: 85 },
       { name: "Express", icon: <SiExpress />, color: "#828282", level: 80 },
       { name: "Python", icon: <FaPython />, color: "#3776AB", level: 75 },
-      { name: "JWT", icon: <SiJsonwebtokens />, color: "#FB923C", level: 75 },
+      { name: "JWT authentication", icon: <SiJsonwebtokens />, color: "#FB923C", level: 75 },
     ],
   },
   {
     id: 3,
     category: "Data",
     icon: <FiDatabase />,
-    panelClass: "bg-accent text-white dark:text-black ",
-    description: "Scaling databases and organizing complexity into structured power.",
+    panelClass: "bg-secondary/10 text-secondary-foreground border-secondary/20",
+    description: "Optimizing relational schemas, non-relational clustering solutions, and fast ORM queries.",
     skills: [
-      { name: "Postgres", icon: <SiPostgresql />, color: "#4169E1", level: 80 },
+      { name: "PostgreSQL", icon: <SiPostgresql />, color: "#4169E1", level: 80 },
       { name: "MongoDB", icon: <SiMongodb />, color: "#4DB33D", level: 85 },
       { name: "Prisma", icon: <SiPrisma />, color: "#5a67d8", level: 85 },
       { name: "Firebase", icon: <FaFire />, color: "#FFA000", level: 80 },
@@ -102,33 +100,33 @@ const TiltCard: React.FC<{ children: ReactNode; className?: string }> = ({ child
 const SkillSticker: React.FC<{ skill: Skill; delay: number }> = ({ skill, delay }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -4 }}
+      whileHover={{ y: -3 }}
       viewport={{ once: true }}
       transition={{ ...springSoft, delay }}
-      className="group bg-card text-card-foreground border-4 border-border p-4 rounded-[var(--radius-sticker)] shadow-cartoon-sm flex flex-col items-center gap-3 transition-shadow duration-200"
+      className="group bg-card/40 text-card-foreground border border-border p-4 rounded-xl shadow-sm flex flex-col items-center gap-3 backdrop-blur-sm hover:border-border/80 transition-colors duration-300"
     >
       <div
-        className="text-4xl  transition-transform duration-200 group-hover:scale-105"
+        className="text-3xl transition-transform duration-300 group-hover:scale-105 filter drop-shadow-sm"
         style={{ color: skill.color }}
       >
         {skill.icon}
       </div>
-      <span className="text-[10px] sm:text-xs font-black uppercase italic tracking-tight text-center">
+      <span className="text-[11px] font-medium tracking-wide text-center text-foreground/90">
         {skill.name}
       </span>
 
-      <div className="w-full h-3.5 bg-muted border-2 border-border rounded-md overflow-hidden relative">
+      <div className="w-full h-1.5 bg-muted border border-border/40 rounded-full overflow-hidden relative">
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${skill.level}%` }}
           viewport={{ once: true }}
           transition={{ ...springSoft, delay: delay + 0.08 }}
-          className="h-full border-r-2 border-border relative"
+          className="h-full rounded-full relative"
           style={{ backgroundColor: skill.color }}
         >
-          <div className="absolute inset-0 opacity-30 bg-[linear-gradient(45deg,rgba(255,255,255,0.45)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.45)_50%,rgba(255,255,255,0.45)_75%,transparent_75%,transparent)] bg-[length:10px_10px]" />
+          <div className="absolute inset-0 opacity-15 bg-[linear-gradient(45deg,rgba(255,255,255,0.2)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0.2)_75%,transparent_75%,transparent)] bg-[length:6px_6px]" />
         </motion.div>
       </div>
     </motion.div>
@@ -140,33 +138,33 @@ const SkillGroupSection: React.FC<{ group: SkillGroup; index: number }> = ({ gro
 
   return (
     <div className={cn(
-      "flex flex-col gap-8 sm:gap-12 lg:flex-row items-center",
+      "flex flex-col gap-6 sm:gap-10 lg:flex-row items-center",
       isEven ? "lg:flex-row" : "lg:flex-row-reverse"
     )}>
       <motion.div
-        initial={{ scale: 0.94, rotate: isEven ? -6 : 6, opacity: 0 }}
-        whileInView={{ scale: 1, rotate: isEven ? -3 : 3, opacity: 1 }}
+        initial={{ scale: 0.96, rotate: isEven ? -2 : 2, opacity: 0 }}
+        whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
         viewport={{ once: true }}
         transition={springSoft}
         className={cn(
-          "w-44 h-44 sm:w-52 sm:h-52 shrink-0 rounded-[var(--radius-cartoon-lg)] border-4 border-border flex flex-col items-center justify-center shadow-cartoon-md",
+          "w-36 h-36 sm:w-44 sm:h-44 shrink-0 rounded-2xl border flex flex-col items-center justify-center shadow-sm backdrop-blur-md",
           group.panelClass,
         )}
       >
-        <div className="text-6xl sm:text-7xl drop-shadow-cartoon mb-1">{group.icon}</div>
-        <span className="font-black uppercase italic tracking-tight text-sm sm:text-base">
+        <div className="text-4xl sm:text-5xl mb-2 filter drop-shadow-sm">{group.icon}</div>
+        <span className="font-semibold uppercase tracking-wider text-xs sm:text-sm">
           {group.category}
         </span>
       </motion.div>
 
       <div className="flex-1 w-full">
         <TiltCard>
-          <div className="bg-card text-card-foreground border-4 border-border rounded-[var(--radius-cartoon-lg)] p-6 sm:p-10 shadow-cartoon-md">
-            <div className="mb-8">
-              <h3 className="text-3xl sm:text-4xl font-black uppercase italic mb-3 tracking-tight leading-none">
-                {group.category} <span className="text-primary italic">Arsenal</span>
+          <div className="bg-card/60 text-card-foreground border border-border rounded-2xl p-6 sm:p-8 shadow-sm backdrop-blur-md">
+            <div className="mb-6">
+              <h3 className="text-xl sm:text-2xl font-medium tracking-tight mb-2 text-foreground">
+                {group.category} <span className="text-primary font-normal">Arsenal</span>
               </h3>
-              <p className="text-base sm:text-lg font-semibold text-muted-foreground max-w-2xl leading-relaxed">
+              <p className="text-sm font-normal text-muted-foreground max-w-2xl leading-relaxed">
                 {group.description}
               </p>
             </div>
@@ -185,50 +183,48 @@ const SkillGroupSection: React.FC<{ group: SkillGroup; index: number }> = ({ gro
 
 const Skills: React.FC = () => {
   const footStats = [
-    { label: "Weapon Classes", value: "03", surface: "bg-primary text-primary-foreground" },
-    { label: "Unlocked Gear", value: "20+", surface: "bg-accent text-white dark:text-accent-foreground" },
-    { label: "Server Uptime", value: "99%", surface: "dark:bg-secondary bg-black/80 dark:text-secondary-foreground text-white" },
+    { label: "Weapon Classes", value: "03", surface: "bg-primary/5 text-primary border-primary/20" },
+    { label: "Unlocked Gear", value: "20+", surface: "bg-accent/5 text-accent-foreground border-accent/20" },
+    { label: "Server Uptime", value: "99%", surface: "bg-secondary/5 text-secondary-foreground border-secondary/20" },
   ];
 
   return (
-    <section id="skills" className="lp-section">
-      <div className="absolute inset-0 opacity-[0.07] dark:opacity-[0.05] pointer-events-none lp-dots" />
+    <section id="skills" className="lp-section relative py-20 overflow-hidden bg-background">
+      <div className="absolute inset-0 opacity-[0.15] dark:opacity-[0.03] pointer-events-none lp-dots bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:16px_16px]" />
 
-      <div className="lp-container">
+      <div className="lp-container max-w-7xl mx-auto px-4 relative z-10">
         <SectionHeader
           kicker="Capabilities Loaded!"
           kickerIcon={<FiDatabase />}
           kickerTone="primary"
-          kickerRotate="-rotate-2"
           title={
             <>
-              <span className="text-yellow-400">TECH</span> <span className="text-primary">STACK</span>
+              <span className="text-primary">TECH</span> <span className="text-foreground">STACK</span>
             </>
           }
         />
         
-
-        <div className="space-y-24 sm:space-y-32">
+        <div className="space-y-16 sm:space-y-24 mt-12">
           {skillsData.map((group, index) => (
             <SkillGroupSection key={group.id} group={group} index={index} />
           ))}
         </div>
 
-        <div className="mt-24 sm:mt-32 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="mt-16 sm:mt-24 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {footStats.map((stat) => (
             <motion.div
               key={stat.label}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ y: -2 }}
               transition={springSoft}
               className={cn(
-                "p-8 sm:p-10 rounded-[var(--radius-cartoon)] border-4 border-border text-center shadow-cartoon-md",
+                "p-6 sm:p-8 rounded-2xl border text-center shadow-sm backdrop-blur-md flex flex-col justify-center items-center",
                 stat.surface,
               )}
             >
-              <div className="text-5xl sm:text-6xl font-black italic mb-2 drop-shadow-cartoon">
+              <div className="text-3xl sm:text-4xl font-semibold tracking-tight mb-1">
                 {stat.value}
               </div>
-              <div className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-80 italic">
+              <div className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground/80">
                 {stat.label}
               </div>
             </motion.div>

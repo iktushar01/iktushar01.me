@@ -37,7 +37,6 @@ const Footer: React.FC = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // LinkedIn link successfully appended with matching username parameters
   const socialLinks: SocialLink[] = [
     { icon: <FaGithub />, link: "https://github.com/iktushar01" },
     { icon: <FaLinkedinIn />, link: "https://linkedin.com/in/iktushar01" },
@@ -45,76 +44,82 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="relative bg-background py-16 border-t-4 border-border overflow-hidden">
-      <div className="absolute inset-0 z-0 opacity-[0.06] dark:opacity-[0.05] pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] bg-[size:32px_32px] text-foreground" />
+    <footer className="relative bg-background py-12 border-t border-border overflow-hidden">
+      {/* GRID PATTERN BACKGROUND */}
+      <div className="absolute inset-0 z-0 opacity-[0.04] dark:opacity-[0.02] pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] bg-[size:24px_24px] text-foreground" />
       </div>
 
-      <div className="lp-container relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-10 md:gap-12">
-          <div className="flex flex-col items-center md:items-start">
-            <div className="bg-accent text-accent-foreground border-4 border-border px-3 py-1 mb-3 shadow-cartoon-sm -rotate-1 rounded-[var(--radius-sticker)]">
-              <div className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-current opacity-80 animate-pulse" />
-                <span className="font-black text-[10px] uppercase tracking-widest">System_Operational</span>
-              </div>
+      <div className="lp-container max-w-7xl mx-auto px-4 relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-12">
+          {/* LEFT: BRANDING & META */}
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <div className="bg-accent/10 text-accent border border-accent/20 px-2.5 py-0.5 mb-3 rounded-full flex items-center gap-1.5 backdrop-blur-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-current animate-pulse" />
+              <span className="font-medium text-[9px] uppercase tracking-wider">System Operational</span>
             </div>
-            <p className="text-xl sm:text-2xl font-black uppercase italic leading-none text-foreground">
+            
+            <p className="text-lg font-medium tracking-tight text-foreground">
               © {currentYear}{" "}
-              <span className="text-primary underline decoration-border decoration-4 underline-offset-2">iktushar01.me</span>
+              <span className="text-primary hover:underline cursor-pointer">iktushar01.me</span>
             </p>
-            <p className="mt-2 font-mono text-[10px] font-bold uppercase text-muted-foreground tracking-wide">
-              Hand-coded in Dhaka_BD
+            <p className="mt-1 font-mono text-[10px] font-normal text-muted-foreground tracking-wide uppercase">
+              Hand-coded in Dhaka, BD
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-4">
-            <div className="flex gap-3">
-              {socialLinks.map((social, i) => (
+          {/* MIDDLE: SOCIAL EMBEDS */}
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex gap-2.5">
+              {socialLinks.map((social) => (
                 <motion.a
                   key={social.link}
                   href={social.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.06, rotate: i % 2 === 0 ? 3 : -3 }}
-                  whileTap={{ scale: 0.94 }}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                   transition={springSnappy}
-                  className="w-12 h-12 sm:w-14 sm:h-14 bg-card text-card-foreground border-4 border-border flex items-center justify-center text-xl sm:text-2xl shadow-cartoon-sm hover:bg-primary hover:text-primary-foreground transition-colors duration-200 rounded-[var(--radius-sticker)]"
+                  className="w-11 h-11 bg-card text-muted-foreground border border-border flex items-center justify-center text-lg shadow-sm hover:border-primary/50 hover:text-primary transition-all duration-200 rounded-xl"
                 >
                   {social.icon}
                 </motion.a>
               ))}
             </div>
-            <div className="bg-foreground text-background px-3 py-1 font-black text-[10px] uppercase italic tracking-widest border-2 border-border rounded-[var(--radius-sticker)]">
-              Full-Stack_Maverick
+            <div className="bg-muted text-muted-foreground border border-border/60 px-2.5 py-0.5 font-medium text-[9px] uppercase tracking-wider rounded-md">
+              Full-Stack Developer
             </div>
           </div>
 
-          <div className="flex items-center gap-6 sm:gap-8">
-            <div className="text-right">
-              <span className="text-[10px] font-black uppercase tracking-tight text-primary">Local_Timestamp</span>
-              <div className="bg-muted border-4 border-border px-3 py-2 shadow-cartoon-sm rounded-[var(--radius-sticker)] mt-1">
-                <span className="text-xl sm:text-2xl font-black font-mono tabular-nums">
+          {/* RIGHT: LIVE METRICS & BACK-TO-TOP */}
+          <div className="flex items-center gap-5 sm:gap-6">
+            <div className="text-center md:text-right">
+              <span className="text-[9px] font-medium uppercase tracking-wider text-primary">Local Timestamp</span>
+              <div className="bg-muted/50 border border-border px-3 py-1.5 shadow-sm rounded-xl mt-1 min-w-[96px]">
+                <span className="text-base sm:text-lg font-medium font-mono tabular-nums text-foreground">
                   {mounted ? formatTime(currentTime) : "00:00:00"}
                 </span>
               </div>
             </div>
 
             <motion.button
-              whileHover={{ y: -3 }}
+              whileHover={{ y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={springSnappy}
               onClick={scrollToTop}
-              className="p-4 sm:p-5 bg-primary text-primary-foreground border-4 border-border shadow-cartoon-md hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-200 rounded-[var(--radius-sticker)]"
+              className="p-3 bg-primary text-primary-foreground border border-primary/20 shadow-sm hover:opacity-90 transition-all duration-200 rounded-xl"
               aria-label="Scroll to top"
             >
-              <FaArrowUp size={22} />
+              <FaArrowUp size={16} />
             </motion.button>
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t-2 border-border/30 flex flex-col items-center gap-2">
-          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">EndOfLine</p>
+        {/* REFINED BOTTOM DIVIDER */}
+        <div className="mt-10 pt-4 border-t border-border/40 flex flex-col items-center">
+          <p className="text-[8px] font-medium text-muted-foreground/50 uppercase tracking-[0.5em]">
+            EndOfLine
+          </p>
         </div>
       </div>
     </footer>

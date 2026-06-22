@@ -30,8 +30,8 @@ const MagneticButton = ({
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current || window.innerWidth < 768) return;
     const { left, top, width, height } = ref.current.getBoundingClientRect();
-    x.set((e.clientX - left - width / 2) * 0.28);
-    y.set((e.clientY - top - height / 2) * 0.28);
+    x.set((e.clientX - left - width / 2) * 0.2);
+    y.set((e.clientY - top - height / 2) * 0.2);
   };
 
   return (
@@ -46,9 +46,11 @@ const MagneticButton = ({
         type="submit"
         disabled={disabled}
         className={cn(
-          "w-full py-5 sm:py-7 border-4 sm:border-[5px] border-border text-lg sm:text-xl font-black uppercase italic transition-all duration-200 ease-out rounded-[var(--radius-sticker)]",
-          status === "sent" ? "bg-accent text-accent-foreground" : "bg-primary text-primary-foreground",
-          "shadow-cartoon-sm hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 active:scale-[0.99]"
+          "w-full py-6 text-sm font-medium uppercase tracking-wider transition-all duration-200 ease-out rounded-xl shadow-sm border",
+          status === "sent" 
+            ? "bg-accent text-accent-foreground border-accent/20" 
+            : "bg-primary text-primary-foreground border-primary/20 hover:opacity-90",
+          "active:scale-[0.99]"
         )}
       >
         {children}
@@ -67,7 +69,7 @@ export default function ContactUs() {
     setCopied(label);
     setTimeout(() => setCopied(null), 2000);
     toast.success(`${label} copied!`, {
-      className: "border-4 border-border font-black uppercase italic shadow-cartoon-sm bg-card text-card-foreground",
+      className: "border border-border bg-card text-card-foreground shadow-sm",
     });
   };
 
@@ -78,9 +80,7 @@ export default function ContactUs() {
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
 
@@ -91,11 +91,10 @@ export default function ContactUs() {
       }
 
       setStatus("sent");
-      toast.success("Message Received on Tushar's inbox! I'll get back to you soon.😎", {
-        icon: <Send size={18} />,
+      toast.success("Message received in Tushar's inbox! I'll get back to you soon. 😎", {
+        icon: <Send size={16} />,
       });
 
-      // Reset form after success 
       setTimeout(() => {
         setStatus("idle");
         setForm({ name: "", email: "", message: "" });
@@ -105,37 +104,38 @@ export default function ContactUs() {
       setStatus("idle");
       toast.error("Transmission Failed!", {
         description: error.message || "Please try again later or use direct contact.",
-        className: "border-4 border-destructive bg-card",
+        className: "border border-destructive/20 bg-card",
       });
     }
   };
 
   const contactRows = [
-    { icon: <FaMapMarkerAlt />, val: "Gazipur, Dhaka", label: "Current Location", surface: "bg-primary text-primary-foreground" },
-    { icon: <FaWhatsapp />, val: "+880 1756650014", label: "Whatsapp & call", surface: "bg-accent text-accent-foreground" },
-    { icon: <FaEnvelope />, val: "iktushar01@gmail.com", label: "Mail", surface: "bg-secondary text-secondary-foreground" },
+    { icon: <FaMapMarkerAlt />, val: "Gazipur, Dhaka", label: "Current Location", surface: "bg-primary/10 text-primary border-primary/10" },
+    { icon: <FaWhatsapp />, val: "+880 1756650014", label: "WhatsApp & Call", surface: "bg-accent/10 text-accent border-accent/10" },
+    { icon: <FaEnvelope />, val: "iktushar01@gmail.com", label: "Mail Address", surface: "bg-secondary/10 text-secondary border-secondary/10" },
   ];
 
   return (
-    <section id="contact" className="lp-section">
-      <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.04] pointer-events-none lp-dots" />
+    <section id="contact" className="lp-section relative py-20 overflow-hidden bg-background">
+      <div className="absolute inset-0 opacity-[0.15] dark:opacity-[0.03] pointer-events-none lp-dots bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:16px_16px]" />
 
-      <div className="lp-container">
+      <div className="lp-container max-w-7xl mx-auto px-4 relative z-10">
         <SectionHeader
           kicker="Capabilities Loaded!"
-          kickerIcon={<MessageSquare size={18} />}
+          kickerIcon={<MessageSquare size={16} />}
           kickerTone="primary"
-          kickerRotate="-rotate-2"
           title={
             <>
-              <span className="text-yellow-400">Contact</span> <span className="text-primary">me</span>
+              <span className="text-primary">CONTACT </span>
+              <span className="text-foreground">ME</span>
             </>
           }
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start mt-12">
+          {/* LEFT SIDE: QUICK ACCESS */}
           <div className="space-y-6">
-            <h3 className="text-2xl sm:text-3xl font-black uppercase italic underline underline-offset-8 decoration-4 decoration-primary/40 tracking-tight">
+            <h3 className="text-lg sm:text-xl font-medium tracking-tight text-foreground">
               Quick Access
             </h3>
 
@@ -143,67 +143,71 @@ export default function ContactUs() {
               {contactRows.map((item, i) => (
                 <motion.div
                   key={item.label}
-                  initial={{ x: -24, opacity: 0 }}
+                  initial={{ x: -16, opacity: 0 }}
                   whileInView={{ x: 0, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ ...springSoft, delay: i * 0.06 }}
                   onClick={() => handleCopy(item.val, item.label)}
-                  className="group relative flex items-center gap-4 p-4 sm:p-5 bg-card text-card-foreground border-4 border-border shadow-cartoon-md hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-200 cursor-pointer rounded-[var(--radius-cartoon)]"
+                  className="group relative flex items-center gap-4 p-4 bg-card/60 text-card-foreground border border-border shadow-sm hover:border-border/80 transition-all duration-300 cursor-pointer rounded-2xl backdrop-blur-md"
                 >
                   <div
                     className={cn(
-                      "shrink-0 w-12 h-12 sm:w-14 sm:h-14 border-4 border-border flex items-center justify-center text-lg sm:text-xl shadow-cartoon-sm rounded-[var(--radius-sticker)]",
-                      item.surface,
+                      "shrink-0 w-11 h-11 border flex items-center justify-center text-base rounded-xl transition-transform duration-300 group-hover:scale-105",
+                      item.surface
                     )}
                   >
                     {item.icon}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-black uppercase text-[10px] text-primary tracking-wide">{item.label}</p>
-                    <p className="text-base sm:text-lg font-black truncate">{item.val}</p>
+                    <p className="font-medium text-[10px] text-primary tracking-wider uppercase">{item.label}</p>
+                    <p className="text-sm sm:text-base font-medium text-foreground truncate mt-0.5">{item.val}</p>
                   </div>
-                  <div className="text-muted-foreground group-hover:text-foreground transition-colors duration-200">
-                    {copied === item.label ? <FaCheck className="text-primary" /> : <FaCopy size={18} />}
+                  <div className="text-muted-foreground group-hover:text-foreground transition-colors duration-200 px-1">
+                    {copied === item.label ? (
+                      <FaCheck className="text-primary text-sm" />
+                    ) : (
+                      <FaCopy size={15} className="opacity-60 group-hover:opacity-100 transition-opacity" />
+                    )}
                   </div>
                 </motion.div>
               ))}
             </div>
           </div>
 
+          {/* RIGHT SIDE: MESSAGE TERMINAL */}
           <motion.div
-            initial={{ y: 28, opacity: 0 }}
+            initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={springSoft}
-            className="bg-card text-card-foreground border-4 sm:border-[5px] border-border p-6 sm:p-9 shadow-cartoon-md rounded-[var(--radius-cartoon-lg)] relative"
+            className="bg-card/60 text-card-foreground border border-border p-6 sm:p-8 shadow-sm rounded-2xl relative backdrop-blur-md"
           >
-            <div className="absolute -top-4 -right-2 sm:-top-5 sm:-right-4 bg-destructive border-4 border-border px-3 py-1 font-black italic rotate-6 shadow-cartoon-sm text-xs sm:text-sm rounded-[var(--radius-sticker)] bg-yellow-400 text-black">
-              URGENT!
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="font-black uppercase italic text-[10px] tracking-wide">Citizen Name</label>
-                  <div className="relative group">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid sm:grid-cols-2 gap-5">
+                {/* NAME FIELD */}
+                <div className="space-y-1.5">
+                  <label className="font-medium uppercase text-[10px] tracking-wider text-muted-foreground">Citizen Name</label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/70" />
                     <Input
                       required
-                      className="h-12 border-4 border-border bg-muted/40 pl-11 font-semibold focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:bg-muted transition-colors duration-200 rounded-[var(--radius-sticker)] placeholder:text-muted-foreground"
+                      className="h-11 border border-border bg-muted/40 pl-10 font-normal text-sm focus-visible:ring-1 focus-visible:ring-primary/30 focus-visible:bg-muted/70 transition-all duration-200 rounded-xl placeholder:text-muted-foreground/60"
                       placeholder="e.g. Bruce Wayne"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="font-black uppercase italic text-[10px] tracking-wide">Digital Address</label>
+
+                {/* EMAIL FIELD */}
+                <div className="space-y-1.5">
+                  <label className="font-medium uppercase text-[10px] tracking-wider text-muted-foreground">Digital Address</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/70" />
                     <Input
                       type="email"
                       required
-                      className="h-12 border-4 border-border bg-muted/40 pl-11 font-semibold focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:bg-muted transition-colors duration-200 rounded-[var(--radius-sticker)] placeholder:text-muted-foreground"
+                      className="h-11 border border-border bg-muted/40 pl-10 font-normal text-sm focus-visible:ring-1 focus-visible:ring-primary/30 focus-visible:bg-muted/70 transition-all duration-200 rounded-xl placeholder:text-muted-foreground/60"
                       placeholder="batman@cave.com"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -212,14 +216,15 @@ export default function ContactUs() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="font-black uppercase italic text-[10px] tracking-wide">The Secret Message</label>
+              {/* MESSAGE FIELD */}
+              <div className="space-y-1.5">
+                <label className="font-medium uppercase text-[10px] tracking-wider text-muted-foreground">The Secret Message</label>
                 <div className="relative">
-                  <MessageSquare className="absolute left-3 top-4 w-5 h-5 text-muted-foreground z-10" />
+                  <MessageSquare className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground/70" />
                   <Textarea
                     required
                     rows={4}
-                    className="border-4 border-border bg-muted/40 pl-11 pt-3 font-semibold focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:bg-muted transition-colors duration-200 rounded-[var(--radius-sticker)] resize-none placeholder:text-muted-foreground"
+                    className="border border-border bg-muted/40 pl-10 pt-3 font-normal text-sm focus-visible:ring-1 focus-visible:ring-primary/30 focus-visible:bg-muted/70 transition-all duration-200 rounded-xl resize-none placeholder:text-muted-foreground/60"
                     placeholder="Drop your project details here..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -227,17 +232,18 @@ export default function ContactUs() {
                 </div>
               </div>
 
+              {/* SUBMIT COMPONENT */}
               <MagneticButton disabled={status !== "idle"} status={status}>
-                <div className="flex items-center justify-center gap-3">
+                <div className="flex items-center justify-center gap-2">
                   {status === "sending" ? (
-                    <Loader2 className="animate-spin" size={22} />
+                    <Loader2 className="animate-spin" size={16} />
                   ) : status === "sent" ? (
-                    <FaCheck size={22} />
+                    <FaCheck size={14} />
                   ) : (
-                    <Send size={22} />
+                    <Send size={14} />
                   )}
-                  <span className="tracking-tight">
-                    {status === "sending" ? "Transmitting..." : status === "sent" ? "Dispatched!" : " Message"}
+                  <span className="tracking-wider">
+                    {status === "sending" ? "Transmitting..." : status === "sent" ? "Dispatched!" : "Send Message"}
                   </span>
                 </div>
               </MagneticButton>
