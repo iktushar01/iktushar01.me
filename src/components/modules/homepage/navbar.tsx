@@ -39,15 +39,15 @@ export default function Navbar() {
 
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, {
-        stiffness: 260,
-        damping: 28,
+        stiffness: 160,
+        damping: 22,
         restDelta: 0.001
     });
 
     const scrollToSection = useCallback((id: string) => {
         const element = document.getElementById(id);
         if (element) {
-            const offset = 80;
+            const offset = 100;
             const elementPosition = element.getBoundingClientRect().top + window.scrollY;
             window.scrollTo({
                 top: elementPosition - offset,
@@ -78,7 +78,7 @@ export default function Navbar() {
             const y = window.scrollY;
             setScrolled(y > 20);
 
-            const scrollPosition = y + 200;
+            const scrollPosition = y + 240;
             const ranges = sectionRangesRef.current;
             for (const r of ranges) {
                 if (scrollPosition >= r.top && scrollPosition < r.bottom) {
@@ -110,113 +110,146 @@ export default function Navbar() {
         <>
             <nav
                 className={cn(
-                    "fixed top-0 w-full z-[60] transition-[padding] duration-300 ease-out",
-                    scrolled ? "py-3 px-4" : "py-6 px-4 sm:px-6"
+                    "fixed top-0 w-full z-[60] transition-all duration-500 ease-in-out",
+                    scrolled ? "py-3 px-4" : "py-5 px-4 sm:px-6"
                 )}
             >
+                {/* Main Premium Floating Bar Container */}
                 <div className={cn(
-                    "relative max-w-6xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center justify-between rounded-[var(--radius-cartoon-lg)] border-4 border-border transition-colors duration-300",
+                    "relative max-w-6xl mx-auto px-6 h-14 md:h-16 flex items-center justify-between rounded-full border border-white/5 transition-all duration-500 ease-in-out",
                     scrolled
-                        ? "bg-card/90 backdrop-blur-md shadow-cartoon-md"
+                        ? "bg-background/40 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.2)] border-white/10 dark:border-zinc-800/50"
                         : "bg-transparent border-transparent shadow-none"
                 )}>
+                    {/* Minimalist Top Scroll Progress Bar with Accent Glow */}
                     <motion.div
-                        className="absolute bottom-0 left-6 right-6 h-1 bg-primary origin-left rounded-full"
+                        className="absolute bottom-0 left-8 right-8 h-[2px] bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 origin-left rounded-full opacity-80 filter drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]"
                         style={{ scaleX }}
                     />
 
-                 <motion.div
-    whileHover={{ scale: 1.03 }}
-    whileTap={{ scale: 0.97 }}
-    transition={springSnappy}
-    className="cursor-pointer shrink-0"
-    onClick={() => scrollToSection("home")}
->
-    <Image
-        src="https://res.cloudinary.com/dfoqasqnw/image/upload/logo_msrkwi.png"
-        alt="Logo"
-        width={140}
-        height={100}
-        className="h-10 md:h-12 w-auto [filter:drop-shadow(2px_0_0_black)_drop-shadow(-2px_0_0_black)_drop-shadow(0_2px_0_black)_drop-shadow(0_-2px_0_black)]"
-        priority
-    />
-</motion.div>
+                    {/* Logo Wrapper */}
+                    <motion.div
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
+                        transition={springSnappy}
+                        className="cursor-pointer shrink-0 opacity-90 hover:opacity-100 transition-opacity"
+                        onClick={() => scrollToSection("home")}
+                    >
+                        <Image
+                            src="https://res.cloudinary.com/dfoqasqnw/image/upload/logo_msrkwi.png"
+                            alt="Logo"
+                            width={120}
+                            height={80}
+                            className="h-7 md:h-8 w-auto filter dark:brightness-110 transition-all duration-300"
+                            priority
+                        />
+                    </motion.div>
 
-                    <div className="flex items-center gap-2 md:gap-3">
+                    {/* Desktop Center Navigation (Vercel Style) */}
+                    <div className="hidden md:flex items-center gap-1 bg-zinc-900/5 dark:bg-white/5 border border-black/[0.04] dark:border-white/[0.04] p-1 rounded-full backdrop-blur-sm">
+                        {NAV_ITEMS.map((item) => (
+                            <button
+                                key={item.id}
+                                onClick={() => scrollToSection(item.id)}
+                                className={cn(
+                                    "relative px-4 py-1.5 rounded-full text-xs font-medium tracking-wide transition-colors duration-200 outline-none",
+                                    activeItem === item.id
+                                        ? "text-foreground font-semibold"
+                                        : "text-muted-foreground hover:text-foreground"
+                                )}
+                            >
+                                {activeItem === item.id && (
+                                    <motion.div
+                                        layoutId="activePremiumNav"
+                                        className="absolute inset-0 bg-background dark:bg-zinc-800/80 rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.1),0_1px_2px_rgba(0,0,0,0.06)] border border-black/[0.04] dark:border-white/10 z-0"
+                                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                    />
+                                )}
+                                <span className="relative z-10">{item.label}</span>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Right Utilities Controls */}
+                    <div className="flex items-center gap-3">
                         <Button
-                            className="hidden sm:flex rounded-full border-4 border-border bg-card text-foreground font-black uppercase italic shadow-cartoon-sm hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 active:scale-[0.98] transition-all duration-200 ease-out px-6"
+                            className="hidden sm:flex rounded-full border border-zinc-200 dark:border-zinc-800 bg-background text-foreground text-xs font-medium tracking-tight shadow-sm hover:bg-accent/50 transition-all duration-300 px-5 h-9"
                             onClick={() => scrollToSection("contact")}
                         >
                             Hire Me
                         </Button>
 
-                        <div className="scale-90 md:scale-100">
-                        <AnimatedThemeTogglerDemo />
+                        <div className="scale-90 opacity-90 hover:opacity-100 transition-opacity">
+                            <AnimatedThemeTogglerDemo />
                         </div>
 
+                        {/* Premium Menu Hamburger Toggle Button */}
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="h-10 w-10 md:h-12 md:w-12 rounded-[var(--radius-sticker)] border-4 border-border bg-accent text-accent-foreground shadow-cartoon-sm hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-200 ease-out shrink-0"
+                            className="h-9 w-9 rounded-full border border-zinc-200 dark:border-zinc-800/80 bg-background/50 text-foreground shadow-sm hover:bg-accent transition-all duration-200 shrink-0 md:hidden"
                             onClick={() => setIsOpen(true)}
                         >
-                            <Menu className="h-5 w-5 md:h-6 md:w-6 stroke-[3px]" />
+                            <Menu className="h-4 w-4 stroke-[2px]" />
                         </Button>
                     </div>
                 </div>
             </nav>
 
+            {/* Premium Command-Drawer Style Sidebar Menu */}
             <AnimatePresence>
                 {isOpen && (
-                    <div className="fixed inset-0 z-[100] flex justify-end p-4">
+                    <div className="fixed inset-0 z-[100] flex justify-end">
+                        {/* Backdrop Glass Mask */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            transition={{ duration: 0.2 }}
+                            transition={{ duration: 0.3 }}
                             onClick={() => setIsOpen(false)}
-                            className="absolute inset-0 bg-foreground/30 backdrop-blur-sm"
+                            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                         />
+                        {/* Sidebar Drawer Component */}
                         <motion.div
-                            initial={{ x: "110%", scale: 0.96 }}
-                            animate={{ x: 0, scale: 1 }}
-                            exit={{ x: "110%", scale: 0.96 }}
+                            initial={{ x: "100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "100%" }}
                             transition={springDrawer}
-                            className="relative w-full max-w-sm bg-card text-card-foreground border-4 border-border h-full max-h-[calc(100dvh-2rem)] rounded-[var(--radius-cartoon-lg)] p-8 flex flex-col shadow-cartoon-md"
+                            className="relative w-full max-w-xs bg-background/90 dark:bg-zinc-950/90 backdrop-blur-xl text-foreground border-l border-zinc-200 dark:border-zinc-800/80 h-full p-6 flex flex-col shadow-2xl"
                         >
-                            <div className="flex justify-between items-center mb-8">
-                                <h2 className="text-2xl font-black uppercase italic tracking-tight">Navigation</h2>
+                            <div className="flex justify-between items-center mb-8 pt-2">
+                                <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground/80">Navigation</h2>
                                 <Button
                                     variant="ghost"
                                     size="icon"
                                     onClick={() => setIsOpen(false)}
-                                    className="rounded-[var(--radius-sticker)] border-4 border-border hover:bg-destructive hover:text-destructive-foreground transition-colors duration-200"
+                                    className="rounded-full h-8 w-8 border border-zinc-200 dark:border-zinc-800/80 hover:bg-accent transition-colors duration-200"
                                 >
-                                    <X className="h-5 w-5 stroke-[3px]" />
+                                    <X className="h-4 w-4 stroke-[2px]" />
                                 </Button>
                             </div>
 
-                            <div className="flex flex-col gap-3 overflow-y-auto">
+                            <div className="flex flex-col gap-1.5 overflow-y-auto">
                                 {NAV_ITEMS.map((item, idx) => (
                                     <motion.button
                                         key={item.id}
-                                        initial={{ opacity: 0, y: 12 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ ...springSoft, delay: idx * 0.04 }}
+                                        initial={{ opacity: 0, x: 8 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ ...springSoft, delay: idx * 0.03 }}
                                         onClick={() => scrollToSection(item.id)}
                                         className={cn(
-                                            "group flex items-center justify-between w-full p-4 rounded-[var(--radius-sticker)] border-4 transition-all duration-200 font-black uppercase italic",
+                                            "group flex items-center justify-between w-full px-4 py-3 rounded-xl border transition-all duration-200 font-medium text-sm text-left tracking-tight",
                                             activeItem === item.id
-                                                ? "bg-primary text-primary-foreground border-border shadow-cartoon-sm"
-                                                : "bg-muted/60 border-border/40 hover:border-border hover:bg-muted"
+                                                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 border-transparent shadow-sm"
+                                                : "bg-transparent border-transparent text-muted-foreground hover:text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-900"
                                         )}
                                     >
-                                        <div className="flex items-center gap-4">
-                                            <item.icon className="h-5 w-5" />
-                                            <span className="text-lg tracking-tight">{item.label}</span>
+                                        <div className="flex items-center gap-3">
+                                            <item.icon className="h-4 w-4 opacity-80" />
+                                            <span>{item.label}</span>
                                         </div>
                                         <ArrowRight className={cn(
-                                            "h-5 w-5 transition-transform duration-200 group-hover:translate-x-1",
+                                            "h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5",
                                             activeItem === item.id ? "opacity-100" : "opacity-0"
                                         )} />
                                     </motion.button>
