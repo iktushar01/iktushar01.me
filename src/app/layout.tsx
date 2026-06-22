@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
-// Import Cartoonish Fonts
-import { Fredoka, Bubblegum_Sans, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemedToaster } from "@/components/themed-toaster";
 import SmoothFollowerClient from "@/components/SmoothFollowerClient";
+import AppReadyClient from "@/components/AppReadyClient";
 import Loading from "./loading";
 
-const fredoka = Fredoka({
-  variable: "--font-fredoka",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
-  weight: ["400", "600", "700"], // Bold weights are key for cartoon UI
+  weight: ["500", "600", "700"],
 });
 
-const bubblegum = Bubblegum_Sans({
-  variable: "--font-bubblegum",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500", "600"],
 });
 
 const geistMono = Geist_Mono({
@@ -41,25 +41,26 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en" 
+      lang="en"
       suppressHydrationWarning
-      className={`${fredoka.variable} ${bubblegum.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body suppressHydrationWarning className="min-h-full flex flex-col font-cartoon">
-        
+      <body suppressHydrationWarning className="min-h-full flex flex-col font-sans">
+
         <Loading />
 
+        <AppReadyClient />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div data-app-content className="flex flex-1 flex-col min-h-full">
+          <div data-app-content>
             {children}
-            <SmoothFollowerClient />
-            <ThemedToaster />
           </div>
+          <SmoothFollowerClient />
+          <ThemedToaster />
         </ThemeProvider>
       </body>
     </html>

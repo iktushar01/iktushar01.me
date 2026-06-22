@@ -5,13 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-cartoon: var(--font-fredoka);
-  --font-handwritten: var(--font-bubblegum);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
   --font-mono: var(--font-geist-mono);
-
-  --radius-cartoon: 2rem;
-  --radius-cartoon-lg: 2.5rem;
-  --radius-sticker: 1.25rem;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -30,74 +26,81 @@
 }
 
 :root {
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.15 0.02 250);
+  /* Clean, slightly warm off-white */
+  --background: oklch(0.98 0.005 80);
+  --foreground: oklch(0.18 0.015 80);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.02 250);
+  --card-foreground: oklch(0.18 0.015 80);
 
-  --primary: oklch(0.6 0.22 260);
-  --primary-foreground: oklch(0.99 0 0);
+  /* Light mode primary: An elegant, high-contrast golden amber (accessible) */
+  --primary: oklch(0.76 0.16 82);
+  --primary-foreground: oklch(0.12 0.01 80);
 
-  --secondary: oklch(0.92 0.03 260);
-  --secondary-foreground: oklch(0.2 0.05 260);
+  /* Warm slate neutrals for secondary structures */
+  --secondary: oklch(0.94 0.01 80);
+  --secondary-foreground: oklch(0.25 0.02 80);
 
-  --muted: oklch(0.96 0.01 260);
-  --muted-foreground: oklch(0.45 0.05 260);
+  --muted: oklch(0.95 0.008 80);
+  --muted-foreground: oklch(0.48 0.02 80);
 
-  --accent: oklch(0.85 0.2 100);
-  --accent-foreground: oklch(0.15 0.02 250);
+  --accent: oklch(0.94 0.01 80);
+  --accent-foreground: oklch(0.18 0.01 80);
 
   --destructive: oklch(0.55 0.22 25);
-  --border: oklch(0.15 0.02 250);
-  --input: oklch(0.15 0.02 250);
-  --ring: oklch(0.6 0.22 260);
+  --border: oklch(0.88 0.01 80);
+  --input: oklch(0.88 0.01 80);
+  --ring: oklch(0.76 0.16 82);
 
-  --radius: 1rem;
-
-  /* Cartoon system: shadow ink + two depth levels (see @utility shadow-cartoon-*) */
-  --cartoon-shadow: rgb(0 0 0);
+  --radius: 0rem;
 }
 
 .dark {
-  --background: oklch(0.14 0.02 255);
-  --foreground: oklch(0.98 0.01 255);
+  /* Rich, premium charcoal tinted with a microscopic bit of warm amber hue */
+  --background: oklch(0.13 0.012 85);
+  --foreground: oklch(0.97 0.006 85);
 
-  --card: oklch(0.18 0.03 255);
-  --card-foreground: oklch(0.98 0.01 255);
+  --card: oklch(0.16 0.012 85);
+  --card-foreground: oklch(0.97 0.006 85);
 
-  --primary: oklch(0.7 0.25 310);
-  --primary-foreground: oklch(0.1 0.02 255);
+  /* Dark mode primary: Vibrant neon cyber-yellow that punches beautifully through dark panels */
+  --primary: oklch(0.86 0.17 96);
+  --primary-foreground: oklch(0.1 0.01 85);
 
-  --secondary: oklch(0.25 0.04 255);
-  --secondary-foreground: oklch(0.98 0.01 255);
+  --secondary: oklch(0.22 0.015 85);
+  --secondary-foreground: oklch(0.97 0.006 85);
 
-  --muted: oklch(0.22 0.03 255);
-  --muted-foreground: oklch(0.7 0.02 255);
+  --muted: oklch(0.2 0.012 85);
+  --muted-foreground: oklch(0.64 0.015 85);
 
-  --accent: oklch(0.72 0.18 95);
-  --accent-foreground: oklch(0.12 0.02 255);
+  --accent: oklch(0.22 0.015 85);
+  --accent-foreground: oklch(0.97 0.006 85);
 
-  --destructive: oklch(0.5 0.2 25);
-  --border: oklch(0.92 0.02 255 / 0.35);
-  --input: oklch(0.92 0.02 255 / 0.35);
-  --ring: oklch(0.7 0.25 310);
+  --destructive: oklch(0.6 0.2 25);
 
-  --cartoon-shadow: oklch(0.95 0.01 255 / 0.22);
+  /* Semi-transparent hairline borders using modern oklch opacity syntax */
+  --border: oklch(0.97 0.006 85 / 0.12);
+  --input: oklch(0.97 0.006 85 / 0.12);
+  --ring: oklch(0.86 0.17 96);
 }
 
 @layer base {
   * {
-    @apply border-border/25 outline-ring/50;
+    @apply border-border outline-ring/50;
   }
 
   body {
-    @apply bg-background text-foreground antialiased font-cartoon;
+    @apply bg-background text-foreground antialiased font-sans;
+  }
+
+  h1, h2, h3, h4,
+  .font-display {
+    @apply font-display;
   }
 
   ::selection {
-    background: var(--foreground);
-    color: var(--background);
+    background: var(--primary);
+    color: var(--primary-foreground);
   }
 
   :is(
@@ -146,67 +149,37 @@ html[data-app-ready="true"] [data-app-content] {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
 }
 
-/* Sonner toasts should follow the active app theme instead of browser defaults. */
+/* Sonner toasts follow the flat editorial system: hairline border, no shadow */
 [data-sonner-toast] {
-  border: 4px solid var(--border) !important;
+  border: 1px solid var(--border) !important;
   background: var(--card) !important;
   color: var(--card-foreground) !important;
-  box-shadow: 8px 8px 0 0 var(--cartoon-shadow) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 [data-sonner-toast] [data-title] {
   color: var(--card-foreground) !important;
-  font-weight: 900;
-  font-style: italic;
-  text-transform: uppercase;
+  font-weight: 600;
 }
 
 [data-sonner-toast] [data-description] {
   color: var(--muted-foreground) !important;
-  font-weight: 600;
+  font-weight: 400;
 }
 
-/* Sticker / neo-brutalist shadows (two levels only) */
-@utility shadow-cartoon-sm {
-  box-shadow: 4px 4px 0 0 var(--cartoon-shadow);
-}
-
-@utility shadow-cartoon-md {
-  box-shadow: 8px 8px 0 0 var(--cartoon-shadow);
-}
-
-@utility drop-shadow-cartoon {
-  filter: drop-shadow(6px 6px 0 var(--cartoon-shadow));
-}
-
+/* Low-opacity dot grid, used sparingly as section texture */
 @utility lp-dots {
-  background-image: radial-gradient(var(--foreground) 2px, transparent 2px);
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
-/* Stroked display text (used with primary fill) */
-.text-outline {
-  -webkit-text-stroke: 2px var(--cartoon-shadow);
-  color: var(--primary);
-}
-
-@media (min-width: 768px) {
-  .text-outline {
-    -webkit-text-stroke: 3px var(--cartoon-shadow);
-  }
-}
-
-.dark .text-outline {
-  -webkit-text-stroke-color: oklch(0.95 0.01 255 / 0.45);
-}
-
-/* Landing layout: 8px grid rhythm */
+/* Landing layout rhythm */
 @utility lp-section {
   @apply relative overflow-hidden bg-background py-20 sm:py-24 md:py-28;
 }
@@ -230,6 +203,6 @@ html[data-app-ready="true"] [data-app-content] {
 }
 
 ::view-transition-old(root), ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
+  animation: none;
+  mix-blend-mode: normal;
 }

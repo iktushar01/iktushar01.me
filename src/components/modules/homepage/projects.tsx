@@ -56,6 +56,7 @@ const ProjectRow: React.FC<{
       <button
         type="button"
         onClick={onOpen}
+        data-cursor-hover
         className="lg:col-span-5 relative aspect-video overflow-hidden border border-border bg-muted text-left"
       >
         <Image

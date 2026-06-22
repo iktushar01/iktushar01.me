@@ -33,7 +33,7 @@ export default function Certificates() {
             transition={{ ...springSoft, delay: index * 0.05 }}
             className="group text-left"
           >
-            <div className="relative aspect-video border border-border bg-muted overflow-hidden">
+            <div data-cursor-hover className="relative aspect-video border border-border bg-muted overflow-hidden">
               <Image
                 src={cert.image}
                 alt={cert.title}

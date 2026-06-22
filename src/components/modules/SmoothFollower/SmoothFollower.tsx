@@ -18,6 +18,8 @@ const interactiveSelector = [
   "[type='reset']",
 ].join(",");
 
+const mediaSelector = "[data-cursor-hover]";
+
 const textSelector = [
   "input",
   "textarea",
@@ -84,6 +86,7 @@ export default function SmoothFollower() {
 
       const element = event.target as HTMLElement | null;
       const textElement = element?.closest(textSelector) as HTMLElement | null;
+      const mediaElement = element?.closest(mediaSelector) as HTMLElement | null;
       const interactiveElement = element?.closest(interactiveSelector) as HTMLElement | null;
 
       setIsVisible(pointerQuery.matches && !motionQuery.matches);
@@ -91,6 +94,16 @@ export default function SmoothFollower() {
       if (textElement) {
         moveCursor(event.clientX, event.clientY);
         updateMode("text", null);
+        return;
+      }
+
+      if (mediaElement) {
+        const rect = mediaElement.getBoundingClientRect();
+        moveCursor(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        updateMode("hover", {
+          width: rect.width + 8,
+          height: rect.height + 8,
+        });
         return;
       }
 

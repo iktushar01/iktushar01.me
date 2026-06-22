@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
-import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -32,13 +32,6 @@ export default function Navbar() {
 
     const navItemIds = useMemo(() => NAV_ITEMS.map((i) => i.id), []);
     const sectionRangesRef = useRef<Array<{ id: string; top: number; bottom: number }>>([]);
-
-    const { scrollYProgress } = useScroll();
-    const scaleX = useSpring(scrollYProgress, {
-        stiffness: 160,
-        damping: 22,
-        restDelta: 0.001
-    });
 
     const scrollToSection = useCallback((id: string) => {
         const element = document.getElementById(id);
@@ -113,12 +106,6 @@ export default function Navbar() {
                 )}
             >
                 <div className="relative max-w-7xl mx-auto px-5 sm:px-10 lg:px-16 h-16 flex items-center justify-between">
-                    {/* Scroll progress — thin flat line, theme accent */}
-                    <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-px bg-primary origin-left"
-                        style={{ scaleX }}
-                    />
-
                     {/* Logo */}
                     <button
                         onClick={() => scrollToSection("home")}
