@@ -10,9 +10,9 @@ import {
   useVelocity,
 } from "framer-motion";
 
-const cursorSpring = { stiffness: 430, damping: 31, mass: 0.45 };
-const magneticSpring = { stiffness: 210, damping: 19, mass: 0.65 };
-const shapeSpring = { type: "spring" as const, stiffness: 260, damping: 24 };
+const cursorSpring = { stiffness: 380, damping: 30, mass: 0.5 };
+const magneticSpring = { stiffness: 180, damping: 22, mass: 0.6 };
+const shapeSpring = { type: "spring" as const, stiffness: 220, damping: 26 };
 
 const interactiveSelector = [
   "a",
@@ -46,9 +46,9 @@ type CursorTarget = {
 function getActionLabel(element: HTMLElement) {
   if (element.matches("a")) return "Open";
   if (element.matches("button, [type='submit'], [data-slot='button']")) {
-    return "Tap";
+    return "View";
   }
-  return "Click";
+  return "Explore";
 }
 
 export default function SmoothFollower() {
@@ -66,9 +66,11 @@ export default function SmoothFollower() {
 
   const xVelocity = useVelocity(smoothX);
   const yVelocity = useVelocity(smoothY);
-  const speedScaleX = useTransform(xVelocity, [-2500, 0, 2500], [1.35, 1, 1.35]);
-  const speedScaleY = useTransform(yVelocity, [-2500, 0, 2500], [0.72, 1, 0.72]);
-  const rotate = useTransform(xVelocity, [-2500, 2500], [-18, 18]);
+  
+  // Refined non-exaggerated fluid skew based on pointer velocity
+  const speedScaleX = useTransform(xVelocity, [-2000, 0, 2000], [1.15, 1, 1.15]);
+  const speedScaleY = useTransform(yVelocity, [-2000, 0, 2000], [0.88, 1, 0.88]);
+  const rotate = useTransform(xVelocity, [-2000, 2000], [-8, 8]);
 
   const cursorStyle = useMemo(
     () => ({
@@ -97,7 +99,6 @@ export default function SmoothFollower() {
       ) {
         return current;
       }
-
       return nextTarget;
     });
   }, []);
@@ -135,7 +136,7 @@ export default function SmoothFollower() {
 
       if (textElement) {
         moveCursor(event.clientX, event.clientY);
-        updateMode("text", { label: "Type", width: 22, height: 42 });
+        updateMode("text", { label: "Type", width: 4, height: 24 });
         return;
       }
 
@@ -144,8 +145,8 @@ export default function SmoothFollower() {
         moveCursor(rect.left + rect.width / 2, rect.top + rect.height / 2);
         updateMode("hover", {
           label: getActionLabel(interactiveElement),
-          width: Math.min(Math.max(rect.width + 18, 48), window.innerWidth - 32),
-          height: Math.min(Math.max(rect.height + 14, 42), 120),
+          width: Math.min(Math.max(rect.width + 12, 40), window.innerWidth - 32),
+          height: Math.min(Math.max(rect.height + 8, 36), 100),
         });
         return;
       }
@@ -188,71 +189,48 @@ export default function SmoothFollower() {
   const isPressed = mode === "pressed";
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[99999] overflow-hidden">
+    <div className="pointer-events-none fixed inset-0 z-[99999] overflow-hidden mix-blend-difference">
       <motion.div className="relative flex items-center justify-center" style={cursorStyle}>
+        {/* CORE CORE INTERACTIVE FOLLOWER CONTAINER */}
         <motion.div
           animate={{
-            width: isHover ? target?.width ?? 56 : isText ? 20 : isPressed ? 18 : 26,
-            height: isHover ? target?.height ?? 48 : isText ? 44 : isPressed ? 18 : 26,
-            borderRadius: isHover ? "18px" : isText ? "999px" : "50%",
+            width: isHover ? target?.width ?? 48 : isText ? 2 : isPressed ? 8 : 12,
+            height: isHover ? target?.height ?? 36 : isText ? 22 : isPressed ? 8 : 12,
+            borderRadius: isHover ? "12px" : isText ? "1px" : "50%",
             backgroundColor: isHover
-              ? "color-mix(in oklab, var(--primary) 18%, transparent)"
-              : isText
-                ? "var(--foreground)"
-                : isPressed
-                  ? "var(--accent)"
-                  : "var(--primary)",
-            borderColor: isHover ? "var(--border)" : "var(--foreground)",
-            borderWidth: isHover || isText ? 3 : 2,
-            boxShadow: isHover
-              ? "6px 6px 0 0 var(--cartoon-shadow)"
-              : "4px 4px 0 0 var(--cartoon-shadow)",
+              ? "rgba(255, 255, 255, 0.08)"
+              : "rgba(255, 255, 255, 1)",
+            borderColor: isHover ? "rgba(255, 255, 255, 0.3)" : "transparent",
+            borderWidth: isHover ? 1 : 0,
           }}
           transition={shapeSpring}
-          className="relative flex items-center justify-center border will-change-transform"
+          className="relative flex items-center justify-center border backdrop-blur-[2px] will-change-[width,height,transform]"
         >
           <AnimatePresence mode="wait">
-            {isHover ? (
+            {isHover && (
               <motion.span
                 key="label"
-                initial={{ opacity: 0, scale: 0.8, y: 6 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: -4 }}
-                className="rounded-full bg-accent px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-accent-foreground shadow-cartoon-sm"
-              >
-                {target?.label ?? "Click"}
-              </motion.span>
-            ) : isText ? (
-              <motion.span
-                key="text"
-                initial={{ opacity: 0, scaleY: 0.5 }}
-                animate={{ opacity: 1, scaleY: 1 }}
-                exit={{ opacity: 0, scaleY: 0.5 }}
-                className="h-7 w-1 rounded-full bg-background"
-              />
-            ) : (
-              <motion.span
-                key="dot"
-                initial={{ opacity: 0, scale: 0.4 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.4 }}
-                className="flex gap-1"
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="text-[10px] font-medium uppercase tracking-widest text-white whitespace-nowrap"
               >
-                <span className="size-1.5 rounded-full bg-primary-foreground" />
-                <span className="size-1.5 rounded-full bg-primary-foreground" />
+                {target?.label ?? "View"}
               </motion.span>
             )}
           </AnimatePresence>
         </motion.div>
 
+        {/* ELEGANT OUTER RADIUS BOUNDING LINK EFFECT */}
         <motion.div
           animate={{
-            width: isHover ? (target?.width ?? 56) + 16 : 52,
-            height: isHover ? (target?.height ?? 48) + 16 : 52,
-            opacity: isHover ? 0.35 : 0.2,
+            width: isHover ? (target?.width ?? 48) + 12 : isText ? 20 : isPressed ? 24 : 28,
+            height: isHover ? (target?.height ?? 36) + 12 : isText ? 20 : isPressed ? 24 : 28,
+            opacity: isHover ? 0.4 : isText ? 0 : isPressed ? 0.8 : 0.25,
+            borderRadius: isHover ? "16px" : "50%",
           }}
           transition={magneticSpring}
-          className="absolute rounded-full border-2 border-primary"
+          className="absolute border border-white"
         />
       </motion.div>
     </div>

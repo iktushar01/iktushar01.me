@@ -1,75 +1,21 @@
 "use client";
 
-import React, { useState, useRef, ReactNode } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
+import React, { useState, ReactNode } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
   FiExternalLink,
   FiX,
-  FiEye,
   FiGithub,
   FiChevronLeft,
   FiChevronRight,
-  FiPackage,
+  FiArrowUpRight,
 } from "react-icons/fi";
 
 import { projectsData, type Project } from "@/components/data/projects";
 import { cn } from "@/lib/utils";
-import {
-  springSoft,
-  springMagnetic,
-  springSnappy,
-} from "@/lib/motion";
+import { springSoft, springSnappy } from "@/lib/motion";
 import { SectionHeader } from "@/components/modules/homepage/section-header";
-
-const MagneticButton: React.FC<{
-  children: ReactNode;
-  onClick?: () => void;
-  className?: string;
-}> = ({ children, onClick, className }) => {
-  const ref = useRef<HTMLButtonElement>(null);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const sx = useSpring(x, springMagnetic);
-  const sy = useSpring(y, springMagnetic);
-
-  const handleMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-
-    const { clientX, clientY } = e;
-    const { left, top, width, height } =
-      ref.current.getBoundingClientRect();
-
-    x.set((clientX - (left + width / 2)) * 0.25);
-    y.set((clientY - (top + height / 2)) * 0.25);
-  };
-
-  return (
-    <motion.button
-      ref={ref}
-      onMouseMove={handleMove}
-      onMouseLeave={() => {
-        x.set(0);
-        y.set(0);
-      }}
-      onClick={onClick}
-      style={{ x: sx, y: sy }}
-      className={cn(
-        "bg-primary text-primary-foreground border border-primary/20 font-medium text-sm px-5 py-2.5 rounded-xl shadow-sm hover:opacity-90 active:scale-[0.98] transition-all duration-200 ease-out flex items-center justify-center gap-2",
-        className
-      )}
-    >
-      {children}
-    </motion.button>
-  );
-};
 
 const ActionButton = ({
   href,
@@ -85,7 +31,7 @@ const ActionButton = ({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center justify-center gap-2 px-4 py-2.5 bg-muted border border-border rounded-xl font-medium text-xs sm:text-sm text-foreground hover:bg-muted/80 hover:border-border/80 transition-colors duration-200"
+      className="flex items-center justify-center gap-2 px-4 py-2.5 bg-transparent border border-border rounded-none font-medium text-xs sm:text-sm text-foreground hover:bg-muted transition-colors duration-200"
     >
       {icon}
       {label}
@@ -93,68 +39,71 @@ const ActionButton = ({
   );
 };
 
-const ProjectCard: React.FC<{
+const ProjectRow: React.FC<{
   project: Project;
   index: number;
   onOpen: () => void;
 }> = ({ project, index, onOpen }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={springSoft}
-      className="group relative flex flex-col md:flex-row gap-6 lg:gap-8 p-5 sm:p-6 bg-card/60 text-card-foreground border border-border rounded-2xl shadow-sm backdrop-blur-md transition-all duration-300 hover:border-border/80"
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ ...springSoft, delay: index * 0.04 }}
+      className="group grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 py-10 border-b border-border last:border-b-0"
     >
-      <div className="w-full md:w-1/2 aspect-video relative overflow-hidden border border-border/60 rounded-xl bg-muted">
+      {/* Image */}
+      <button
+        type="button"
+        onClick={onOpen}
+        className="lg:col-span-5 relative aspect-video overflow-hidden border border-border bg-muted text-left"
+      >
         <Image
           src={project.images[0]}
           alt={project.title}
           fill
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-cover group-hover:scale-[1.02] transition-transform duration-500 ease-out"
+          sizes="(max-width: 1024px) 100vw, 40vw"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
         />
+      </button>
 
-        <div className="absolute top-3 left-3 px-2.5 py-0.5 bg-accent/10 border border-accent/20 font-medium text-[10px] tracking-wide text-accent-foreground uppercase shadow-sm rounded-full backdrop-blur-md">
-          Featured
-        </div>
-      </div>
-
-      <div className="flex-1 flex flex-col justify-between gap-4 py-1">
+      {/* Content */}
+      <div className="lg:col-span-7 flex flex-col justify-between gap-4">
         <div>
-          <h3 className="text-xl sm:text-2xl font-medium tracking-tight text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
-            {project.title}
-          </h3>
+          <div className="flex items-baseline justify-between gap-4 mb-2">
+            <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+              {project.title}
+            </h3>
+            <span className="text-xs font-mono text-muted-foreground/50 shrink-0">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          </div>
 
-          <p className="text-sm text-muted-foreground mb-4 leading-relaxed font-normal">
+          <p className="text-sm text-muted-foreground leading-relaxed mb-4 max-w-xl">
             {project.description}
           </p>
 
-          <div className="flex flex-wrap gap-1.5 mb-2">
-            {project.technologies.slice(0, 4).map((tech) => (
-              <span
-                key={tech}
-                className="px-2.5 py-0.5 bg-muted border border-border/60 text-[10px] font-medium uppercase tracking-wider text-muted-foreground rounded-md"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
+          <p className="text-xs font-mono text-muted-foreground">
+            {project.technologies.slice(0, 4).join(" / ")}
+          </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <MagneticButton onClick={onOpen}>
-            <FiEye size={16} />
-            Inspect
-          </MagneticButton>
+        <div className="flex items-center gap-5 pt-2">
+          <button
+            type="button"
+            onClick={onOpen}
+            className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors duration-200"
+          >
+            View details <FiArrowUpRight size={15} />
+          </button>
 
           <a
             href={project.liveLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 bg-muted border border-border shadow-sm hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-all duration-200 rounded-xl"
+            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
           >
-            <FiExternalLink size={18} />
+            Live site <FiExternalLink size={14} />
           </a>
         </div>
       </div>
@@ -163,9 +112,7 @@ const ProjectCard: React.FC<{
 };
 
 const Projects: React.FC = () => {
-  const [selectedProject, setSelectedProject] =
-    useState<Project | null>(null);
-
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeImage, setActiveImage] = useState(0);
 
   const openProject = (project: Project) => {
@@ -188,80 +135,74 @@ const Projects: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="lp-section relative py-20 overflow-hidden bg-background">
-      <div className="absolute inset-0 opacity-[0.15] dark:opacity-[0.03] pointer-events-none lp-dots bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:16px_16px]" />
+    <section id="projects" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
+      <SectionHeader
+        kicker="Selected work"
+        kickerTone="secondary"
+        title={
+          <>
+            <span className="text-primary">PROJECTS</span>
+          </>
+        }
+      />
 
-      <div className="lp-container max-w-7xl mx-auto px-4 relative z-10">
-        <SectionHeader
-          kicker="Portfolio Lab"
-          kickerIcon={<FiPackage />}
-          kickerTone="secondary"
-          title={
-            <>
-              <span className="text-primary">CRAFTED </span>
-              <span className="text-foreground">WORKS</span>
-            </>
-          }
-        />
-
-        <div className="grid grid-cols-1 gap-8 mt-12">
-          {projectsData.map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              index={index}
-              onOpen={() => openProject(project)}
-            />
-          ))}
-        </div>
+      <div className="mt-12">
+        {projectsData.map((project, index) => (
+          <ProjectRow
+            key={project.id}
+            project={project}
+            index={index}
+            onOpen={() => openProject(project)}
+          />
+        ))}
       </div>
 
       <AnimatePresence>
         {selectedProject && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
-            {/* BACKDROP */}
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="absolute inset-0 bg-background/80 backdrop-blur-md border-y border-border"
+              className="absolute inset-0 bg-background/90"
               onClick={() => setSelectedProject(null)}
             />
 
-            {/* MODAL */}
+            {/* Modal */}
             <motion.div
-              initial={{ scale: 0.96, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.96, opacity: 0 }}
+              initial={{ y: 12, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 12, opacity: 0 }}
               transition={springSnappy}
-              className="relative z-[110] w-full max-w-4xl bg-card/90 text-card-foreground border border-border shadow-lg rounded-2xl overflow-hidden max-h-[90vh] flex flex-col backdrop-blur-xl"
+              className="relative z-[110] w-full max-w-4xl bg-card text-card-foreground border border-border shadow-lg overflow-hidden max-h-[90vh] flex flex-col"
             >
-              {/* HEADER */}
-              <div className="p-4 bg-muted border-b border-border flex justify-between items-center sticky top-0 z-50">
-                <span className="font-medium uppercase tracking-wider text-xs text-muted-foreground">
-                  Project Terminal
+              {/* Header */}
+              <div className="px-5 py-4 border-b border-border flex justify-between items-center sticky top-0 z-50 bg-card">
+                <span className="font-mono text-xs text-muted-foreground/70 tracking-wide">
+                  PROJECT DETAIL
                 </span>
-
                 <button
                   type="button"
                   onClick={() => setSelectedProject(null)}
-                  className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive p-1.5 transition-colors duration-200 border border-border/40 rounded-lg"
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+                  aria-label="Close"
                 >
                   <FiX size={18} />
                 </button>
               </div>
 
-              {/* CONTENT */}
+              {/* Content */}
               <div className="p-5 sm:p-6 overflow-y-auto lp-scrollbar space-y-6">
-                {/* CAROUSEL WRAPPER */}
-                <div className="relative aspect-video border border-border shadow-sm bg-muted rounded-xl overflow-hidden">
+                {/* Carousel */}
+                <div className="relative aspect-video border border-border bg-muted overflow-hidden">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={activeImage}
-                      initial={{ opacity: 0, scale: 1.01 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.99 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
                       transition={{ duration: 0.25 }}
                       className="absolute inset-0"
                     >
@@ -275,34 +216,33 @@ const Projects: React.FC = () => {
                     </motion.div>
                   </AnimatePresence>
 
-                  {/* LEFT BTN */}
                   <button
                     onClick={prevImage}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2.5 bg-card/80 backdrop-blur-md border border-border text-foreground rounded-full shadow-sm hover:bg-card transition-all duration-200"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2 bg-background/80 border border-border text-foreground hover:bg-background transition-colors duration-200"
+                    aria-label="Previous image"
                   >
                     <FiChevronLeft size={18} />
                   </button>
-
-                  {/* RIGHT BTN */}
                   <button
                     onClick={nextImage}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2.5 bg-card/80 backdrop-blur-md border border-border text-foreground rounded-full shadow-sm hover:bg-card transition-all duration-200"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2 bg-background/80 border border-border text-foreground hover:bg-background transition-colors duration-200"
+                    aria-label="Next image"
                   >
                     <FiChevronRight size={18} />
                   </button>
                 </div>
 
-                {/* THUMBNAILS */}
+                {/* Thumbnails */}
                 <div className="flex gap-2 overflow-x-auto pb-1.5 lp-scrollbar">
                   {selectedProject.images.map((img, index) => (
                     <button
                       key={index}
                       onClick={() => setActiveImage(index)}
                       className={cn(
-                        "relative min-w-[90px] h-[60px] overflow-hidden rounded-lg border transition-all duration-200 shadow-sm",
+                        "relative min-w-[90px] h-[60px] overflow-hidden border transition-opacity duration-200",
                         activeImage === index
-                          ? "border-primary scale-[1.02]"
-                          : "border-border opacity-60 hover:opacity-100"
+                          ? "border-primary opacity-100"
+                          : "border-border opacity-50 hover:opacity-90"
                       )}
                     >
                       <Image
@@ -316,12 +256,12 @@ const Projects: React.FC = () => {
                   ))}
                 </div>
 
-                <div className="space-y-4">
-                  <h2 className="text-xl sm:text-2xl font-medium tracking-tight text-foreground">
+                <div className="space-y-5">
+                  <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
                     {selectedProject.title}
                   </h2>
 
-                  {/* LINK ACTIONS */}
+                  {/* Link actions */}
                   <div className="flex flex-wrap gap-2.5">
                     {selectedProject.frontendLink && (
                       <ActionButton
@@ -340,43 +280,38 @@ const Projects: React.FC = () => {
                     <ActionButton
                       href={selectedProject.liveLink}
                       icon={<FiExternalLink size={16} />}
-                      label="Live Preview"
+                      label="Live preview"
                     />
                   </div>
 
-                  {/* METADATA GRID */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                    <div className="space-y-2">
-                      <h4 className="inline-block px-2.5 py-0.5 bg-primary/10 border border-primary/20 text-primary font-medium uppercase text-[10px] tracking-wider rounded-md">
-                        The Mission
+                  {/* Metadata */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2 border-t border-border">
+                    <div className="pt-5">
+                      <h4 className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-3">
+                        Key challenges
                       </h4>
-                      <ul className="space-y-2">
+                      <ul className="space-y-2.5">
                         {selectedProject.challenges.map((c, i) => (
                           <li
                             key={i}
-                            className="font-normal flex gap-2.5 text-muted-foreground text-sm leading-relaxed"
+                            className="flex gap-2.5 text-muted-foreground text-sm leading-relaxed"
                           >
-                            <span className="text-primary/70 text-xs mt-0.5">▶</span>
+                            <span className="text-muted-foreground/40 font-mono text-xs mt-0.5">
+                              {String(i + 1).padStart(2, "0")}
+                            </span>
                             {c}
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="space-y-2">
-                      <h4 className="inline-block px-2.5 py-0.5 bg-secondary/10 border border-secondary/20 text-secondary font-medium uppercase text-[10px] tracking-wider rounded-md">
-                        Technology Stack
+                    <div className="pt-5">
+                      <h4 className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-3">
+                        Stack
                       </h4>
-                      <div className="flex flex-wrap gap-1.5">
-                        {selectedProject.technologies.map((t) => (
-                          <span
-                            key={t}
-                            className="px-2.5 py-1 bg-muted border border-border/60 text-[10px] font-medium uppercase tracking-wider text-muted-foreground rounded-md"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
+                      <p className="text-sm text-muted-foreground font-mono leading-relaxed">
+                        {selectedProject.technologies.join(" / ")}
+                      </p>
                     </div>
                   </div>
                 </div>
