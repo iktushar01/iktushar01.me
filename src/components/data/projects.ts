@@ -22,7 +22,7 @@ export const projectsData: Project[] = [
     tag: "Next.js Platform",
 
     images: [
-      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1782219446/ChatGPT_Image_May_17_2026_10_02_44_AM_ej3p2z.png",
+      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1782219446/ChatGPT_Image_May_17_2026_10_02_44_AM_ej3p2z.png", 
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465636/one_uz50sw.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465636/two_ozn9cp.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465636/three_p83x25.png",
