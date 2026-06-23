@@ -22,6 +22,7 @@ export const projectsData: Project[] = [
     tag: "Next.js Platform",
 
     images: [
+      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1782219446/ChatGPT_Image_May_17_2026_10_02_44_AM_ej3p2z.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465636/one_uz50sw.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465636/two_ozn9cp.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778465636/three_p83x25.png",
@@ -72,6 +73,7 @@ export const projectsData: Project[] = [
     tag: "Full Stack",
 
     images: [
+      "https://res.cloudinary.com/dfoqasqnw/image/upload/v1782219308/ChatGPT_Image_May_17_2026_10_19_46_AM_uzr4ic.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815021/Screenshot_2026-05-15_091339_nspgjj.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815021/Screenshot_2026-05-15_091432_ynabtv.png",
       "https://res.cloudinary.com/dfoqasqnw/image/upload/v1778815021/Screenshot_2026-05-15_091506_kc5ip6.png",
