@@ -26,7 +26,7 @@ const fadeUp: Variants = {
 };
 
 const meta = [
-  { k: "Role", v: "Fullstack Engineer" },
+  { k: "Role", v: "Fullstack Web Developer" },
   { k: "Stack", v: "MERN, Next.js, TypeScript" },
   { k: "Based", v: "Gazipur, Bangladesh" },
   { k: "Status", v: "Open to work" },
@@ -91,7 +91,7 @@ const Header: React.FC = () => {
         >
           Fullstack
           <br />
-          Engineer.
+          Web Developer<span className="text-primary">.</span>
         </motion.h1>
 
         <motion.p
@@ -138,7 +138,7 @@ const Header: React.FC = () => {
               className="bg-primary text-primary-foreground font-medium text-sm rounded-none px-6 h-11 hover:bg-primary/90 transition-colors duration-200"
             >
               <a href={RESUME_PDF_PATH} download="Ibrahim Khalil Tushar.pdf">
-                Resume <ArrowRight className="ml-2 size-4" />
+               Download Resume <ArrowRight className="ml-2 size-4" />
               </a>
             </Button>
             <Button
@@ -148,7 +148,7 @@ const Header: React.FC = () => {
               className="bg-transparent text-foreground border-border font-medium text-sm rounded-none px-6 h-11 hover:bg-muted transition-colors duration-200"
             >
               <a href={CV_DOC_URL} target="_blank" rel="noopener noreferrer">
-                Interactive CV <ArrowUpRight className="ml-2 size-4" />
+                View Resume <ArrowUpRight className="ml-2 size-4" />
               </a>
             </Button>
           </div>

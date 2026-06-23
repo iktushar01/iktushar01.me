@@ -2,11 +2,44 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { FaReact, FaNodeJs, FaFire, FaPython } from "react-icons/fa";
+
+// FontAwesome Icons (fa)
+import { 
+  FaReact, 
+  FaNodeJs, 
+  FaWordpress, 
+  FaHtml5, 
+  FaCss3Alt, 
+  FaGithub, 
+  FaFigma, 
+  FaDocker, 
+  FaLinux, 
+  FaGitAlt 
+} from "react-icons/fa";
+
+// SimpleIcons (si)
 import {
-  SiTailwindcss, SiExpress, SiMongodb, SiJsonwebtokens, SiTypescript, SiNextdotjs, SiPostgresql,
-  SiPrisma
+  SiTailwindcss, 
+  SiExpress, 
+  SiMongodb, 
+  SiTypescript, 
+  SiNextdotjs, 
+  SiPostgresql,
+  SiPrisma, 
+  SiFirebase, 
+  SiRedis, 
+  SiGo, 
+  SiWebflow, 
+  SiPostman, 
+
+  SiVercel
 } from "react-icons/si";
+
+import { VscCode } from "react-icons/vsc";
+
+// Ionicons (io5) - best standard JS icon
+import { IoLogoJavascript } from "react-icons/io5";
+
 import { springSoft } from "@/lib/motion";
 import { SectionHeader } from "@/components/modules/homepage/section-header";
 
@@ -26,37 +59,47 @@ const skillsData: SkillGroup[] = [
   {
     index: "01",
     category: "Frontend",
-    description:
-      "Component-driven interfaces with deliberate state management and interaction detail.",
+    description: "Component-driven interfaces with deliberate state management and interaction detail.",
     skills: [
+      { name: "HTML5", icon: <FaHtml5 /> },
+      { name: "CSS3", icon: <FaCss3Alt /> },
+      { name: "Tailwind CSS", icon: <SiTailwindcss /> },
+      { name: "JavaScript", icon: <IoLogoJavascript /> },
+      { name: "TypeScript", icon: <SiTypescript /> },
       { name: "React", icon: <FaReact /> },
       { name: "Next.js", icon: <SiNextdotjs /> },
-      { name: "TypeScript", icon: <SiTypescript /> },
-      { name: "Tailwind CSS", icon: <SiTailwindcss /> },
+      { name: "Webflow", icon: <SiWebflow /> },
+      { name: "WordPress", icon: <FaWordpress /> },
     ],
   },
   {
     index: "02",
-    category: "Backend",
-    description:
-      "Business logic, authentication, and data flow built around clear boundaries.",
+    category: "Backend & Databases",
+    description: "Business logic, architecture, and schema design across relational and non-relational stores.",
     skills: [
       { name: "Node.js", icon: <FaNodeJs /> },
       { name: "Express", icon: <SiExpress /> },
-      { name: "Python", icon: <FaPython /> },
-      { name: "JWT Auth", icon: <SiJsonwebtokens /> },
+      { name: "Go", icon: <SiGo /> },
+      { name: "PostgreSQL", icon: <SiPostgresql /> },
+      { name: "MongoDB", icon: <SiMongodb /> },
+      { name: "Prisma", icon: <SiPrisma /> },
+      { name: "Firebase", icon: <SiFirebase /> },
+      { name: "Redis", icon: <SiRedis /> },
     ],
   },
   {
     index: "03",
-    category: "Data",
-    description:
-      "Schema design and querying across relational and non-relational stores.",
+    category: "Tools & DevOps",
+    description: "Version control, development environments, design tools, and deployment workflows.",
     skills: [
-      { name: "PostgreSQL", icon: <SiPostgresql /> },
-      { name: "MongoDB", icon: <SiMongodb /> },
-      { name: "Prisma", icon: <SiPrisma /> },
-      { name: "Firebase", icon: <FaFire /> },
+      { name: "Git", icon: <FaGitAlt /> },
+      { name: "GitHub", icon: <FaGithub /> },
+      { name: "VS Code", icon: <VscCode /> },
+      { name: "Postman", icon: <SiPostman /> },
+      { name: "Figma", icon: <FaFigma /> },
+      { name: "Vercel", icon: <SiVercel /> },
+      { name: "Docker", icon: <FaDocker /> },
+      { name: "Linux", icon: <FaLinux /> },
     ],
   },
 ];
@@ -107,9 +150,9 @@ const SkillGroupRow: React.FC<{ group: SkillGroup; index: number }> = ({ group, 
 
 const Skills: React.FC = () => {
   const footStats = [
-    { label: "Stack Areas", value: "03" },
-    { label: "Tools in Use", value: "12" },
-    { label: "Primary Focus", value: "MERN" },
+    { label: "Project Completed", value: "10+" },
+    { label: "Tools in Use", value: "25+" },
+    { label: "Primary Focus", value: "PERN Stack" },
   ];
 
   return (

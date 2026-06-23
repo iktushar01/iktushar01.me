@@ -20,10 +20,9 @@ interface DomainItem {
 const AboutMe: React.FC = () => {
   const specRows: SpecRow[] = [
     { index: "01", label: "Name", value: "Md. Ibrahim Khalil Tushar" },
-    { index: "02", label: "Role", value: "Full-stack Software Developer" },
+    { index: "02", label: "Role", value: "Full-stack Web Developer" },
     { index: "03", label: "Education", value: "B.Sc. CSE, Uttara University" },
     { index: "04", label: "Location", value: "Gazipur, Bangladesh" },
-    { index: "05", label: "Shipped", value: "Acadex, Store-Xen, Medquix, DocScheduleBD" },
   ];
 
   const domains: DomainItem[] = [
