@@ -56,22 +56,11 @@ const Header: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, ease: easeInOut.ease }}
-      className="relative min-h-screen flex flex-col bg-background text-foreground px-5 sm:px-10 lg:px-16 pt-28 pb-12"
+      className="relative flex flex-col bg-background text-foreground px-4 sm:px-10 lg:px-16 pt-24 sm:pt-28 pb-8 sm:pb-12 lg:min-h-screen overflow-x-hidden"
     >
-      {/* Top meta row — index line */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        custom={0}
-        variants={fadeUp}
-        className="flex items-center justify-between text-xs font-mono text-muted-foreground border-b border-border pb-4 mb-auto"
-      >
-        <span className="tracking-wide">PORTFOLIO / 2026</span>
-        <span className="hidden sm:inline tracking-wide">N&deg; 001 &mdash; INDEX</span>
-      </motion.div>
 
       {/* Main wordmark block */}
-      <div className="flex-1 flex flex-col justify-center py-16 lg:py-20">
+      <div className="flex flex-col justify-start lg:flex-1 lg:justify-center py-6 sm:py-10 lg:py-20 min-w-0">
         <motion.p
           initial="hidden"
           animate="visible"
@@ -87,7 +76,7 @@ const Header: React.FC = () => {
           animate="visible"
           custom={2}
           variants={fadeUp}
-          className="text-[13vw] sm:text-[10vw] lg:text-[7.5vw] font-semibold tracking-tighter leading-[0.88] text-foreground -ml-[0.5vw]"
+          className="text-[clamp(2.25rem,10.5vw,6.5rem)] sm:text-[clamp(2.5rem,9vw,7rem)] font-semibold tracking-tighter leading-[0.9] text-foreground break-words"
         >
           Fullstack
           <br />
@@ -99,7 +88,7 @@ const Header: React.FC = () => {
           animate="visible"
           custom={3}
           variants={fadeUp}
-          className="mt-8 max-w-md text-sm sm:text-base text-muted-foreground leading-relaxed border-l border-border pl-5"
+          className="mt-6 sm:mt-8 max-w-md text-sm sm:text-base text-muted-foreground leading-relaxed border-l border-border pl-5"
         >
           I build production web applications with the MERN stack and
           Next.js &mdash; resilient backends, considered interfaces, and code
@@ -113,17 +102,17 @@ const Header: React.FC = () => {
         animate="visible"
         custom={4}
         variants={fadeUp}
-        className="border-t border-border pt-6"
+        className="border-t border-border pt-5 sm:pt-6 mt-2 sm:mt-0"
       >
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
           {/* Metadata table */}
-          <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3 flex-1">
+          <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-3 flex-1 min-w-0">
             {meta.map((item) => (
-              <div key={item.k}>
+              <div key={item.k} className="min-w-0">
                 <dt className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-1">
                   {item.k}
                 </dt>
-                <dd className="text-sm font-medium text-foreground tracking-tight">
+                <dd className="text-sm font-medium text-foreground tracking-tight break-words">
                   {item.v}
                 </dd>
               </div>
@@ -131,21 +120,21 @@ const Header: React.FC = () => {
           </dl>
 
           {/* Actions */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0">
             <Button
               asChild
               size="lg"
-              className="bg-primary text-primary-foreground font-medium text-sm rounded-none px-6 h-11 hover:bg-primary/90 transition-colors duration-200"
+              className="w-full sm:w-auto bg-primary text-primary-foreground font-medium text-sm rounded-none px-5 sm:px-6 h-11 hover:bg-primary/90 transition-colors duration-200"
             >
               <a href={RESUME_PDF_PATH} download="Ibrahim Khalil Tushar.pdf">
-               Download Resume <ArrowRight className="ml-2 size-4" />
+                Download Resume <ArrowRight className="ml-2 size-4" />
               </a>
             </Button>
             <Button
               asChild
               variant="outline"
               size="lg"
-              className="bg-transparent text-foreground border-border font-medium text-sm rounded-none px-6 h-11 hover:bg-muted transition-colors duration-200"
+              className="w-full sm:w-auto bg-transparent text-foreground border-border font-medium text-sm rounded-none px-5 sm:px-6 h-11 hover:bg-muted transition-colors duration-200"
             >
               <a href={CV_DOC_URL} target="_blank" rel="noopener noreferrer">
                 View Resume <ArrowUpRight className="ml-2 size-4" />
@@ -155,11 +144,11 @@ const Header: React.FC = () => {
         </div>
 
         {/* Socials row */}
-        <div className="flex items-center gap-5 mt-8 pt-5 border-t border-border/60">
-          <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-border/60">
+          <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 shrink-0">
             Elsewhere
           </span>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {inlineSocials.map((social) => (
               <a
                 key={social.label}

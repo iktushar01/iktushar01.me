@@ -18,10 +18,10 @@ export default function Certificates() {
     useState<Certificate | null>(null);
 
   return (
-    <section id="certificates" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
+    <section id="certificates" className="relative py-14 sm:py-20 lg:py-24 bg-background text-foreground px-4 sm:px-10 lg:px-16">
       <SectionHeader kicker="Credentials" title="Certificates" />
 
-      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+      <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-8 gap-y-8 sm:gap-y-12">
         {certificatesData.map((cert: Certificate, index: number) => (
           <motion.button
             key={cert.id}

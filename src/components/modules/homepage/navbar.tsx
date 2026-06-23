@@ -105,11 +105,11 @@ export default function Navbar() {
                         : "bg-background/0 border-transparent"
                 )}
             >
-                <div className="relative max-w-7xl mx-auto px-5 sm:px-10 lg:px-16 h-16 flex items-center justify-between">
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 h-14 sm:h-16 flex items-center justify-between gap-3">
                     {/* Logo */}
                     <button
                         onClick={() => scrollToSection("home")}
-                        className="shrink-0 opacity-90 hover:opacity-100 transition-opacity"
+                        className="inline-flex size-9 shrink-0 items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
                         aria-label="Go to top"
                     >
                         <Image
@@ -117,13 +117,13 @@ export default function Navbar() {
                             alt="Logo"
                             width={120}
                             height={80}
-                            className="h-6 md:h-7 w-auto dark:brightness-110"
+                            className="h-5 w-auto sm:h-6 dark:brightness-110"
                             priority
                         />
                     </button>
 
                     {/* Desktop nav — flat text links */}
-                    <div className="hidden md:flex items-center gap-7">
+                    <div className="hidden lg:flex items-center gap-5 xl:gap-7 min-w-0 flex-1 justify-center px-4">
                         {NAV_ITEMS.map((item) => (
                             <button
                                 key={item.id}
@@ -147,27 +147,25 @@ export default function Navbar() {
                         ))}
                     </div>
 
-                    {/* Right utilities */}
-                    <div className="flex items-center gap-4">
+                    {/* Right utilities — logo, toggle, and menu share size-9 controls */}
+                    <div className="flex items-center gap-1 sm:gap-2 shrink-0">
                         <Button
                             onClick={() => scrollToSection("contact")}
-                            className="hidden sm:flex rounded-none bg-primary text-primary-foreground text-xs font-medium tracking-wide hover:bg-primary/90 transition-colors duration-200 px-5 h-9"
+                            className="hidden md:flex rounded-none bg-primary text-primary-foreground text-xs font-medium tracking-wide hover:bg-primary/90 transition-colors duration-200 px-4 xl:px-5 h-9"
                         >
                             Hire me
                         </Button>
 
-                        <div className="opacity-90 hover:opacity-100 transition-opacity">
-                            <AnimatedThemeTogglerDemo />
-                        </div>
+                        <AnimatedThemeTogglerDemo />
 
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="h-9 w-9 rounded-none text-foreground hover:bg-muted transition-colors duration-200 shrink-0 md:hidden"
+                            className="size-9 rounded-none text-foreground hover:bg-muted transition-colors duration-200 shrink-0 lg:hidden"
                             onClick={() => setIsOpen(true)}
                             aria-label="Open menu"
                         >
-                            <Menu className="h-4 w-4" />
+                            <Menu className="size-4" />
                         </Button>
                     </div>
                 </div>
@@ -198,10 +196,10 @@ export default function Navbar() {
                                 </h2>
                                 <button
                                     onClick={() => setIsOpen(false)}
-                                    className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+                                    className="inline-flex size-9 items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200"
                                     aria-label="Close menu"
                                 >
-                                    <X className="h-4 w-4" />
+                                    <X className="size-4" />
                                 </button>
                             </div>
 

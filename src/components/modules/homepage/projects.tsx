@@ -50,7 +50,7 @@ const ProjectRow: React.FC<{
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ ...springSoft, delay: index * 0.04 }}
-      className="group grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 py-10 border-b border-border last:border-b-0"
+      className="group grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-10 py-6 sm:py-8 lg:py-10 border-b border-border last:border-b-0"
     >
       {/* Image */}
       <button
@@ -136,10 +136,10 @@ const Projects: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
+    <section id="projects" className="relative py-14 sm:py-20 lg:py-24 bg-background text-foreground px-4 sm:px-10 lg:px-16">
       <SectionHeader kicker="Selected work" title="Projects" />
 
-      <div className="mt-12">
+      <div className="mt-8 sm:mt-12">
         {projectsData.map((project, index) => (
           <ProjectRow
             key={project.id}

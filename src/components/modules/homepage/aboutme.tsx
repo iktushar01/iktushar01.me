@@ -44,10 +44,10 @@ const AboutMe: React.FC = () => {
   ];
 
   return (
-    <section id="about" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
+    <section id="about" className="relative py-14 sm:py-20 lg:py-24 bg-background text-foreground px-4 sm:px-10 lg:px-16">
       <SectionHeader kicker="Who is this guy?" title="About Me" />
 
-      <div className="mt-14 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+      <div className="mt-8 sm:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
         {/* Left: fixed label, running paragraph */}
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-28">
@@ -94,7 +94,7 @@ const AboutMe: React.FC = () => {
           </dl>
 
           {/* Domains list */}
-          <div className="mt-12">
+          <div className="mt-8 sm:mt-12">
             <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-2">
               Where I work
             </span>

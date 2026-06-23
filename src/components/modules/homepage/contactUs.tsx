@@ -68,13 +68,13 @@ export default function ContactUs() {
   ];
 
   return (
-    <section id="contact" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
+    <section id="contact" className="relative py-14 sm:py-20 lg:py-24 bg-background text-foreground px-4 sm:px-10 lg:px-16">
       <SectionHeader kicker="Get in touch" title="Contact" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start mt-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-start mt-8 sm:mt-12">
         {/* Left: direct contact list */}
         <div>
-          <h3 className="text-sm uppercase tracking-widest text-muted-foreground/70 mb-6">
+          <h3 className="text-sm uppercase tracking-widest text-muted-foreground/70 mb-4 sm:mb-6">
             Direct contact
           </h3>
 
@@ -120,7 +120,7 @@ export default function ContactUs() {
           viewport={{ once: true }}
           transition={springSoft}
         >
-          <h3 className="text-sm uppercase tracking-widest text-muted-foreground/70 mb-6">
+          <h3 className="text-sm uppercase tracking-widest text-muted-foreground/70 mb-4 sm:mb-6">
             Send a message
           </h3>
 

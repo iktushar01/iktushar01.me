@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="relative bg-background text-foreground border-t border-border px-5 sm:px-10 lg:px-16 py-10">
+    <footer className="relative bg-background text-foreground border-t border-border px-4 sm:px-10 lg:px-16 py-8 sm:py-10">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         {/* Left: identity */}
         <div>

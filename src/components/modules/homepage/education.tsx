@@ -52,7 +52,7 @@ const EducationRow: React.FC<{ item: EducationItem; idx: number }> = ({ item, id
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-60px" }}
     transition={{ ...springSoft, delay: idx * 0.06 }}
-    className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 py-10 border-b border-border last:border-b-0"
+    className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-10 py-6 sm:py-8 lg:py-10 border-b border-border last:border-b-0"
   >
     {/* Index + logo + status */}
     <div className="lg:col-span-3 flex items-start gap-4">
@@ -101,10 +101,10 @@ const EducationRow: React.FC<{ item: EducationItem; idx: number }> = ({ item, id
 );
 
 const Education: React.FC = () => (
-  <section id="education" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
+  <section id="education" className="relative py-14 sm:py-20 lg:py-24 bg-background text-foreground px-4 sm:px-10 lg:px-16">
     <SectionHeader kicker="Academic background" title="Education" />
 
-    <div className="mt-12">
+    <div className="mt-8 sm:mt-12">
       {educationData.map((item, idx) => (
         <EducationRow key={item.index} item={item} idx={idx} />
       ))}

@@ -111,7 +111,7 @@ const SkillGroupRow: React.FC<{ group: SkillGroup; index: number }> = ({ group, 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ ...springSoft, delay: index * 0.05 }}
-      className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 py-10 border-b border-border last:border-b-0"
+      className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-10 py-6 sm:py-8 lg:py-10 border-b border-border last:border-b-0"
     >
       {/* Label column */}
       <div className="lg:col-span-4 flex items-start gap-4">
@@ -156,10 +156,10 @@ const Skills: React.FC = () => {
   ];
 
   return (
-    <section id="skills" className="relative py-24 bg-background text-foreground px-5 sm:px-10 lg:px-16">
+    <section id="skills" className="relative py-14 sm:py-20 lg:py-24 bg-background text-foreground px-4 sm:px-10 lg:px-16">
       <SectionHeader kicker="What I work with" title="Tech Stack" />
 
-      <div className="mt-12">
+      <div className="mt-8 sm:mt-12">
         {skillsData.map((group, index) => (
           <SkillGroupRow key={group.category} group={group} index={index} />
         ))}
@@ -170,7 +170,7 @@ const Skills: React.FC = () => {
         {footStats.map((stat) => (
           <div
             key={stat.label}
-            className="py-6 px-2 sm:px-4 text-center border-r border-border last:border-r-0"
+            className="py-4 sm:py-6 px-2 sm:px-4 text-center border-r border-border last:border-r-0"
           >
             <div className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
               {stat.value}

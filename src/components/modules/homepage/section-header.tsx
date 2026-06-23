@@ -13,7 +13,7 @@ type SectionHeaderProps = {
 
 export function SectionHeader({ kicker, title, className }: SectionHeaderProps) {
   return (
-    <header className={cn("mb-12 sm:mb-16", className)}>
+    <header className={cn("mb-8 sm:mb-12 lg:mb-16", className)}>
       <motion.p
         initial={{ opacity: 0, y: 8 }}
         whileInView={{ opacity: 1, y: 0 }}
