@@ -22,6 +22,7 @@ const NAV_ITEMS: NavItem[] = [
     { label: "Projects", id: "projects" },
     { label: "Certificates", id: "certificates" },
     { label: "Activities", id: "activities" },
+    { label: "GitHub", id: "github" },
     { label: "Blog", id: "blogs" },
     { label: "Contact", id: "contact" },
 ];
