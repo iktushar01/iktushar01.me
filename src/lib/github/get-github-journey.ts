@@ -4,7 +4,7 @@ import {
   mapEventsToActivityFeed,
   mapEventsToCommits,
 } from "@/lib/github/github-api";
-import { fetchGitHubJourneyGraphQL } from "@/lib/github/github-graphql";
+import { fetchGitHubJourneyGraphQL, fetchRecentCommitsGraphQL } from "@/lib/github/github-graphql";
 import { getGitHubUsername } from "@/lib/github/cache";
 import {
   flattenContributionDays,
@@ -18,6 +18,7 @@ import type {
   GitHubJourneyData,
   ImpactMetrics,
   PinnedRepository,
+  RecentCommit,
 } from "@/lib/github/types";
 
 function mapPinnedRepos(
@@ -53,6 +54,16 @@ export async function getGitHubJourneyData(): Promise<GitHubJourneyData> {
   }
 
   const user = graphql.user;
+
+  const graphqlCommits = await fetchRecentCommitsGraphQL(
+    username,
+    user.avatarUrl
+  ).catch(() => [] as RecentCommit[]);
+
+  const recentCommits =
+    graphqlCommits.length > 0
+      ? graphqlCommits
+      : mapEventsToCommits(events, user.avatarUrl);
   const collection = user.contributionsCollection;
   const calendar = collection.contributionCalendar;
   const contributionDays = flattenContributionDays(calendar.weeks);
@@ -72,7 +83,6 @@ export async function getGitHubJourneyData(): Promise<GitHubJourneyData> {
   const languages = aggregateLanguages(repoNodes);
   const pinnedRepos = mapPinnedRepos(user.pinnedItems.nodes);
 
-  const recentCommits = mapEventsToCommits(events, user.avatarUrl);
   const activityFeed = mapEventsToActivityFeed(events);
 
   const stats = {
