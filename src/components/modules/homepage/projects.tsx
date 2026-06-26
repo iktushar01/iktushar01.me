@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, ReactNode } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
@@ -112,9 +113,18 @@ const ProjectRow: React.FC<{
   );
 };
 
-const Projects: React.FC = () => {
+const Projects: React.FC<{
+  limit?: number;
+  showAllButton?: boolean;
+  kicker?: string;
+  title?: string;
+}> = ({ limit, showAllButton, kicker = "Selected work", title = "Projects" }) => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeImage, setActiveImage] = useState(0);
+
+  const displayedProjects = limit
+    ? projectsData.slice(0, limit)
+    : projectsData;
 
   const openProject = (project: Project) => {
     setSelectedProject(project);
@@ -137,10 +147,10 @@ const Projects: React.FC = () => {
 
   return (
     <section id="projects" className="relative py-14 sm:py-20 lg:py-24 bg-background text-foreground px-4 sm:px-10 lg:px-16">
-      <SectionHeader kicker="Selected work" title="Projects" />
+      <SectionHeader kicker={kicker} title={title} />
 
       <div className="mt-8 sm:mt-12">
-        {projectsData.map((project, index) => (
+        {displayedProjects.map((project, index) => (
           <ProjectRow
             key={project.id}
             project={project}
@@ -149,6 +159,21 @@ const Projects: React.FC = () => {
           />
         ))}
       </div>
+
+      {showAllButton && (
+        <div className="mt-10 sm:mt-14 flex justify-center">
+          <Link
+            href="/project"
+            className="group inline-flex items-center gap-2 border border-border px-6 py-3 text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200"
+          >
+            View all projects
+            <FiArrowUpRight
+              size={16}
+              className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
+        </div>
+      )}
 
       <AnimatePresence>
         {selectedProject && (

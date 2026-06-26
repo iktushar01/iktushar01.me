@@ -15,7 +15,7 @@ export default function Home() {
       <AboutMe />
       <Skills />
       <Education />
-      <Projects />
+      <Projects limit={3} showAllButton />
       <Certificates />
       <Contact />
       <Footer />
