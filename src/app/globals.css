@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "highlight.js/styles/github.min.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -205,4 +206,84 @@ html[data-app-ready="true"] [data-app-content] {
 ::view-transition-old(root), ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+}
+
+.dark .blog-prose pre code.hljs {
+  background: oklch(0.18 0.012 85);
+  color: oklch(0.92 0.006 85);
+}
+
+.blog-prose {
+  @apply text-foreground;
+}
+
+.blog-prose h2 {
+  @apply text-2xl sm:text-3xl font-semibold tracking-tight mt-10 mb-4 scroll-mt-24;
+}
+
+.blog-prose h3 {
+  @apply text-xl sm:text-2xl font-semibold tracking-tight mt-8 mb-3 scroll-mt-24;
+}
+
+.blog-prose p {
+  @apply text-sm sm:text-base text-muted-foreground leading-relaxed mb-4;
+}
+
+.blog-prose ul,
+.blog-prose ol {
+  @apply text-sm sm:text-base text-muted-foreground leading-relaxed mb-4 pl-5 space-y-2;
+}
+
+.blog-prose ul {
+  @apply list-disc;
+}
+
+.blog-prose ol {
+  @apply list-decimal;
+}
+
+.blog-prose li {
+  @apply leading-relaxed;
+}
+
+.blog-prose strong {
+  @apply text-foreground font-semibold;
+}
+
+.blog-prose a {
+  @apply text-primary underline underline-offset-4 hover:text-primary/80 transition-colors;
+}
+
+.blog-prose blockquote {
+  @apply border-l-2 border-primary pl-4 my-6 text-muted-foreground italic;
+}
+
+.blog-prose table {
+  @apply w-full text-sm border-collapse mb-6;
+}
+
+.blog-prose th,
+.blog-prose td {
+  @apply border border-border px-3 py-2 text-left;
+}
+
+.blog-prose th {
+  @apply bg-muted font-medium text-foreground;
+}
+
+.blog-prose pre {
+  @apply mb-6 overflow-x-auto border border-border;
+}
+
+.blog-prose pre code.hljs {
+  @apply block p-4 text-sm font-mono leading-relaxed;
+  background: oklch(0.96 0.008 80);
+}
+
+.blog-prose :not(pre) > code {
+  @apply font-mono text-xs bg-muted px-1.5 py-0.5 border border-border text-foreground;
+}
+
+.blog-prose hr {
+  @apply my-8 border-border;
 }

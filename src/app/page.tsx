@@ -7,7 +7,13 @@ import Projects from "@/components/modules/homepage/projects";
 import Contact from "@/components/modules/homepage/contactUs";
 import Footer from "@/components/modules/homepage/footer";
 import Certificates from "@/components/modules/homepage/certificates";
+import Activities from "@/components/modules/homepage/activities";
+import LatestBlogs from "@/components/modules/homepage/latest-blogs";
+import { getLatestPosts } from "@/lib/blog";
+
 export default function Home() {
+  const latestPosts = getLatestPosts(4);
+
   return (
     <div>
       <Navbar />
@@ -17,6 +23,8 @@ export default function Home() {
       <Education />
       <Projects limit={3} showAllButton />
       <Certificates />
+      <Activities />
+      <LatestBlogs posts={latestPosts} limit={4} />
       <Contact />
       <Footer />
     </div>
