@@ -5,15 +5,12 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiExternalLink, FiX } from "react-icons/fi";
 
-import {
-  certificatesData,
-  type Certificate,
-} from "@/components/data/certificates";
+import type { Certificate } from "@/types/portfolio";
 
 import { springSoft, springSnappy } from "@/lib/motion";
 import { SectionHeader } from "@/components/modules/homepage/section-header";
 
-export default function Certificates() {
+export default function Certificates({ certificates }: { certificates: Certificate[] }) {
   const [selectedCertificate, setSelectedCertificate] =
     useState<Certificate | null>(null);
 
@@ -22,7 +19,7 @@ export default function Certificates() {
       <SectionHeader kicker="Credentials" title="Certificates" />
 
       <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-8 gap-y-8 sm:gap-y-12">
-        {certificatesData.map((cert: Certificate, index: number) => (
+        {certificates.map((cert: Certificate, index: number) => (
           <motion.button
             key={cert.id}
             type="button"
@@ -143,6 +140,7 @@ export default function Certificates() {
                     </p>
                   </div>
 
+                  {selectedCertificate.credentialUrl && (
                   <div className="pt-2">
                     <a
                       href={selectedCertificate.credentialUrl}
@@ -154,6 +152,7 @@ export default function Certificates() {
                       Verify credential
                     </a>
                   </div>
+                  )}
                 </div>
               </div>
             </motion.div>

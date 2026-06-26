@@ -11,11 +11,11 @@ import { BlogCard } from "@/components/modules/blog/blog-card";
 import { BlogJsonLd } from "@/components/modules/blog/blog-json-ld";
 import { ShareButtons } from "@/components/modules/blog/share-buttons";
 import { AnimatedThemeTogglerDemo } from "@/components/mode-toggle";
-import { blogPostsData } from "@/components/data/blogs";
 import {
   extractHeadings,
   formatBlogDate,
   getAdjacentPosts,
+  getAllPosts,
   getPostBySlug,
   getRelatedPosts,
 } from "@/lib/blog";
@@ -24,15 +24,13 @@ interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return blogPostsData.map((post) => ({ slug: post.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return { title: "Post Not Found" };
@@ -76,13 +74,13 @@ export async function generateMetadata({
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) notFound();
 
   const headings = extractHeadings(post.content);
-  const relatedPosts = getRelatedPosts(slug, 3);
-  const { prev, next } = getAdjacentPosts(slug);
+  const relatedPosts = await getRelatedPosts(slug, 3);
+  const { prev, next } = await getAdjacentPosts(slug);
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">

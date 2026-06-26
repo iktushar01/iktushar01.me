@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
 
-import type { BlogPost } from "@/components/data/blogs";
+import type { BlogPost } from "@/types/portfolio";
 import { BlogCard } from "@/components/modules/blog/blog-card";
 import { SectionHeader } from "@/components/modules/homepage/section-header";
 import { springSoft } from "@/lib/motion";

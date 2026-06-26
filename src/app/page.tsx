@@ -11,9 +11,21 @@ import Activities from "@/components/modules/homepage/activities";
 import LatestBlogs from "@/components/modules/homepage/latest-blogs";
 import GitHubJourney from "@/components/modules/homepage/github-journey";
 import { getLatestPosts } from "@/lib/blog";
+import {
+  fetchActivities,
+  fetchCertificates,
+  fetchProjects,
+} from "@/lib/api/portfolio";
 
-export default function Home() {
-  const latestPosts = getLatestPosts(4);
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const [projects, certificates, activities, latestPosts] = await Promise.all([
+    fetchProjects(),
+    fetchCertificates(),
+    fetchActivities(),
+    getLatestPosts(4),
+  ]);
 
   return (
     <div>
@@ -22,9 +34,9 @@ export default function Home() {
       <AboutMe />
       <Skills />
       <Education />
-      <Projects limit={3} showAllButton />
-      <Certificates />
-      <Activities />
+      <Projects projects={projects} limit={3} showAllButton />
+      <Certificates certificates={certificates} />
+      <Activities activities={activities} />
       <GitHubJourney />
       <LatestBlogs posts={latestPosts} limit={4} />
       <Contact />

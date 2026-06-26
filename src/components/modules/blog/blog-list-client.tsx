@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
-import type { BlogPost } from "@/components/data/blogs";
+import type { BlogPost } from "@/types/portfolio";
 import { BlogCard } from "@/components/modules/blog/blog-card";
 import { cn } from "@/lib/utils";
 

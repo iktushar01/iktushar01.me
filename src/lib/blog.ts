@@ -1,35 +1,47 @@
-import GithubSlugger from "github-slugger";
+import type { BlogPost } from "@/types/portfolio";
+import { fetchBlogBySlug, fetchBlogPosts } from "@/lib/api/portfolio";
 
-import { blogPostsData, type BlogPost } from "@/components/data/blogs";
+export type { BlogPost };
 
-export function getAllPosts(): BlogPost[] {
-  return [...blogPostsData].sort(
+export async function getAllPosts(): Promise<BlogPost[]> {
+  const posts = await fetchBlogPosts();
+  return [...posts].sort(
     (a, b) =>
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );
 }
 
-export function getPublishedPosts(): BlogPost[] {
+export async function getPublishedPosts(): Promise<BlogPost[]> {
   return getAllPosts();
 }
 
-export function getPostBySlug(slug: string): BlogPost | undefined {
-  return blogPostsData.find((post) => post.slug === slug);
+export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
+  const post = await fetchBlogBySlug(slug);
+  return post ?? undefined;
 }
 
-export function getFeaturedPost(): BlogPost | undefined {
-  return getAllPosts().find((post) => post.featured);
+export async function getFeaturedPost(): Promise<BlogPost | undefined> {
+  const posts = await getAllPosts();
+  return posts.find((post) => post.featured);
 }
 
-export function getLatestPosts(limit = 4): BlogPost[] {
-  return getAllPosts().slice(0, limit);
+export async function getLatestPosts(limit = 4): Promise<BlogPost[]> {
+  const posts = await getAllPosts();
+  return posts.slice(0, limit);
 }
 
-export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
-  const current = getPostBySlug(slug);
-  if (!current) return getLatestPosts(limit).filter((p) => p.slug !== slug);
+export async function getRelatedPosts(
+  slug: string,
+  limit = 3
+): Promise<BlogPost[]> {
+  const posts = await getAllPosts();
+  const current = posts.find((post) => post.slug === slug);
 
-  return getAllPosts()
+  if (!current) {
+    return posts.filter((p) => p.slug !== slug).slice(0, limit);
+  }
+
+  return posts
     .filter(
       (post) =>
         post.slug !== slug &&
@@ -39,12 +51,13 @@ export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
     .slice(0, limit);
 }
 
-export function getAdjacentPosts(slug: string): {
+export async function getAdjacentPosts(slug: string): Promise<{
   prev: BlogPost | null;
   next: BlogPost | null;
-} {
-  const posts = getAllPosts();
+}> {
+  const posts = await getAllPosts();
   const index = posts.findIndex((post) => post.slug === slug);
+
   if (index === -1) return { prev: null, next: null };
 
   return {
@@ -53,14 +66,14 @@ export function getAdjacentPosts(slug: string): {
   };
 }
 
-export function getAllCategories(): string[] {
-  return [...new Set(blogPostsData.map((post) => post.category))].sort();
+export async function getAllCategories(): Promise<string[]> {
+  const posts = await getAllPosts();
+  return [...new Set(posts.map((post) => post.category))].sort();
 }
 
-export function getAllTags(): string[] {
-  return [
-    ...new Set(blogPostsData.flatMap((post) => post.tags)),
-  ].sort();
+export async function getAllTags(): Promise<string[]> {
+  const posts = await getAllPosts();
+  return [...new Set(posts.flatMap((post) => post.tags))].sort();
 }
 
 export interface TocHeading {
@@ -70,7 +83,6 @@ export interface TocHeading {
 }
 
 export function extractHeadings(markdown: string): TocHeading[] {
-  const slugger = new GithubSlugger();
   const headings: TocHeading[] = [];
   const lines = markdown.split("\n");
 
@@ -80,11 +92,12 @@ export function extractHeadings(markdown: string): TocHeading[] {
 
     const level = match[1].length;
     const text = match[2].replace(/#+\s*$/, "").trim();
-    headings.push({
-      id: slugger.slug(text),
-      text,
-      level,
-    });
+    const id = text
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-");
+
+    headings.push({ id, text, level });
   }
 
   return headings;

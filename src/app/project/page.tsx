@@ -5,16 +5,20 @@ import { ArrowLeft } from "lucide-react";
 import Projects from "@/components/modules/homepage/projects";
 import Footer from "@/components/modules/homepage/footer";
 import { AnimatedThemeTogglerDemo } from "@/components/mode-toggle";
+import { fetchProjects } from "@/lib/api/portfolio";
 
 export const metadata: Metadata = {
   title: "Projects — Tushar's Portfolio",
   description: "All projects by Tushar — full-stack developer.",
 };
 
-export default function ProjectPage() {
+export const dynamic = "force-dynamic";
+
+export default async function ProjectPage() {
+  const projects = await fetchProjects();
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {/* Minimal sticky header */}
       <header className="sticky top-0 z-[60] border-b border-border bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 h-14 sm:h-16 flex items-center justify-between gap-3">
           <Link
@@ -44,9 +48,8 @@ export default function ProjectPage() {
         </div>
       </header>
 
-      {/* All projects */}
       <main className="flex-1">
-        <Projects kicker="All work" title="All Projects" />
+        <Projects projects={projects} kicker="All work" title="All Projects" />
       </main>
 
       <Footer />

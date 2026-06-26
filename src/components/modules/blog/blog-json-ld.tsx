@@ -1,4 +1,4 @@
-import type { BlogPost } from "@/components/data/blogs";
+import type { BlogPost } from "@/types/portfolio";
 import { formatBlogDate } from "@/lib/blog";
 
 interface BlogJsonLdProps {

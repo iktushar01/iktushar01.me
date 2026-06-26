@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiArrowUpRight, FiClock } from "react-icons/fi";
 
-import type { BlogPost } from "@/components/data/blogs";
+import type { BlogPost } from "@/types/portfolio";
 import { formatBlogDate } from "@/lib/blog";
 import { springSoft } from "@/lib/motion";
 

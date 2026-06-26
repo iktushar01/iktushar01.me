@@ -36,11 +36,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogsPage() {
-  const posts = getAllPosts();
-  const categories = getAllCategories();
-  const tags = getAllTags();
-  const featuredPost = getFeaturedPost();
+export const dynamic = "force-dynamic";
+
+export default async function BlogsPage() {
+  const posts = await getAllPosts();
+  const categories = await getAllCategories();
+  const tags = await getAllTags();
+  const featuredPost = await getFeaturedPost();
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">

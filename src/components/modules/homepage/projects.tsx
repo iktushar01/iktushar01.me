@@ -13,7 +13,7 @@ import {
   FiArrowUpRight,
 } from "react-icons/fi";
 
-import { projectsData, type Project } from "@/components/data/projects";
+import type { Project } from "@/types/portfolio";
 import { cn } from "@/lib/utils";
 import { springSoft, springSnappy } from "@/lib/motion";
 import { SectionHeader } from "@/components/modules/homepage/section-header";
@@ -99,6 +99,7 @@ const ProjectRow: React.FC<{
             View details <FiArrowUpRight size={15} />
           </button>
 
+          {project.liveLink && (
           <a
             href={project.liveLink}
             target="_blank"
@@ -107,6 +108,7 @@ const ProjectRow: React.FC<{
           >
             Live site <FiExternalLink size={14} />
           </a>
+          )}
         </div>
       </div>
     </motion.div>
@@ -114,17 +116,18 @@ const ProjectRow: React.FC<{
 };
 
 const Projects: React.FC<{
+  projects: Project[];
   limit?: number;
   showAllButton?: boolean;
   kicker?: string;
   title?: string;
-}> = ({ limit, showAllButton, kicker = "Selected work", title = "Projects" }) => {
+}> = ({ projects, limit, showAllButton, kicker = "Selected work", title = "Projects" }) => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeImage, setActiveImage] = useState(0);
 
   const displayedProjects = limit
-    ? projectsData.slice(0, limit)
-    : projectsData;
+    ? projects.slice(0, limit)
+    : projects;
 
   const openProject = (project: Project) => {
     setSelectedProject(project);
@@ -295,11 +298,13 @@ const Projects: React.FC<{
                         label="Backend"
                       />
                     )}
+                    {selectedProject.liveLink && (
                     <ActionButton
                       href={selectedProject.liveLink}
                       icon={<FiExternalLink size={16} />}
                       label="Live preview"
                     />
+                    )}
                   </div>
 
                   {/* Metadata */}

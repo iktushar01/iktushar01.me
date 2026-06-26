@@ -14,10 +14,9 @@ import {
 } from "react-icons/fi";
 
 import {
-  activitiesData,
   ACTIVITY_TYPE_LABELS,
   type Activity,
-} from "@/components/data/activities";
+} from "@/types/portfolio";
 import { cn } from "@/lib/utils";
 import { springSoft, springSnappy } from "@/lib/motion";
 import { SectionHeader } from "@/components/modules/homepage/section-header";
@@ -558,7 +557,7 @@ function ActivitiesEmptyState() {
   );
 }
 
-export default function Activities() {
+export default function Activities({ activities }: { activities: Activity[] }) {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
     null
   );
@@ -573,11 +572,11 @@ export default function Activities() {
         title="Extra-Curricular Activities"
       />
 
-      {activitiesData.length === 0 ? (
+      {activities.length === 0 ? (
         <ActivitiesEmptyState />
       ) : (
         <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-8 gap-y-8 sm:gap-y-12">
-          {activitiesData.map((activity, index) => (
+          {activities.map((activity, index) => (
             <ActivityCard
               key={activity.id}
               activity={activity}
