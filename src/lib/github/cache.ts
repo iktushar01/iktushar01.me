@@ -1,11 +1,28 @@
 export const GITHUB_CACHE_REVALIDATE = 3600;
 
+/** Server-only username — never exposed to the client bundle. */
 export function getGitHubUsername(): string {
-  return process.env.NEXT_PUBLIC_GITHUB_USERNAME ?? "iktushar01";
+  return (
+    process.env.GITHUB_USERNAME ??
+    process.env.NEXT_PUBLIC_GITHUB_USERNAME ??
+    "iktushar01"
+  );
+}
+
+function getGitHubToken(): string | undefined {
+  return process.env.GITHUB_TOKEN?.trim() || undefined;
+}
+
+export function assertGitHubConfigured(): void {
+  if (!getGitHubToken()) {
+    throw new Error(
+      "GITHUB_TOKEN is missing. Add it to .env.local (server-only, no NEXT_PUBLIC prefix)."
+    );
+  }
 }
 
 export function getGitHubHeaders(): HeadersInit {
-  const token = process.env.GITHUB_TOKEN;
+  const token = getGitHubToken();
   return {
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
@@ -27,7 +44,10 @@ export async function githubRestFetch<T>(
   });
 
   if (!response.ok) {
-    throw new Error(`GitHub REST error ${response.status} for ${path}`);
+    const body = await response.text().catch(() => "");
+    throw new Error(
+      `GitHub REST error ${response.status} for ${path}${body ? `: ${body.slice(0, 120)}` : ""}`
+    );
   }
 
   return response.json() as Promise<T>;
@@ -37,6 +57,8 @@ export async function githubGraphqlFetch<T>(
   query: string,
   variables: Record<string, unknown>
 ): Promise<T> {
+  assertGitHubConfigured();
+
   const response = await fetch("https://api.github.com/graphql", {
     method: "POST",
     headers: {
@@ -48,7 +70,10 @@ export async function githubGraphqlFetch<T>(
   });
 
   if (!response.ok) {
-    throw new Error(`GitHub GraphQL error ${response.status}`);
+    const body = await response.text().catch(() => "");
+    throw new Error(
+      `GitHub GraphQL HTTP ${response.status}${body ? `: ${body.slice(0, 120)}` : ""}`
+    );
   }
 
   const json = (await response.json()) as {
@@ -57,7 +82,7 @@ export async function githubGraphqlFetch<T>(
   };
 
   if (json.errors?.length) {
-    throw new Error(json.errors[0].message);
+    throw new Error(json.errors[0]?.message ?? "GitHub GraphQL request failed");
   }
 
   if (!json.data) {

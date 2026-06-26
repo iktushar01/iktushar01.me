@@ -12,7 +12,6 @@ const GITHUB_JOURNEY_QUERY = `
       url
       followers { totalCount }
       following { totalCount }
-      repositories(privacy: PUBLIC) { totalCount }
       contributionsCollection {
         contributionCalendar {
           totalContributions

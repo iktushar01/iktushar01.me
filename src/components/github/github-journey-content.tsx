@@ -14,21 +14,17 @@ import type { GitHubJourneyData } from "@/lib/github/types";
 
 interface GitHubJourneyContentProps {
   data: GitHubJourneyData;
-  username: string;
 }
 
-export function GitHubJourneyContent({
-  data,
-  username,
-}: GitHubJourneyContentProps) {
+export function GitHubJourneyContent({ data }: GitHubJourneyContentProps) {
   return (
     <div className="space-y-10 sm:space-y-14 lg:space-y-16">
       <GitHubHero data={{ profile: data.profile, stats: data.stats }} />
 
       <GitHubCalendarSection
-        username={username}
         totalContributions={data.stats.totalContributions}
         summary={data.contributionSummary}
+        weeks={data.contributionWeeks}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">

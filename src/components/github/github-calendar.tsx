@@ -1,58 +1,81 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Calendar, Flame, TrendingUp, Zap } from "lucide-react";
 
 import { GlassCard } from "@/components/github/glass-card";
 import { AnimatedCounter } from "@/components/github/animated-counter";
-import type { ContributionSummary } from "@/lib/github/types";
+import type { ContributionDay, ContributionSummary } from "@/lib/github/types";
 import { springSoft } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
-const GitHubCalendar = dynamic(
-  () => import("react-github-calendar").then((m) => m.GitHubCalendar),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-[140px] animate-pulse bg-muted/60 rounded-none" />
-    ),
-  }
-);
+const LEVEL_CLASSES = [
+  "bg-muted/80",
+  "bg-primary/25",
+  "bg-primary/45",
+  "bg-primary/65",
+  "bg-primary",
+];
+
+function getLevel(count: number, max: number): number {
+  if (count <= 0) return 0;
+  if (max <= 0) return 1;
+  const ratio = count / max;
+  if (ratio <= 0.25) return 1;
+  if (ratio <= 0.5) return 2;
+  if (ratio <= 0.75) return 3;
+  return 4;
+}
+
+interface ContributionHeatmapProps {
+  weeks: ContributionDay[][];
+}
+
+function ContributionHeatmap({ weeks }: ContributionHeatmapProps) {
+  const max = weeks.reduce(
+    (peak, week) => Math.max(peak, ...week.map((day) => day.count)),
+    0
+  );
+
+  return (
+    <div className="overflow-x-auto lp-scrollbar pb-2">
+      <div className="inline-flex gap-[3px] min-w-min">
+        {weeks.map((week, weekIndex) => (
+          <div key={weekIndex} className="flex flex-col gap-[3px]">
+            {week.map((day) => (
+              <div
+                key={day.date}
+                title={`${day.count} contributions on ${day.date}`}
+                className={cn(
+                  "size-3 sm:size-[12px] border border-border/30",
+                  LEVEL_CLASSES[getLevel(day.count, max)]
+                )}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 interface GitHubCalendarSectionProps {
-  username: string;
   totalContributions: number;
   summary: ContributionSummary;
+  weeks: ContributionDay[][];
 }
 
 export function GitHubCalendarSection({
-  username,
   totalContributions,
   summary,
+  weeks,
 }: GitHubCalendarSectionProps) {
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark");
-    setTheme(isDark ? "dark" : "light");
-
-    const observer = new MutationObserver(() => {
-      setTheme(
-        document.documentElement.classList.contains("dark") ? "dark" : "light"
-      );
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => observer.disconnect();
+    setMounted(true);
   }, []);
-
-  const calendarTheme = {
-    light: ["#f0ede6", "#e8d9a8", "#d4b84a", "#b8941a", "#8a6f00"],
-    dark: ["#1a1a1a", "#3d3520", "#6b5a1e", "#a89020", "#e8d44a"],
-  };
 
   const stats = [
     {
@@ -110,17 +133,12 @@ export function GitHubCalendarSection({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ ...springSoft, delay: 0.1 }}
-        className="overflow-x-auto lp-scrollbar pb-2"
       >
-        <GitHubCalendar
-          username={username}
-          theme={calendarTheme}
-          colorScheme={theme}
-          blockSize={12}
-          blockMargin={3}
-          fontSize={12}
-          showWeekdayLabels
-        />
+        {mounted && weeks.length > 0 ? (
+          <ContributionHeatmap weeks={weeks} />
+        ) : (
+          <div className="h-[140px] animate-pulse bg-muted/60" />
+        )}
       </motion.div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-8">

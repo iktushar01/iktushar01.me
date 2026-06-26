@@ -11,6 +11,7 @@ import Activities from "@/components/modules/homepage/activities";
 import LatestBlogs from "@/components/modules/homepage/latest-blogs";
 import GitHubJourney from "@/components/modules/homepage/github-journey";
 import { getLatestPosts } from "@/lib/blog";
+import { getGitHubJourneyData } from "@/lib/github/get-github-journey";
 import {
   fetchActivities,
   fetchCertificates,
@@ -20,12 +21,20 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [projects, certificates, activities, latestPosts] = await Promise.all([
-    fetchProjects(),
-    fetchCertificates(),
-    fetchActivities(),
-    getLatestPosts(4),
-  ]);
+  const [projects, certificates, activities, latestPosts, githubResult] =
+    await Promise.all([
+      fetchProjects(),
+      fetchCertificates(),
+      fetchActivities(),
+      getLatestPosts(4),
+      getGitHubJourneyData()
+        .then((data) => ({ data, error: null as string | null }))
+        .catch((err: unknown) => ({
+          data: null,
+          error:
+            err instanceof Error ? err.message : "Failed to load GitHub data",
+        })),
+    ]);
 
   return (
     <div>
@@ -37,7 +46,7 @@ export default async function Home() {
       <Projects projects={projects} limit={3} showAllButton />
       <Certificates certificates={certificates} />
       <Activities activities={activities} />
-      <GitHubJourney />
+      <GitHubJourney data={githubResult.data} errorMessage={githubResult.error} />
       <LatestBlogs posts={latestPosts} limit={4} />
       <Contact />
       <Footer />

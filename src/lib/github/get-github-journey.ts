@@ -56,6 +56,12 @@ export async function getGitHubJourneyData(): Promise<GitHubJourneyData> {
   const collection = user.contributionsCollection;
   const calendar = collection.contributionCalendar;
   const contributionDays = flattenContributionDays(calendar.weeks);
+  const contributionWeeks = calendar.weeks.map((week) =>
+    week.contributionDays.map((day) => ({
+      date: day.date,
+      count: day.contributionCount,
+    }))
+  );
   const contributionSummary = getContributionSummary(contributionDays);
   const monthlySummary = getMonthlySummary(contributionDays);
 
@@ -108,6 +114,7 @@ export async function getGitHubJourneyData(): Promise<GitHubJourneyData> {
     },
     stats,
     contributionDays,
+    contributionWeeks,
     weeklyActivity: getWeeklyActivity(contributionDays, 12),
     monthlyContributions: getMonthlyContributions(contributionDays),
     contributionSummary,

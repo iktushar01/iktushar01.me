@@ -122,6 +122,7 @@ export interface GitHubJourneyData {
   profile: GitHubProfile;
   stats: GitHubStats;
   contributionDays: ContributionDay[];
+  contributionWeeks: ContributionDay[][];
   weeklyActivity: WeeklyActivityPoint[];
   monthlyContributions: MonthlyContribution[];
   contributionSummary: ContributionSummary;
