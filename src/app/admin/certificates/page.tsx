@@ -5,6 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/admin/date-picker";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import { TagInput } from "@/components/admin/tag-input";
 import { Input } from "@/components/ui/input";
@@ -113,7 +114,7 @@ export function CertificateFormPage({ id }: { id?: string }) {
       <h2 className="text-2xl font-semibold">{id ? "Edit Certificate" : "New Certificate"}</h2>
       <Input placeholder="Title" value={form.title || ""} onChange={(e) => update("title", e.target.value)} required />
       <Input placeholder="Issuer" value={form.issuer || ""} onChange={(e) => update("issuer", e.target.value)} required />
-      <Input placeholder="Date" value={form.date || ""} onChange={(e) => update("date", e.target.value)} required />
+      <DatePicker label="Date" value={form.date} onChange={(v) => update("date", v)} required />
       <Textarea placeholder="Description" value={form.description || ""} onChange={(e) => update("description", e.target.value)} required rows={4} />
       <Input placeholder="Credential URL" value={form.credentialUrl || ""} onChange={(e) => update("credentialUrl", e.target.value)} />
       <TagInput label="Skills" value={form.skills || []} onChange={(v) => update("skills", v)} />

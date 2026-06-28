@@ -5,6 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/admin/date-picker";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import { TagInput } from "@/components/admin/tag-input";
 import { Input } from "@/components/ui/input";
@@ -132,7 +133,7 @@ export function ActivityFormPage({ slug }: { slug?: string }) {
       </select>
 
       <Input placeholder="Organizer" value={form.organizer || ""} onChange={(e) => update("organizer", e.target.value)} required />
-      <Input placeholder="Date" value={form.date || ""} onChange={(e) => update("date", e.target.value)} required />
+      <DatePicker label="Date" value={form.date} onChange={(v) => update("date", v)} required />
       <Input placeholder="Location" value={form.location || ""} onChange={(e) => update("location", e.target.value)} />
       <Input placeholder="Achievement" value={form.achievement || ""} onChange={(e) => update("achievement", e.target.value)} />
       <Textarea placeholder="Short description" value={form.shortDescription || ""} onChange={(e) => update("shortDescription", e.target.value)} required rows={3} />
