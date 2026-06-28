@@ -80,8 +80,7 @@ export function DatePicker({
               onChange(formatPortfolioDate(date));
               setOpen(false);
             }}
-            defaultMonth={selectedDate}
-            initialFocus
+            defaultMonth={selectedDate ?? new Date()}
           />
         </PopoverContent>
       </Popover>
