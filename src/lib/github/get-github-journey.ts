@@ -1,6 +1,7 @@
 import {
   deriveAchievements,
   fetchPublicEvents,
+  mapCommitsToActivityFeed,
   mapEventsToActivityFeed,
   mapEventsToCommits,
 } from "@/lib/github/github-api";
@@ -83,7 +84,9 @@ export async function getGitHubJourneyData(): Promise<GitHubJourneyData> {
   const languages = aggregateLanguages(repoNodes);
   const pinnedRepos = mapPinnedRepos(user.pinnedItems.nodes);
 
-  const activityFeed = mapEventsToActivityFeed(events);
+  const eventFeed = mapEventsToActivityFeed(events);
+  const activityFeed =
+    eventFeed.length > 0 ? eventFeed : mapCommitsToActivityFeed(recentCommits);
 
   const stats = {
     totalStars,

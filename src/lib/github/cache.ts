@@ -13,6 +13,10 @@ function getGitHubToken(): string | undefined {
   return process.env.GITHUB_TOKEN?.trim() || undefined;
 }
 
+export function hasGitHubToken(): boolean {
+  return Boolean(getGitHubToken());
+}
+
 export function assertGitHubConfigured(): void {
   if (!getGitHubToken()) {
     throw new Error(

@@ -1,4 +1,4 @@
-import { githubRestFetch } from "@/lib/github/cache";
+import { githubRestFetch, hasGitHubToken } from "@/lib/github/cache";
 import type {
   ActivityFeedItem,
   RecentCommit,
@@ -12,6 +12,7 @@ interface GitHubEvent {
   actor: { avatar_url: string };
   payload: {
     ref?: string;
+    ref_type?: string;
     commits?: { sha: string; message: string }[];
     action?: string;
     release?: { tag_name: string; name: string };
@@ -23,8 +24,9 @@ export async function fetchPublicEvents(
   username: string,
   page = 1
 ): Promise<GitHubEvent[]> {
+  const scope = hasGitHubToken() ? "events" : "events/public";
   return githubRestFetch<GitHubEvent[]>(
-    `/users/${username}/events/public?per_page=30&page=${page}`
+    `/users/${username}/${scope}?per_page=30&page=${page}`
   );
 }
 
@@ -66,27 +68,41 @@ export function mapEventsToActivityFeed(
     switch (event.type) {
       case "PushEvent": {
         const count = event.payload.commits?.length ?? 0;
-        if (count === 0) break;
+        const branch = event.payload.ref?.replace("refs/heads/", "") ?? "main";
+        const repoName = repo.split("/")[1];
         items.push({
           id: event.id,
           type: "push",
-          message: `Pushed ${count} commit${count > 1 ? "s" : ""} to ${repo.split("/")[1]}`,
+          message:
+            count > 0
+              ? `Pushed ${count} commit${count > 1 ? "s" : ""} to ${repoName}`
+              : `Pushed to ${branch} on ${repoName}`,
           timestamp: event.created_at,
           url: `https://github.com/${repo}`,
         });
         break;
       }
-      case "CreateEvent":
-        if (event.payload.ref === "refs/heads/main" || !event.payload.ref) {
-          items.push({
-            id: event.id,
-            type: "create",
-            message: `Created repository ${repo.split("/")[1]}`,
-            timestamp: event.created_at,
-            url: `https://github.com/${repo}`,
-          });
+      case "CreateEvent": {
+        const refType = event.payload.ref_type;
+        const repoName = repo.split("/")[1];
+        let message = `Created repository ${repoName}`;
+
+        if (refType === "branch") {
+          const branch = event.payload.ref?.replace("refs/heads/", "") ?? "branch";
+          message = `Created branch ${branch} on ${repoName}`;
+        } else if (refType === "tag") {
+          message = `Created tag on ${repoName}`;
         }
+
+        items.push({
+          id: event.id,
+          type: "create",
+          message,
+          timestamp: event.created_at,
+          url: `https://github.com/${repo}`,
+        });
         break;
+      }
       case "PullRequestEvent":
         items.push({
           id: event.id,
@@ -129,6 +145,26 @@ export function mapEventsToActivityFeed(
   }
 
   return items.slice(0, 30);
+}
+
+export function mapCommitsToActivityFeed(
+  commits: RecentCommit[]
+): ActivityFeedItem[] {
+  return commits.map((commit) => {
+    const repoName = commit.repo.split("/").pop() ?? commit.repo;
+    const headline =
+      commit.message.length > 72
+        ? `${commit.message.slice(0, 72)}…`
+        : commit.message;
+
+    return {
+      id: commit.id,
+      type: "push",
+      message: `Committed "${headline}" to ${repoName}`,
+      timestamp: commit.timestamp,
+      url: commit.repoUrl,
+    };
+  });
 }
 
 export function deriveAchievements(

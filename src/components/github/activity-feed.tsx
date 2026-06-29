@@ -70,7 +70,10 @@ export function ActivityFeed({ items }: ActivityFeedProps) {
       {items.length === 0 ? (
         <div className="text-center py-12 border border-dashed border-border">
           <p className="text-sm text-muted-foreground">
-            No recent public activity.
+            No recent public activity yet.
+          </p>
+          <p className="text-xs text-muted-foreground/70 mt-2">
+            Push commits or open pull requests on GitHub to populate this feed.
           </p>
         </div>
       ) : (
