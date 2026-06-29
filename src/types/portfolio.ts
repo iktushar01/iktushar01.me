@@ -20,6 +20,7 @@ export interface Project {
   liveLink: string | null;
   frontendLink: string | null;
   backendLink: string | null;
+  demoVideoLink?: string | null;
   challenges: string[];
   improvements: string[];
   sortOrder?: number;

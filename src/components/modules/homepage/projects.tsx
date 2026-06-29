@@ -11,6 +11,7 @@ import {
   FiChevronLeft,
   FiChevronRight,
   FiArrowUpRight,
+  FiPlay,
 } from "react-icons/fi";
 
 import type { Project } from "@/types/portfolio";
@@ -100,14 +101,25 @@ const ProjectRow: React.FC<{
           </button>
 
           {project.liveLink && (
-          <a
-            href={project.liveLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
-          >
-            Live site <FiExternalLink size={14} />
-          </a>
+            <a
+              href={project.liveLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
+            >
+              Live site <FiExternalLink size={14} />
+            </a>
+          )}
+
+          {project.demoVideoLink && (
+            <a
+              href={project.demoVideoLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
+            >
+              Demo video <FiPlay size={14} />
+            </a>
           )}
         </div>
       </div>
@@ -299,11 +311,18 @@ const Projects: React.FC<{
                       />
                     )}
                     {selectedProject.liveLink && (
-                    <ActionButton
-                      href={selectedProject.liveLink}
-                      icon={<FiExternalLink size={16} />}
-                      label="Live preview"
-                    />
+                      <ActionButton
+                        href={selectedProject.liveLink}
+                        icon={<FiExternalLink size={16} />}
+                        label="Live preview"
+                      />
+                    )}
+                    {selectedProject.demoVideoLink && (
+                      <ActionButton
+                        href={selectedProject.demoVideoLink}
+                        icon={<FiPlay size={16} />}
+                        label="Demo video"
+                      />
                     )}
                   </div>
 

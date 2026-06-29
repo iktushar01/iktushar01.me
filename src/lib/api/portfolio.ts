@@ -12,6 +12,7 @@ function normalizeProject(project: Project): Project {
     liveLink: project.liveLink || "",
     frontendLink: project.frontendLink || "",
     backendLink: project.backendLink || "",
+    demoVideoLink: project.demoVideoLink || "",
   };
 }
 
