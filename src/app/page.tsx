@@ -44,8 +44,8 @@ export default async function Home() {
       <Skills />
       <Education />
       <Projects projects={projects} limit={3} showAllButton />
-      <Certificates certificates={certificates} />
-      <Activities activities={activities} />
+      <Certificates certificates={certificates} limit={3} showAllButton />
+      <Activities activities={activities} limit={3} showAllButton />
       <GitHubJourney data={githubResult.data} errorMessage={githubResult.error} />
       <LatestBlogs posts={latestPosts} limit={4} />
       <Contact />

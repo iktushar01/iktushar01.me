@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  FiArrowUpRight,
   FiExternalLink,
   FiX,
   FiGithub,
@@ -557,26 +559,39 @@ function ActivitiesEmptyState() {
   );
 }
 
-export default function Activities({ activities }: { activities: Activity[] }) {
+export default function Activities({
+  activities,
+  limit,
+  showAllButton,
+  kicker = "Beyond the classroom",
+  title = "Extra-Curricular Activities",
+}: {
+  activities: Activity[];
+  limit?: number;
+  showAllButton?: boolean;
+  kicker?: string;
+  title?: string;
+}) {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
     null
   );
+
+  const displayedActivities = limit
+    ? activities.slice(0, limit)
+    : activities;
 
   return (
     <section
       id="activities"
       className="relative py-14 sm:py-20 lg:py-24 bg-background text-foreground px-4 sm:px-10 lg:px-16"
     >
-      <SectionHeader
-        kicker="Beyond the classroom"
-        title="Extra-Curricular Activities"
-      />
+      <SectionHeader kicker={kicker} title={title} />
 
       {activities.length === 0 ? (
         <ActivitiesEmptyState />
       ) : (
         <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-8 gap-y-8 sm:gap-y-12">
-          {activities.map((activity, index) => (
+          {displayedActivities.map((activity, index) => (
             <ActivityCard
               key={activity.id}
               activity={activity}
@@ -584,6 +599,21 @@ export default function Activities({ activities }: { activities: Activity[] }) {
               onOpen={() => setSelectedActivity(activity)}
             />
           ))}
+        </div>
+      )}
+
+      {showAllButton && (
+        <div className="mt-10 sm:mt-14 flex justify-center">
+          <Link
+            href="/activities"
+            className="group inline-flex items-center gap-2 border border-border px-6 py-3 text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200"
+          >
+            View all activities
+            <FiArrowUpRight
+              size={16}
+              className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
         </div>
       )}
 

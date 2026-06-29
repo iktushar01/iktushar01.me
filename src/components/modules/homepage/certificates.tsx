@@ -1,25 +1,42 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiExternalLink, FiX } from "react-icons/fi";
+import { FiArrowUpRight, FiExternalLink, FiX } from "react-icons/fi";
 
 import type { Certificate } from "@/types/portfolio";
 
 import { springSoft, springSnappy } from "@/lib/motion";
 import { SectionHeader } from "@/components/modules/homepage/section-header";
 
-export default function Certificates({ certificates }: { certificates: Certificate[] }) {
+export default function Certificates({
+  certificates,
+  limit,
+  showAllButton,
+  kicker = "Credentials",
+  title = "Certificates",
+}: {
+  certificates: Certificate[];
+  limit?: number;
+  showAllButton?: boolean;
+  kicker?: string;
+  title?: string;
+}) {
   const [selectedCertificate, setSelectedCertificate] =
     useState<Certificate | null>(null);
 
+  const displayedCertificates = limit
+    ? certificates.slice(0, limit)
+    : certificates;
+
   return (
     <section id="certificates" className="relative py-14 sm:py-20 lg:py-24 bg-background text-foreground px-4 sm:px-10 lg:px-16">
-      <SectionHeader kicker="Credentials" title="Certificates" />
+      <SectionHeader kicker={kicker} title={title} />
 
       <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-8 gap-y-8 sm:gap-y-12">
-        {certificates.map((cert: Certificate, index: number) => (
+        {displayedCertificates.map((cert: Certificate, index: number) => (
           <motion.button
             key={cert.id}
             type="button"
@@ -51,6 +68,21 @@ export default function Certificates({ certificates }: { certificates: Certifica
           </motion.button>
         ))}
       </div>
+
+      {showAllButton && (
+        <div className="mt-10 sm:mt-14 flex justify-center">
+          <Link
+            href="/certificates"
+            className="group inline-flex items-center gap-2 border border-border px-6 py-3 text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200"
+          >
+            View all certificates
+            <FiArrowUpRight
+              size={16}
+              className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
+        </div>
+      )}
 
       {/* Detail modal */}
       <AnimatePresence>
