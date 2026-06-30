@@ -154,6 +154,63 @@ const AboutMe: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isIdCardOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 bg-background/90"
+              onClick={closeIdCardModal}
+            />
+
+            <motion.div
+              initial={{ y: 12, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 12, opacity: 0 }}
+              transition={springSnappy}
+              className="relative z-[110] w-full max-w-lg bg-card text-card-foreground border border-border shadow-lg overflow-hidden max-h-[90vh] flex flex-col"
+            >
+              <div className="px-5 py-4 border-b border-border flex justify-between items-center sticky top-0 z-50 bg-card">
+                <span className="font-mono text-xs text-muted-foreground/70 tracking-wide">
+                  {showIdCardBack ? "ID CARD — BACK" : "ID CARD — FRONT"}
+                </span>
+                <button
+                  type="button"
+                  onClick={closeIdCardModal}
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+                  aria-label="Close"
+                >
+                  <FiX size={18} />
+                </button>
+              </div>
+
+              <div className="p-5 sm:p-6 overflow-y-auto lp-scrollbar space-y-5">
+                <div className="relative w-full aspect-[1.586/1] border border-border overflow-hidden bg-muted">
+                  <Image
+                    src={showIdCardBack ? ID_CARD_BACK : ID_CARD_FRONT}
+                    alt={showIdCardBack ? "ID card back" : "ID card front"}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 512px"
+                    className="object-contain"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowIdCardBack((prev) => !prev)}
+                  className="w-full border border-border py-3 text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200"
+                >
+                  {showIdCardBack ? "View front" : "View back"}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
