@@ -115,6 +115,134 @@ const AboutMe: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Right: scrollable content — each block has a distinct layout */}
+        <div className="lg:col-span-7 space-y-12 sm:space-y-16">
+          {/* 1. Profile — compact info cards + status banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={springSoft}
+          >
+          </motion.div>
+
+          {/* 2. Services — icon card grid */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={springSoft}
+          >
+            <BlockTitle>What I can help with</BlockTitle>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {services.map((service, idx) => (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ ...springSoft, delay: idx * 0.04 }}
+                  className="group flex gap-3 border border-border p-4 hover:border-primary/40 hover:bg-muted/30 transition-colors duration-200"
+                >
+                  <div className="shrink-0 flex size-9 items-center justify-center border border-border bg-background text-muted-foreground group-hover:text-primary group-hover:border-primary/30 transition-colors duration-200">
+                    <service.icon size={16} />
+                  </div>
+                  <p className="text-sm text-foreground leading-relaxed pt-1">
+                    {service.title}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* 4. Exploring — flowing pill cloud */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={springSoft}
+          >
+            <BlockTitle>Currently exploring</BlockTitle>
+            <div className="border border-dashed border-border p-5 sm:p-6">
+              <div className="flex items-center gap-2 mb-4 text-muted-foreground">
+                <FiCompass size={14} />
+                <span className="text-xs font-mono">Learning roadmap</span>
+              </div>
+              <div className="flex flex-wrap gap-2.5">
+                {exploring.map((item, idx) => (
+                  <motion.span
+                    key={item}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ ...springSoft, delay: idx * 0.06 }}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-primary bg-primary/10 border border-primary/25"
+                  >
+                    <span className="text-[10px] font-mono text-primary/60">
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    {item}
+                  </motion.span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* 5. Open to — checklist panel */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={springSoft}
+          >
+            <BlockTitle>Open to</BlockTitle>
+            <ul className="divide-y divide-border border border-border bg-muted/20">
+              {openTo.map((item, idx) => (
+                <motion.li
+                  key={item}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ ...springSoft, delay: idx * 0.05 }}
+                  className="flex items-center gap-3 px-4 py-3.5"
+                >
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                    <FiCheck size={11} strokeWidth={3} />
+                  </span>
+                  <span className="text-sm text-foreground">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* 6. Philosophy — pull quote */}
+          <motion.blockquote
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={springSoft}
+            className="relative border-l-4 border-primary pl-6 py-2"
+          >
+            <BlockTitle>Philosophy</BlockTitle>
+            <span
+              className="absolute -top-1 left-4 text-5xl font-serif text-primary/20 leading-none select-none"
+              aria-hidden
+            >
+              &ldquo;
+            </span>
+            <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
+              I enjoy collaborating on impactful projects, solving complex problems, and
+              continuously improving my skills to stay aligned with modern technologies and
+              industry standards.
+            </p>
+            <p className="mt-4 text-base sm:text-lg font-medium text-foreground leading-relaxed tracking-tight">
+              Great products are built through clean code, thoughtful design, scalability,
+              and continuous innovation — let&rsquo;s connect and build something impactful
+              together.
+            </p>
+          </motion.blockquote>
+        </div>
       </div>
 
       <AnimatePresence>
