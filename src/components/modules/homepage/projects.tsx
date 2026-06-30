@@ -290,9 +290,19 @@ const Projects: React.FC<{
                 </div>
 
                 <div className="space-y-5">
-                  <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
-                    {selectedProject.title}
-                  </h2>
+                  <div>
+                    {selectedProject.tag && (
+                      <span className="inline-block mb-2 px-2.5 py-1 text-[10px] uppercase tracking-widest font-medium border bg-primary/15 text-primary border-primary/30">
+                        {selectedProject.tag}
+                      </span>
+                    )}
+                    <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+                      {selectedProject.title}
+                    </h2>
+                    <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                      {selectedProject.description}
+                    </p>
+                  </div>
 
                   {/* Link actions */}
                   <div className="flex flex-wrap gap-2.5">
@@ -328,26 +338,49 @@ const Projects: React.FC<{
 
                   {/* Metadata */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2 border-t border-border">
-                    <div className="pt-5">
-                      <h4 className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-3">
-                        Key challenges
-                      </h4>
-                      <ul className="space-y-2.5">
-                        {selectedProject.challenges.map((c, i) => (
-                          <li
-                            key={i}
-                            className="flex gap-2.5 text-muted-foreground text-sm leading-relaxed"
-                          >
-                            <span className="text-muted-foreground/40 font-mono text-xs mt-0.5">
-                              {String(i + 1).padStart(2, "0")}
-                            </span>
-                            {c}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {selectedProject.challenges.length > 0 && (
+                      <div className="pt-5">
+                        <h4 className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-3">
+                          Key challenges
+                        </h4>
+                        <ul className="space-y-2.5">
+                          {selectedProject.challenges.map((c, i) => (
+                            <li
+                              key={i}
+                              className="flex gap-2.5 text-muted-foreground text-sm leading-relaxed"
+                            >
+                              <span className="text-muted-foreground/40 font-mono text-xs mt-0.5">
+                                {String(i + 1).padStart(2, "0")}
+                              </span>
+                              {c}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
-                    <div className="pt-5">
+                    {selectedProject.improvements.length > 0 && (
+                      <div className="pt-5">
+                        <h4 className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-3">
+                          Improvements
+                        </h4>
+                        <ul className="space-y-2.5">
+                          {selectedProject.improvements.map((item, i) => (
+                            <li
+                              key={i}
+                              className="flex gap-2.5 text-muted-foreground text-sm leading-relaxed"
+                            >
+                              <span className="text-muted-foreground/40 font-mono text-xs mt-0.5">
+                                {String(i + 1).padStart(2, "0")}
+                              </span>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <div className="pt-5 md:col-span-2">
                       <h4 className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-3">
                         Stack
                       </h4>

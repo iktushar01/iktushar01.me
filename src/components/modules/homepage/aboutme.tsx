@@ -87,13 +87,11 @@ const AboutMe: React.FC = () => {
             </p>
             <button
               type="button"
-              onMouseEnter={openIdCardModal}
-              className="mt-6 group inline-flex items-center gap-2 border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200"
+              onClick={openIdCardModal}
+              data-cursor-hover
+              className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:bg-primary/90 transition-colors duration-200"
             >
-              <FiCreditCard
-                size={15}
-                className="text-muted-foreground group-hover:text-foreground transition-colors duration-200"
-              />
+              <FiCreditCard size={15} />
               View ID card
             </button>
           </div>
