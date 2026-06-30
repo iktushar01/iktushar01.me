@@ -28,7 +28,7 @@ export function SectionHeader({ kicker, title, className }: SectionHeaderProps) 
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ ...springSoft, delay: 0.05 }}
-        className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-foreground leading-tight"
+        className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-primary leading-tight"
       >
         {title}
       </motion.div>
