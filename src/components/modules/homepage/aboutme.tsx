@@ -33,15 +33,15 @@ const services = [
 const techStack = [
   {
     label: "Frontend",
-    items: ["React.js", "Next.js", "Tailwind CSS", "JavaScript", "TypeScript"],
+    tools: "React.js, Next.js, Tailwind CSS, JavaScript, TypeScript",
   },
   {
     label: "Backend",
-    items: ["Node.js", "Express.js", "MongoDB", "PostgreSQL", "Prisma"],
+    tools: "Node.js, Express.js, MongoDB, PostgreSQL, Prisma",
   },
   {
-    label: "Tools & Technologies",
-    items: ["Git", "GitHub", "Docker", "Firebase", "Linux", "Postman", "Vercel"],
+    label: "Tools",
+    tools: "Git, GitHub, Docker, Firebase, Linux, Postman, Vercel",
   },
 ];
 
@@ -58,27 +58,6 @@ const openTo = [
   "Open Source Collaboration",
   "Long-Term Professional Collaboration",
 ];
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-4">
-      {children}
-    </span>
-  );
-}
-
-function TagPill({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <span
-      className={cn(
-        "inline-block px-2.5 py-1 text-xs font-mono text-muted-foreground border border-border bg-muted/40",
-        className
-      )}
-    >
-      {children}
-    </span>
-  );
-}
 
 const AboutMe: React.FC = () => {
   const [isIdCardOpen, setIsIdCardOpen] = useState(false);
@@ -101,62 +80,44 @@ const AboutMe: React.FC = () => {
     >
       <SectionHeader kicker="Who is this guy?" title="About Me" />
 
-      {/* Intro + profile specs */}
-      <div className="mt-8 sm:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16">
+      <div className="mt-8 sm:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16">
+        {/* Left: sticky intro */}
         <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-28 space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={springSoft}
-            >
-              <SectionLabel>Introduction</SectionLabel>
-              <p className="text-lg sm:text-xl leading-relaxed text-foreground font-medium tracking-tight">
-                Hi, I&rsquo;m Ibrahim Khalil Tushar — a Full Stack Developer focused on
-                building scalable, high-performance web applications that deliver seamless
-                user experiences and real business value.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ ...springSoft, delay: 0.05 }}
-              className="space-y-4 text-sm sm:text-base leading-relaxed text-muted-foreground"
-            >
-              <p>
-                I specialize in production-ready applications using React.js, Next.js,
-                Node.js, Express.js, MongoDB, PostgreSQL, Prisma, and TypeScript —
-                writing clean, maintainable code and designing architectures built for
-                long-term growth.
-              </p>
-              <p>
-                From responsive interfaces to secure backends and optimized APIs, I enjoy
-                transforming ideas into fast, functional, and visually engaging digital
-                products.
-              </p>
-            </motion.div>
-
-            <motion.button
+          <div className="lg:sticky lg:top-28">
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-4">
+              Profile
+            </span>
+            <p className="text-lg sm:text-xl leading-relaxed text-foreground font-medium tracking-tight">
+              Hi, I&rsquo;m Ibrahim Khalil Tushar — a Full Stack Developer focused on
+              building scalable, high-performance web applications that deliver seamless
+              user experiences and real business value.
+            </p>
+            <p className="mt-5 text-sm sm:text-base leading-relaxed text-muted-foreground">
+              I specialize in production-ready applications using React.js, Next.js,
+              Node.js, Express.js, MongoDB, PostgreSQL, Prisma, and TypeScript —
+              writing clean, maintainable code and designing architectures built for
+              long-term growth.
+            </p>
+            <p className="mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
+              From responsive interfaces to secure backends and optimized APIs, I enjoy
+              transforming ideas into fast, functional, and visually engaging digital
+              products.
+            </p>
+            <button
               type="button"
               onClick={openIdCardModal}
               data-cursor-hover
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ ...springSoft, delay: 0.1 }}
-              className="w-full inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:bg-primary/90 transition-colors duration-200"
+              className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium hover:bg-primary/90 transition-colors duration-200"
             >
               <FiCreditCard size={15} />
               View ID card
-            </motion.button>
+            </button>
           </div>
         </div>
 
-        <div className="lg:col-span-7">
-          <SectionLabel>Profile</SectionLabel>
+        {/* Right: scrollable content */}
+        <div className="lg:col-span-7 space-y-10 sm:space-y-12">
+          {/* Spec sheet */}
           <dl>
             {specRows.map((row, idx) => (
               <motion.div
@@ -164,7 +125,7 @@ const AboutMe: React.FC = () => {
                 initial={{ opacity: 0, y: 8 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ ...springSoft, delay: idx * 0.04 }}
+                transition={{ ...springSoft, delay: idx * 0.05 }}
                 className="grid grid-cols-[2.5rem_8rem_1fr] sm:grid-cols-[3rem_9rem_1fr] items-baseline gap-4 py-4 border-b border-border"
               >
                 <dt className="text-xs font-mono text-muted-foreground/60">{row.index}</dt>
@@ -182,142 +143,98 @@ const AboutMe: React.FC = () => {
               </motion.div>
             ))}
           </dl>
-        </div>
-      </div>
 
-      {/* Services */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={springSoft}
-        className="mt-14 sm:mt-20 pt-10 sm:pt-14 border-t border-border"
-      >
-        <SectionLabel>What I can help with</SectionLabel>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-10">
-          {services.map((service, idx) => (
-            <motion.li
-              key={service}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ ...springSoft, delay: idx * 0.04 }}
-              className="flex gap-4 py-4 border-b border-border"
-            >
-              <span className="text-xs font-mono text-muted-foreground/50 shrink-0 mt-0.5">
-                {String(idx + 1).padStart(2, "0")}
-              </span>
-              <span className="text-sm sm:text-base text-foreground leading-relaxed">
-                {service}
-              </span>
-            </motion.li>
-          ))}
-        </ul>
-      </motion.div>
-
-      {/* Tech stack */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={springSoft}
-        className="mt-14 sm:mt-20 pt-10 sm:pt-14 border-t border-border"
-      >
-        <SectionLabel>Tech stack</SectionLabel>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
-          {techStack.map((group, idx) => (
-            <motion.div
-              key={group.label}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ ...springSoft, delay: idx * 0.06 }}
-            >
-              <h3 className="text-sm font-semibold text-foreground tracking-tight mb-3">
-                {group.label}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <TagPill key={item}>{item}</TagPill>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Exploring + Open to */}
-      <div className="mt-14 sm:mt-20 pt-10 sm:pt-14 border-t border-border grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={springSoft}
-        >
-          <SectionLabel>Currently exploring</SectionLabel>
-          <div className="flex flex-wrap gap-2">
-            {exploring.map((item, idx) => (
-              <motion.span
-                key={item}
-                initial={{ opacity: 0, y: 6 }}
+          {/* What I can help with */}
+          <div>
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-2">
+              What I can help with
+            </span>
+            {services.map((service, idx) => (
+              <motion.div
+                key={service}
+                initial={{ opacity: 0, y: 8 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ ...springSoft, delay: idx * 0.05 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ ...springSoft, delay: idx * 0.04 }}
+                className="grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr] items-baseline gap-4 py-4 border-b border-border"
               >
-                <TagPill className="border-primary/20 bg-primary/10 text-primary">
-                  {item}
-                </TagPill>
-              </motion.span>
+                <span className="text-xs font-mono text-muted-foreground/60">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <p className="text-sm text-muted-foreground leading-relaxed">{service}</p>
+              </motion.div>
             ))}
           </div>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ ...springSoft, delay: 0.05 }}
-        >
-          <SectionLabel>Open to</SectionLabel>
-          <ul className="space-y-3">
-            {openTo.map((item, idx) => (
-              <motion.li
+
+          {/* Currently exploring */}
+          <div>
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-2">
+              Currently exploring
+            </span>
+            {exploring.map((item, idx) => (
+              <motion.div
                 key={item}
-                initial={{ opacity: 0, x: 8 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
                 transition={{ ...springSoft, delay: idx * 0.05 }}
-                className="flex items-start gap-3 text-sm sm:text-base text-foreground"
+                className="grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr] items-baseline gap-4 py-4 border-b border-border"
               >
-                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
-                {item}
-              </motion.li>
+                <span className="text-xs font-mono text-muted-foreground/60">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <p className="text-sm text-primary leading-relaxed">{item}</p>
+              </motion.div>
             ))}
-          </ul>
-        </motion.div>
-      </div>
+          </div>
 
-      {/* Closing */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={springSoft}
-        className="mt-14 sm:mt-20 pt-10 sm:pt-14 border-t border-border"
-      >
-        <div className="border border-border bg-muted/30 p-6 sm:p-8 space-y-4">
-          <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
-            I enjoy collaborating on impactful projects, solving complex problems, and
-            continuously improving my skills to stay aligned with modern technologies and
-            industry standards.
-          </p>
-          <p className="text-base sm:text-lg font-medium text-foreground leading-relaxed tracking-tight">
-            Great products are built through clean code, thoughtful design, scalability,
-            and continuous innovation — let&rsquo;s connect and build something impactful
-            together.
-          </p>
+          {/* Open to */}
+          <div>
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-2">
+              Open to
+            </span>
+            {openTo.map((item, idx) => (
+              <motion.div
+                key={item}
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ ...springSoft, delay: idx * 0.05 }}
+                className="grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr] items-baseline gap-4 py-4 border-b border-border"
+              >
+                <span className="text-xs font-mono text-muted-foreground/60">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <p className="text-sm text-foreground leading-relaxed">{item}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Closing */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={springSoft}
+            className="pt-2"
+          >
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-4">
+              Philosophy
+            </span>
+            <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
+              I enjoy collaborating on impactful projects, solving complex problems, and
+              continuously improving my skills to stay aligned with modern technologies and
+              industry standards.
+            </p>
+            <p className="mt-4 text-sm sm:text-base font-medium text-foreground leading-relaxed tracking-tight">
+              Great products are built through clean code, thoughtful design, scalability,
+              and continuous innovation — let&rsquo;s connect and build something impactful
+              together.
+            </p>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
 
       <AnimatePresence>
         {isIdCardOpen && (
