@@ -14,7 +14,7 @@ interface LatestBlogsProps {
   limit?: number;
 }
 
-export default function LatestBlogs({ posts, limit = 4 }: LatestBlogsProps) {
+export default function LatestBlogs({ posts, limit = 3 }: LatestBlogsProps) {
   const displayed = posts.slice(0, limit);
 
   if (displayed.length === 0) {

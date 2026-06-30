@@ -26,7 +26,7 @@ export default async function Home() {
       fetchProjects(),
       fetchCertificates(),
       fetchActivities(),
-      getLatestPosts(4),
+      getLatestPosts(3),
       getGitHubJourneyData()
         .then((data) => ({ data, error: null as string | null }))
         .catch((err: unknown) => ({
@@ -47,7 +47,7 @@ export default async function Home() {
       <Certificates certificates={certificates} limit={3} showAllButton />
       <Activities activities={activities} limit={3} showAllButton />
       <GitHubJourney data={githubResult.data} errorMessage={githubResult.error} />
-      <LatestBlogs posts={latestPosts} limit={4} />
+      <LatestBlogs posts={latestPosts} limit={3} />
       <Contact />
       <Footer />
     </div>

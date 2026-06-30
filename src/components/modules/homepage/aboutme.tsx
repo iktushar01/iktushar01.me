@@ -1,9 +1,16 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { springSoft } from "@/lib/motion";
+import React, { useState } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiCreditCard, FiX } from "react-icons/fi";
+import { springSoft, springSnappy } from "@/lib/motion";
 import { SectionHeader } from "@/components/modules/homepage/section-header";
+
+const ID_CARD_FRONT =
+  "https://res.cloudinary.com/dfoqasqnw/image/upload/v1782792186/ChatGPT_Image_Jun_30_2026_09_55_36_AM_aournx.png";
+const ID_CARD_BACK =
+  "https://res.cloudinary.com/dfoqasqnw/image/upload/v1782792185/ChatGPT_Image_Jun_30_2026_09_59_48_AM_uoycy6.png";
 
 interface SpecRow {
   index: string;
@@ -18,6 +25,19 @@ interface DomainItem {
 }
 
 const AboutMe: React.FC = () => {
+  const [isIdCardOpen, setIsIdCardOpen] = useState(false);
+  const [showIdCardBack, setShowIdCardBack] = useState(false);
+
+  const openIdCardModal = () => {
+    setShowIdCardBack(false);
+    setIsIdCardOpen(true);
+  };
+
+  const closeIdCardModal = () => {
+    setIsIdCardOpen(false);
+    setShowIdCardBack(false);
+  };
+
   const specRows: SpecRow[] = [
     { index: "01", label: "Name", value: "Md. Ibrahim Khalil Tushar" },
     { index: "02", label: "Role", value: "Full-stack Web Developer" },
@@ -65,6 +85,17 @@ const AboutMe: React.FC = () => {
               expanding into Go and relational systems for work that needs to
               hold at scale.
             </p>
+            <button
+              type="button"
+              onClick={openIdCardModal}
+              className="mt-6 group inline-flex items-center gap-2 border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200"
+            >
+              <FiCreditCard
+                size={15}
+                className="text-muted-foreground group-hover:text-foreground transition-colors duration-200"
+              />
+              View ID card
+            </button>
           </div>
         </div>
 
