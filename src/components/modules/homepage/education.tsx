@@ -15,6 +15,7 @@ interface EducationItem {
   logo: string;
   current: boolean;
   gpa?: string;
+  gpaLabel?: string;
   skills: string[];
 }
 
@@ -31,6 +32,7 @@ const educationData: EducationItem[] = [
     logo: UTTARA_LOGO,
     current: true,
     gpa: "In progress",
+    gpaLabel: "CGPA",
     skills: ["React.js", "MERN Stack", "Node.js"],
   },
   {
@@ -89,7 +91,7 @@ const EducationRow: React.FC<{ item: EducationItem; idx: number }> = ({ item, id
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
         {item.gpa && (
           <span className="text-muted-foreground">
-            <span className="text-foreground/70">GPA</span> &middot; {item.gpa}
+            <span className="text-foreground/70">{item.gpaLabel ?? "GPA"}</span> &middot; {item.gpa}
           </span>
         )}
         <span className="text-muted-foreground">
