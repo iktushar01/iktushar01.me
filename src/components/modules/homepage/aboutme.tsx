@@ -3,7 +3,22 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiCreditCard, FiX } from "react-icons/fi";
+import {
+  FiCreditCard,
+  FiX,
+  FiLayers,
+  FiLayout,
+  FiServer,
+  FiDatabase,
+  FiCode,
+  FiTrendingUp,
+  FiMapPin,
+  FiBriefcase,
+  FiBookOpen,
+  FiUser,
+  FiCheck,
+  FiCompass,
+} from "react-icons/fi";
 import { springSoft, springSnappy } from "@/lib/motion";
 import { SectionHeader } from "@/components/modules/homepage/section-header";
 import { cn } from "@/lib/utils";
@@ -13,36 +28,20 @@ const ID_CARD_FRONT =
 const ID_CARD_BACK =
   "https://res.cloudinary.com/dfoqasqnw/image/upload/v1782792185/ChatGPT_Image_Jun_30_2026_09_59_48_AM_uoycy6.png";
 
-const specRows = [
-  { index: "01", label: "Name", value: "Md. Ibrahim Khalil Tushar" },
-  { index: "02", label: "Role", value: "Full Stack Developer" },
-  { index: "03", label: "Education", value: "B.Sc. CSE, Uttara University" },
-  { index: "04", label: "Location", value: "Gazipur, Bangladesh" },
-  { index: "05", label: "Status", value: "Open to opportunities" },
+const specCards = [
+  { icon: FiUser, label: "Name", value: "Md. Ibrahim Khalil Tushar" },
+  { icon: FiBriefcase, label: "Role", value: "Full Stack Developer" },
+  { icon: FiBookOpen, label: "Education", value: "B.Sc. CSE, Uttara University" },
+  { icon: FiMapPin, label: "Location", value: "Gazipur, Bangladesh" },
 ];
 
 const services = [
-  "Full Stack Web Application Development",
-  "Modern & Responsive UI/UX Implementation",
-  "REST API Development & Backend Systems",
-  "Database Design & Performance Optimization",
-  "Clean Architecture & Maintainable Codebases",
-  "Scalable and Performance-Focused Solutions",
-];
-
-const techStack = [
-  {
-    label: "Frontend",
-    tools: "React.js, Next.js, Tailwind CSS, JavaScript, TypeScript",
-  },
-  {
-    label: "Backend",
-    tools: "Node.js, Express.js, MongoDB, PostgreSQL, Prisma",
-  },
-  {
-    label: "Tools",
-    tools: "Git, GitHub, Docker, Firebase, Linux, Postman, Vercel",
-  },
+  { icon: FiLayers, title: "Full Stack Web Application Development" },
+  { icon: FiLayout, title: "Modern & Responsive UI/UX Implementation" },
+  { icon: FiServer, title: "REST API Development & Backend Systems" },
+  { icon: FiDatabase, title: "Database Design & Performance Optimization" },
+  { icon: FiCode, title: "Clean Architecture & Maintainable Codebases" },
+  { icon: FiTrendingUp, title: "Scalable and Performance-Focused Solutions" },
 ];
 
 const exploring = [
@@ -58,6 +57,14 @@ const openTo = [
   "Open Source Collaboration",
   "Long-Term Professional Collaboration",
 ];
+
+function BlockTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-4">
+      {children}
+    </h3>
+  );
+}
 
 const AboutMe: React.FC = () => {
   const [isIdCardOpen, setIsIdCardOpen] = useState(false);
@@ -115,124 +122,166 @@ const AboutMe: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: scrollable content */}
-        <div className="lg:col-span-7 space-y-10 sm:space-y-12">
-          {/* Spec sheet */}
-          <dl>
-            {specRows.map((row, idx) => (
-              <motion.div
-                key={row.label}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ ...springSoft, delay: idx * 0.05 }}
-                className="grid grid-cols-[2.5rem_8rem_1fr] sm:grid-cols-[3rem_9rem_1fr] items-baseline gap-4 py-4 border-b border-border"
-              >
-                <dt className="text-xs font-mono text-muted-foreground/60">{row.index}</dt>
-                <dt className="text-xs uppercase tracking-widest text-muted-foreground">
-                  {row.label}
-                </dt>
-                <dd
-                  className={cn(
-                    "text-sm sm:text-base font-medium tracking-tight",
-                    row.label === "Status" ? "text-primary" : "text-foreground"
-                  )}
-                >
-                  {row.value}
-                </dd>
-              </motion.div>
-            ))}
-          </dl>
-
-          {/* What I can help with */}
-          <div>
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-2">
-              What I can help with
-            </span>
-            {services.map((service, idx) => (
-              <motion.div
-                key={service}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ ...springSoft, delay: idx * 0.04 }}
-                className="grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr] items-baseline gap-4 py-4 border-b border-border"
-              >
-                <span className="text-xs font-mono text-muted-foreground/60">
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-                <p className="text-sm text-muted-foreground leading-relaxed">{service}</p>
-              </motion.div>
-            ))}
-          </div>
-
-
-          {/* Currently exploring */}
-          <div>
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-2">
-              Currently exploring
-            </span>
-            {exploring.map((item, idx) => (
-              <motion.div
-                key={item}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ ...springSoft, delay: idx * 0.05 }}
-                className="grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr] items-baseline gap-4 py-4 border-b border-border"
-              >
-                <span className="text-xs font-mono text-muted-foreground/60">
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-                <p className="text-sm text-primary leading-relaxed">{item}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Open to */}
-          <div>
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-2">
-              Open to
-            </span>
-            {openTo.map((item, idx) => (
-              <motion.div
-                key={item}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ ...springSoft, delay: idx * 0.05 }}
-                className="grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr] items-baseline gap-4 py-4 border-b border-border"
-              >
-                <span className="text-xs font-mono text-muted-foreground/60">
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-                <p className="text-sm text-foreground leading-relaxed">{item}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Closing */}
+        {/* Right: scrollable content — each block has a distinct layout */}
+        <div className="lg:col-span-7 space-y-12 sm:space-y-16">
+          {/* 1. Profile — compact info cards + status banner */}
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={springSoft}
-            className="pt-2"
           >
-            <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 block mb-4">
-              Philosophy
+            <BlockTitle>At a glance</BlockTitle>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {specCards.map((card, idx) => (
+                <motion.div
+                  key={card.label}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ ...springSoft, delay: idx * 0.05 }}
+                  className="border border-border p-4 bg-muted/20"
+                >
+                  <card.icon className="size-4 text-muted-foreground mb-2" />
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70">
+                    {card.label}
+                  </p>
+                  <p className="mt-1 text-sm font-medium text-foreground leading-snug">
+                    {card.value}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ ...springSoft, delay: 0.2 }}
+              className="mt-3 flex items-center gap-3 border border-primary/30 bg-primary/10 px-4 py-3"
+            >
+              <span className="relative flex size-2 shrink-0">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-40" />
+                <span className="relative inline-flex size-2 rounded-full bg-primary" />
+              </span>
+              <p className="text-sm font-medium text-primary">Open to opportunities</p>
+            </motion.div>
+          </motion.div>
+
+          {/* 2. Services — icon card grid */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={springSoft}
+          >
+            <BlockTitle>What I can help with</BlockTitle>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {services.map((service, idx) => (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ ...springSoft, delay: idx * 0.04 }}
+                  className="group flex gap-3 border border-border p-4 hover:border-primary/40 hover:bg-muted/30 transition-colors duration-200"
+                >
+                  <div className="shrink-0 flex size-9 items-center justify-center border border-border bg-background text-muted-foreground group-hover:text-primary group-hover:border-primary/30 transition-colors duration-200">
+                    <service.icon size={16} />
+                  </div>
+                  <p className="text-sm text-foreground leading-relaxed pt-1">
+                    {service.title}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* 4. Exploring — flowing pill cloud */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={springSoft}
+          >
+            <BlockTitle>Currently exploring</BlockTitle>
+            <div className="border border-dashed border-border p-5 sm:p-6">
+              <div className="flex items-center gap-2 mb-4 text-muted-foreground">
+                <FiCompass size={14} />
+                <span className="text-xs font-mono">Learning roadmap</span>
+              </div>
+              <div className="flex flex-wrap gap-2.5">
+                {exploring.map((item, idx) => (
+                  <motion.span
+                    key={item}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ ...springSoft, delay: idx * 0.06 }}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-primary bg-primary/10 border border-primary/25"
+                  >
+                    <span className="text-[10px] font-mono text-primary/60">
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    {item}
+                  </motion.span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* 5. Open to — checklist panel */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={springSoft}
+          >
+            <BlockTitle>Open to</BlockTitle>
+            <ul className="divide-y divide-border border border-border bg-muted/20">
+              {openTo.map((item, idx) => (
+                <motion.li
+                  key={item}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ ...springSoft, delay: idx * 0.05 }}
+                  className="flex items-center gap-3 px-4 py-3.5"
+                >
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                    <FiCheck size={11} strokeWidth={3} />
+                  </span>
+                  <span className="text-sm text-foreground">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* 6. Philosophy — pull quote */}
+          <motion.blockquote
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={springSoft}
+            className="relative border-l-4 border-primary pl-6 py-2"
+          >
+            <BlockTitle>Philosophy</BlockTitle>
+            <span
+              className="absolute -top-1 left-4 text-5xl font-serif text-primary/20 leading-none select-none"
+              aria-hidden
+            >
+              &ldquo;
             </span>
             <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
               I enjoy collaborating on impactful projects, solving complex problems, and
               continuously improving my skills to stay aligned with modern technologies and
               industry standards.
             </p>
-            <p className="mt-4 text-sm sm:text-base font-medium text-foreground leading-relaxed tracking-tight">
+            <p className="mt-4 text-base sm:text-lg font-medium text-foreground leading-relaxed tracking-tight">
               Great products are built through clean code, thoughtful design, scalability,
               and continuous innovation — let&rsquo;s connect and build something impactful
               together.
             </p>
-          </motion.div>
+          </motion.blockquote>
         </div>
       </div>
 
