@@ -120,7 +120,7 @@ export default function Navbar() {
                             alt="Logo"
                             width={120}
                             height={80}
-                            className="h-5 w-auto sm:h-6 dark:brightness-110"
+                            className="h-5 w-auto sm:h-6 dark:brightness-110 logo-stroke"
                             priority
                         />
                     </button>

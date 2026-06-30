@@ -287,3 +287,8 @@ html[data-app-ready="true"] [data-app-content] {
 .blog-prose hr {
   @apply my-8 border-border;
 }
+
+/* Very small black stroke for raster logos (subtle outline) */
+.logo-stroke {
+  filter: drop-shadow(0 0 0.6px rgba(0, 0, 0, 0.95));
+}
