@@ -66,7 +66,7 @@ const ProjectRow: React.FC<{
           alt={project.title}
           fill
           sizes="(max-width: 1024px) 100vw, 40vw"
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+          className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.02]"
         />
       </button>
 
