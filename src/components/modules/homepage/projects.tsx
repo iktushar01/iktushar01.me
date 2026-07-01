@@ -15,7 +15,7 @@ import {
 } from "react-icons/fi";
 
 import type { Project } from "@/types/portfolio";
-import { cn } from "@/lib/utils";
+import { cn, hasOptionalUrl } from "@/lib/utils";
 import { springSoft, springSnappy } from "@/lib/motion";
 import { SectionHeader } from "@/components/modules/homepage/section-header";
 
@@ -100,9 +100,9 @@ const ProjectRow: React.FC<{
             View details <FiArrowUpRight size={15} />
           </button>
 
-          {project.liveLink && (
+          {hasOptionalUrl(project.liveLink) && (
             <a
-              href={project.liveLink}
+              href={project.liveLink!}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
@@ -111,9 +111,9 @@ const ProjectRow: React.FC<{
             </a>
           )}
 
-          {project.demoVideoLink && (
+          {hasOptionalUrl(project.demoVideoLink) && (
             <a
-              href={project.demoVideoLink}
+              href={project.demoVideoLink!}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
@@ -306,30 +306,30 @@ const Projects: React.FC<{
 
                   {/* Link actions */}
                   <div className="flex flex-wrap gap-2.5">
-                    {selectedProject.frontendLink && (
+                    {hasOptionalUrl(selectedProject.frontendLink) && (
                       <ActionButton
-                        href={selectedProject.frontendLink}
+                        href={selectedProject.frontendLink!}
                         icon={<FiGithub size={16} />}
                         label="Frontend"
                       />
                     )}
-                    {selectedProject.backendLink && (
+                    {hasOptionalUrl(selectedProject.backendLink) && (
                       <ActionButton
-                        href={selectedProject.backendLink}
+                        href={selectedProject.backendLink!}
                         icon={<FiGithub size={16} />}
                         label="Backend"
                       />
                     )}
-                    {selectedProject.liveLink && (
+                    {hasOptionalUrl(selectedProject.liveLink) && (
                       <ActionButton
-                        href={selectedProject.liveLink}
+                        href={selectedProject.liveLink!}
                         icon={<FiExternalLink size={16} />}
                         label="Live preview"
                       />
                     )}
-                    {selectedProject.demoVideoLink && (
+                    {hasOptionalUrl(selectedProject.demoVideoLink) && (
                       <ActionButton
-                        href={selectedProject.demoVideoLink}
+                        href={selectedProject.demoVideoLink!}
                         icon={<FiPlay size={16} />}
                         label="Demo video"
                       />

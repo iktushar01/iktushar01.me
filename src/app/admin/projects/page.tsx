@@ -15,6 +15,7 @@ import {
   adminFetchProjects,
   adminSaveProject,
 } from "@/lib/api/admin";
+import { hasOptionalUrl } from "@/lib/utils";
 import type { Project } from "@/types/portfolio";
 
 export default function AdminProjectsPage() {
@@ -82,7 +83,7 @@ function emptyProject(): Partial<Project> {
     liveLink: "",
     frontendLink: "",
     backendLink: "",
-    demoVideoLink: "",
+    demoVideoLink: null,
     challenges: [],
     improvements: [],
     isPublished: true,
@@ -114,7 +115,12 @@ export function ProjectFormPage({ id }: { id?: string }) {
     setSaving(true);
 
     try {
-      await adminSaveProject(id || null, form);
+      await adminSaveProject(id || null, {
+        ...form,
+        demoVideoLink: hasOptionalUrl(form.demoVideoLink)
+          ? form.demoVideoLink!.trim()
+          : null,
+      });
       toast.success(id ? "Project updated" : "Project created");
       window.location.href = "/admin/projects";
     } catch (error) {
@@ -136,7 +142,11 @@ export function ProjectFormPage({ id }: { id?: string }) {
       <Input placeholder="Live link" value={form.liveLink || ""} onChange={(e) => update("liveLink", e.target.value)} />
       <Input placeholder="Frontend repo" value={form.frontendLink || ""} onChange={(e) => update("frontendLink", e.target.value)} />
       <Input placeholder="Backend repo" value={form.backendLink || ""} onChange={(e) => update("backendLink", e.target.value)} />
-      <Input placeholder="Demo video URL (YouTube, Loom, etc.)" value={form.demoVideoLink || ""} onChange={(e) => update("demoVideoLink", e.target.value)} />
+      <Input
+        placeholder="Demo video URL — optional (YouTube, Loom, etc.)"
+        value={form.demoVideoLink || ""}
+        onChange={(e) => update("demoVideoLink", e.target.value)}
+      />
 
       <TagInput label="Technologies" value={form.technologies || []} onChange={(v) => update("technologies", v)} />
       <TagInput label="Challenges" value={form.challenges || []} onChange={(v) => update("challenges", v)} />

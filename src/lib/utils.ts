@@ -5,6 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+/** True when a nullable optional URL field has a non-empty value. */
+export function hasOptionalUrl(value?: string | null): boolean {
+  return typeof value === "string" && value.trim().length > 0
+}
+
 /**
  * Normalize a date value into a `YYYY-MM-DD` string suitable for an
  * `<input type="date">` control. Returns an empty string for empty/invalid

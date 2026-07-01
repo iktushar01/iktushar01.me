@@ -1,4 +1,5 @@
 import { apiFetch, safeApiFetch } from "@/lib/api/client";
+import { hasOptionalUrl } from "@/lib/utils";
 import type {
   Activity,
   BlogPost,
@@ -6,13 +7,17 @@ import type {
   Project,
 } from "@/types/portfolio";
 
+function normalizeOptionalUrl(value?: string | null): string | null {
+  return hasOptionalUrl(value) ? value!.trim() : null;
+}
+
 function normalizeProject(project: Project): Project {
   return {
     ...project,
-    liveLink: project.liveLink || "",
-    frontendLink: project.frontendLink || "",
-    backendLink: project.backendLink || "",
-    demoVideoLink: project.demoVideoLink || "",
+    liveLink: normalizeOptionalUrl(project.liveLink),
+    frontendLink: normalizeOptionalUrl(project.frontendLink),
+    backendLink: normalizeOptionalUrl(project.backendLink),
+    demoVideoLink: normalizeOptionalUrl(project.demoVideoLink),
   };
 }
 
