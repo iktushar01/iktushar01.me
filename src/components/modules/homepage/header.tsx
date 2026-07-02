@@ -14,7 +14,7 @@ import { springSoft, easeInOut } from "@/lib/motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 const RESUME_PDF_PATH = "/resume.pdf";
-const CV_DOC_URL = "https://drive.google.com/file/d/1kDBaB5KUNH5UAQdH_rf_ps6SyojpBALF/view?usp=sharing";
+const CV_DOC_URL = "https://drive.google.com/file/d/1SRmpjnOP1ObxgMxFuA98vavWiP7SOxS-/view?usp=sharing";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 10 },
