@@ -108,31 +108,33 @@ export default function Navbar() {
                         : "bg-background/0 border-transparent"
                 )}
             >
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 h-14 sm:h-16 flex items-center justify-between gap-3">
-                    {/* Logo */}
-                    <button
-                        onClick={() => scrollToSection("home")}
-                        className="inline-flex size-9 shrink-0 items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
-                        aria-label="Go to top"
-                    >
-                        <Image
-                            src="https://res.cloudinary.com/dfoqasqnw/image/upload/logo_msrkwi.png"
-                            alt="Logo"
-                            width={120}
-                            height={80}
-                            className="h-5 w-auto sm:h-6 dark:brightness-110 logo-stroke"
-                            priority
-                        />
-                    </button>
+                <div className="relative w-full px-4 sm:px-10 lg:px-16 h-14 sm:h-16 flex items-center justify-between">
+                    {/* Logo — far left */}
+                    <div className="shrink-0 z-10">
+                        <button
+                            onClick={() => scrollToSection("home")}
+                            className="inline-flex size-9 items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
+                            aria-label="Go to top"
+                        >
+                            <Image
+                                src="https://res.cloudinary.com/dfoqasqnw/image/upload/logo_msrkwi.png"
+                                alt="Logo"
+                                width={120}
+                                height={80}
+                                className="h-5 w-auto sm:h-6 dark:brightness-110 logo-stroke"
+                                priority
+                            />
+                        </button>
+                    </div>
 
-                    {/* Desktop nav — flat text links */}
-                    <div className="hidden lg:flex items-center gap-5 xl:gap-7 min-w-0 flex-1 justify-center px-4">
+                    {/* Desktop nav — centered */}
+                    <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-4 xl:gap-6">
                         {NAV_ITEMS.map((item) => (
                             <button
                                 key={item.id}
                                 onClick={() => scrollToSection(item.id)}
                                 className={cn(
-                                    "relative text-xs uppercase tracking-widest transition-colors duration-200 py-1",
+                                    "relative text-xs uppercase tracking-widest transition-colors duration-200 py-1 whitespace-nowrap",
                                     activeItem === item.id
                                         ? "text-foreground font-semibold"
                                         : "text-muted-foreground hover:text-foreground"
@@ -150,16 +152,16 @@ export default function Navbar() {
                         ))}
                     </div>
 
-                    {/* Right utilities — logo, toggle, and menu share size-9 controls */}
-                    <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+                    {/* Right utilities — toggle then hire me */}
+                    <div className="flex items-center gap-1 sm:gap-2 shrink-0 z-10">
+                        <AnimatedThemeTogglerDemo />
+
                         <Button
                             onClick={() => scrollToSection("contact")}
                             className="hidden md:flex rounded-none bg-primary text-primary-foreground text-xs font-medium tracking-wide hover:bg-primary/90 transition-colors duration-200 px-4 xl:px-5 h-9"
                         >
                             Hire me
                         </Button>
-
-                        <AnimatedThemeTogglerDemo />
 
                         <Button
                             variant="ghost"

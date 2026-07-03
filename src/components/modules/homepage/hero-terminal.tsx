@@ -200,7 +200,7 @@ export default function HeroTerminal() {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ...springSoft, delay: 0.3 }}
-      className="hidden lg:flex flex-col w-full max-w-md xl:max-w-lg shrink-0"
+      className="hidden lg:flex flex-col w-full max-w-md xl:max-w-lg shrink-0 self-center"
       onClick={() => ready && inputRef.current?.focus()}
     >
       <div className="border border-border bg-muted/20 backdrop-blur-sm overflow-hidden">

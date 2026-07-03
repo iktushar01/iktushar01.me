@@ -57,11 +57,11 @@ const Header: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, ease: easeInOut.ease }}
-      className="relative flex flex-col bg-background text-foreground px-4 sm:px-10 lg:px-16 pt-24 sm:pt-28 pb-8 sm:pb-12 lg:min-h-screen overflow-x-hidden"
+      className="relative flex flex-col bg-background text-foreground px-4 sm:px-10 lg:px-16 pt-24 sm:pt-28 pb-6 sm:pb-8 overflow-x-hidden"
     >
 
       {/* Main wordmark + terminal (desktop) */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10 lg:gap-12 lg:flex-1 py-6 sm:py-10 lg:py-20 min-w-0">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-8 py-4 sm:py-6 lg:py-8 min-w-0">
         <div className="flex flex-col justify-start min-w-0">
           <motion.p
             initial="hidden"
@@ -96,22 +96,14 @@ const Header: React.FC = () => {
             Next.js &mdash; resilient backends, considered interfaces, and code
             that holds up after the demo ends.
           </motion.p>
-        </div>
 
-        <HeroTerminal />
-      </div>
-
-      {/* Bottom strip: metadata table + actions */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        custom={4}
-        variants={fadeUp}
-        className="border-t border-border pt-5 sm:pt-6 mt-2 sm:mt-0"
-      >
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          {/* Actions — left on desktop */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0 order-2 lg:order-1">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            custom={4}
+            variants={fadeUp}
+            className="mt-6 sm:mt-7 flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
+          >
             <Button
               asChild
               size="lg"
@@ -131,25 +123,35 @@ const Header: React.FC = () => {
                 View Resume <ArrowUpRight className="ml-2 size-4" />
               </a>
             </Button>
-          </div>
-
-          {/* Metadata table — right on desktop */}
-          <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-3 flex-1 min-w-0 order-1 lg:order-2 lg:ml-auto lg:text-right">
-            {meta.map((item) => (
-              <div key={item.k} className="min-w-0">
-                <dt className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-1">
-                  {item.k}
-                </dt>
-                <dd className="text-sm font-medium text-foreground tracking-tight break-words">
-                  {item.v}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          </motion.div>
         </div>
 
+        <HeroTerminal />
+      </div>
+
+      {/* Bottom strip: metadata + socials */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        custom={5}
+        variants={fadeUp}
+        className="border-t border-border pt-4 sm:pt-5 mt-4 lg:mt-6"
+      >
+        <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-3">
+          {meta.map((item) => (
+            <div key={item.k} className="min-w-0">
+              <dt className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-1">
+                {item.k}
+              </dt>
+              <dd className="text-sm font-medium text-foreground tracking-tight break-words">
+                {item.v}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
         {/* Socials row */}
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-border/60">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mt-5 sm:mt-6 pt-4 border-t border-border/60">
           <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 shrink-0">
             Elsewhere
           </span>
