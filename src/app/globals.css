@@ -288,7 +288,16 @@ html[data-app-ready="true"] [data-app-content] {
   @apply my-8 border-border;
 }
 
-/* Very small black stroke for raster logos (subtle outline) */
+/* Hardcoded black stroke so yellow logo stays visible in light mode */
 .logo-stroke {
-  filter: drop-shadow(0 0 0.6px rgba(0, 0, 0, 0.95));
+  filter:
+    drop-shadow(0 0 0.4px #000)
+    drop-shadow(0.4px 0 0 #000)
+    drop-shadow(-0.4px 0 0 #000)
+    drop-shadow(0 0.4px 0 #000)
+    drop-shadow(0 -0.4px 0 #000)
+    drop-shadow(0.3px 0.3px 0 #000)
+    drop-shadow(-0.3px -0.3px 0 #000)
+    drop-shadow(0.3px -0.3px 0 #000)
+    drop-shadow(-0.3px 0.3px 0 #000);
 }

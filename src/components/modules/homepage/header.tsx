@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { springSoft, easeInOut } from "@/lib/motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import HeroTerminal from "@/components/modules/homepage/hero-terminal";
 
 const RESUME_PDF_PATH = "/resume.pdf";
 const CV_DOC_URL = "https://drive.google.com/file/d/1SRmpjnOP1ObxgMxFuA98vavWiP7SOxS-/view?usp=sharing";
@@ -59,41 +60,45 @@ const Header: React.FC = () => {
       className="relative flex flex-col bg-background text-foreground px-4 sm:px-10 lg:px-16 pt-24 sm:pt-28 pb-8 sm:pb-12 lg:min-h-screen overflow-x-hidden"
     >
 
-      {/* Main wordmark block */}
-      <div className="flex flex-col justify-start lg:flex-1 lg:justify-center py-6 sm:py-10 lg:py-20 min-w-0">
-        <motion.p
-          initial="hidden"
-          animate="visible"
-          custom={1}
-          variants={fadeUp}
-          className="text-sm sm:text-base font-medium text-primary mb-4 tracking-tight"
-        >
-          Md. Ibrahim Khalil Tushar
-        </motion.p>
+      {/* Main wordmark + terminal (desktop) */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10 lg:gap-12 lg:flex-1 py-6 sm:py-10 lg:py-20 min-w-0">
+        <div className="flex flex-col justify-start min-w-0">
+          <motion.p
+            initial="hidden"
+            animate="visible"
+            custom={1}
+            variants={fadeUp}
+            className="text-sm sm:text-base font-medium text-primary mb-4 tracking-tight"
+          >
+            Md. Ibrahim Khalil Tushar
+          </motion.p>
 
-        <motion.h1
-          initial="hidden"
-          animate="visible"
-          custom={2}
-          variants={fadeUp}
-          className="text-[clamp(2.25rem,10.5vw,6.5rem)] sm:text-[clamp(2.5rem,9vw,7rem)] font-semibold tracking-tighter leading-[0.9] text-foreground break-words"
-        >
-          Fullstack
-          <br />
-          Web Developer<span className="text-primary">.</span>
-        </motion.h1>
+          <motion.h1
+            initial="hidden"
+            animate="visible"
+            custom={2}
+            variants={fadeUp}
+            className="text-[clamp(2.25rem,10.5vw,6.5rem)] sm:text-[clamp(2.5rem,9vw,7rem)] font-semibold tracking-tighter leading-[0.9] text-foreground break-words"
+          >
+            Fullstack
+            <br />
+            Web Developer<span className="text-primary">.</span>
+          </motion.h1>
 
-        <motion.p
-          initial="hidden"
-          animate="visible"
-          custom={3}
-          variants={fadeUp}
-          className="mt-6 sm:mt-8 max-w-md text-sm sm:text-base text-muted-foreground leading-relaxed border-l border-border pl-5"
-        >
-          I build production web applications with the MERN stack and
-          Next.js &mdash; resilient backends, considered interfaces, and code
-          that holds up after the demo ends.
-        </motion.p>
+          <motion.p
+            initial="hidden"
+            animate="visible"
+            custom={3}
+            variants={fadeUp}
+            className="mt-6 sm:mt-8 max-w-md text-sm sm:text-base text-muted-foreground leading-relaxed border-l border-border pl-5"
+          >
+            I build production web applications with the MERN stack and
+            Next.js &mdash; resilient backends, considered interfaces, and code
+            that holds up after the demo ends.
+          </motion.p>
+        </div>
+
+        <HeroTerminal />
       </div>
 
       {/* Bottom strip: metadata table + actions */}
@@ -105,22 +110,8 @@ const Header: React.FC = () => {
         className="border-t border-border pt-5 sm:pt-6 mt-2 sm:mt-0"
       >
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          {/* Metadata table */}
-          <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-3 flex-1 min-w-0">
-            {meta.map((item) => (
-              <div key={item.k} className="min-w-0">
-                <dt className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-1">
-                  {item.k}
-                </dt>
-                <dd className="text-sm font-medium text-foreground tracking-tight break-words">
-                  {item.v}
-                </dd>
-              </div>
-            ))}
-          </dl>
-
-          {/* Actions */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0">
+          {/* Actions — left on desktop */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0 order-2 lg:order-1">
             <Button
               asChild
               size="lg"
@@ -141,6 +132,20 @@ const Header: React.FC = () => {
               </a>
             </Button>
           </div>
+
+          {/* Metadata table — right on desktop */}
+          <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-3 flex-1 min-w-0 order-1 lg:order-2 lg:ml-auto lg:text-right">
+            {meta.map((item) => (
+              <div key={item.k} className="min-w-0">
+                <dt className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-1">
+                  {item.k}
+                </dt>
+                <dd className="text-sm font-medium text-foreground tracking-tight break-words">
+                  {item.v}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
         {/* Socials row */}
