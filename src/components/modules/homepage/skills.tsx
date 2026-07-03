@@ -46,6 +46,8 @@ import { SectionHeader } from "@/components/modules/homepage/section-header";
 interface Skill {
   name: string;
   icon: React.ReactNode;
+  color: string;
+  darkColor?: string;
 }
 
 interface SkillGroup {
@@ -61,15 +63,15 @@ const skillsData: SkillGroup[] = [
     category: "Frontend",
     description: "Component-driven interfaces with deliberate state management and interaction detail.",
     skills: [
-      { name: "HTML5", icon: <FaHtml5 /> },
-      { name: "CSS3", icon: <FaCss3Alt /> },
-      { name: "Tailwind CSS", icon: <SiTailwindcss /> },
-      { name: "JavaScript", icon: <IoLogoJavascript /> },
-      { name: "TypeScript", icon: <SiTypescript /> },
-      { name: "React", icon: <FaReact /> },
-      { name: "Next.js", icon: <SiNextdotjs /> },
-      { name: "Webflow", icon: <SiWebflow /> },
-      { name: "WordPress", icon: <FaWordpress /> },
+      { name: "HTML5", icon: <FaHtml5 />, color: "#E34F26" },
+      { name: "CSS3", icon: <FaCss3Alt />, color: "#1572B6" },
+      { name: "Tailwind CSS", icon: <SiTailwindcss />, color: "#06B6D4" },
+      { name: "JavaScript", icon: <IoLogoJavascript />, color: "#F7DF1E" },
+      { name: "TypeScript", icon: <SiTypescript />, color: "#3178C6" },
+      { name: "React", icon: <FaReact />, color: "#61DAFB" },
+      { name: "Next.js", icon: <SiNextdotjs />, color: "#000000", darkColor: "#ffffff" },
+      { name: "Webflow", icon: <SiWebflow />, color: "#4353FF" },
+      { name: "WordPress", icon: <FaWordpress />, color: "#21759B" },
     ],
   },
   {
@@ -77,14 +79,14 @@ const skillsData: SkillGroup[] = [
     category: "Backend & Databases",
     description: "Business logic, architecture, and schema design across relational and non-relational stores.",
     skills: [
-      { name: "Node.js", icon: <FaNodeJs /> },
-      { name: "Express", icon: <SiExpress /> },
-      { name: "Go", icon: <SiGo /> },
-      { name: "PostgreSQL", icon: <SiPostgresql /> },
-      { name: "MongoDB", icon: <SiMongodb /> },
-      { name: "Prisma", icon: <SiPrisma /> },
-      { name: "Firebase", icon: <SiFirebase /> },
-      { name: "Redis", icon: <SiRedis /> },
+      { name: "Node.js", icon: <FaNodeJs />, color: "#339933" },
+      { name: "Express", icon: <SiExpress />, color: "#000000", darkColor: "#ffffff" },
+      { name: "Go", icon: <SiGo />, color: "#00ADD8" },
+      { name: "PostgreSQL", icon: <SiPostgresql />, color: "#4169E1" },
+      { name: "MongoDB", icon: <SiMongodb />, color: "#47A248" },
+      { name: "Prisma", icon: <SiPrisma />, color: "#2D3748", darkColor: "#A0AEC0" },
+      { name: "Firebase", icon: <SiFirebase />, color: "#FFCA28" },
+      { name: "Redis", icon: <SiRedis />, color: "#DC382D" },
     ],
   },
   {
@@ -92,14 +94,14 @@ const skillsData: SkillGroup[] = [
     category: "Tools & DevOps",
     description: "Version control, development environments, design tools, and deployment workflows.",
     skills: [
-      { name: "Git", icon: <FaGitAlt /> },
-      { name: "GitHub", icon: <FaGithub /> },
-      { name: "VS Code", icon: <VscCode /> },
-      { name: "Postman", icon: <SiPostman /> },
-      { name: "Figma", icon: <FaFigma /> },
-      { name: "Vercel", icon: <SiVercel /> },
-      { name: "Docker", icon: <FaDocker /> },
-      { name: "Linux", icon: <FaLinux /> },
+      { name: "Git", icon: <FaGitAlt />, color: "#F05032" },
+      { name: "GitHub", icon: <FaGithub />, color: "#181717", darkColor: "#ffffff" },
+      { name: "VS Code", icon: <VscCode />, color: "#007ACC" },
+      { name: "Postman", icon: <SiPostman />, color: "#FF6C37" },
+      { name: "Figma", icon: <FaFigma />, color: "#F24E1E" },
+      { name: "Vercel", icon: <SiVercel />, color: "#000000", darkColor: "#ffffff" },
+      { name: "Docker", icon: <FaDocker />, color: "#2496ED" },
+      { name: "Linux", icon: <FaLinux />, color: "#FCC624" },
     ],
   },
 ];
@@ -134,9 +136,17 @@ const SkillGroupRow: React.FC<{ group: SkillGroup; index: number }> = ({ group, 
           {group.skills.map((skill) => (
             <li
               key={skill.name}
-              className="flex items-center gap-2.5 py-2 border-b border-border/60 sm:border-b-0"
+              className="group flex items-center gap-2.5 py-2 border-b border-border/60 sm:border-b-0"
+              style={
+                {
+                  "--skill-color": skill.color,
+                  "--skill-dark-color": skill.darkColor ?? skill.color,
+                } as React.CSSProperties
+              }
             >
-              <span className="text-base text-muted-foreground">{skill.icon}</span>
+              <span className="text-base text-muted-foreground transition-colors duration-200 group-hover:text-[var(--skill-color)] dark:group-hover:text-[var(--skill-dark-color)]">
+                {skill.icon}
+              </span>
               <span className="text-sm font-medium text-foreground tracking-tight">
                 {skill.name}
               </span>

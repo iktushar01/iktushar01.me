@@ -59,13 +59,13 @@ const EducationRow: React.FC<{ item: EducationItem; idx: number }> = ({ item, id
     {/* Index + logo + status */}
     <div className="lg:col-span-3 flex items-start gap-4">
       <span className="text-xs font-mono text-muted-foreground/50 pt-1">{item.index}</span>
-      <div className="relative w-12 h-12 rounded-md border border-border bg-card shrink-0 overflow-hidden">
+      <div className="relative size-16 sm:size-20 shrink-0 overflow-hidden rounded-full border border-border">
         <Image
           src={item.logo}
           alt={`${item.institution} logo`}
           fill
-          sizes="48px"
-          className="object-contain p-1.5"
+          sizes="(max-width: 640px) 64px, 80px"
+          className="object-cover"
         />
       </div>
       <span className="text-[10px] uppercase tracking-widest text-muted-foreground pt-1.5">
