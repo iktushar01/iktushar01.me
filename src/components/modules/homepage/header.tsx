@@ -57,11 +57,11 @@ const Header: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, ease: easeInOut.ease }}
-      className="relative flex flex-col bg-background text-foreground px-4 sm:px-10 lg:px-16 pt-24 sm:pt-28 pb-6 sm:pb-8 overflow-x-hidden"
+      className="relative flex min-h-screen flex-col bg-background text-foreground px-4 sm:px-10 lg:px-16 pt-24 sm:pt-28 pb-6 sm:pb-8 lg:pb-10 overflow-x-hidden"
     >
 
-      {/* Main wordmark + terminal (desktop) */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-8 py-4 sm:py-6 lg:py-8 min-w-0">
+      {/* Main wordmark + terminal — grows to fill viewport */}
+      <div className="flex flex-1 flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-10 py-4 sm:py-6 min-w-0">
         <div className="flex flex-col justify-start min-w-0">
           <motion.p
             initial="hidden"
@@ -129,33 +129,47 @@ const Header: React.FC = () => {
         <HeroTerminal />
       </div>
 
-      {/* Bottom strip: metadata + socials */}
+      {/* Bottom cards: metadata + socials */}
       <motion.div
         initial="hidden"
         animate="visible"
         custom={5}
         variants={fadeUp}
-        className="border-t border-border pt-4 sm:pt-5 mt-4 lg:mt-6"
+        className="mt-auto w-full shrink-0"
       >
-        <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-3">
-          {meta.map((item) => (
-            <div key={item.k} className="min-w-0">
-              <dt className="text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-1">
-                {item.k}
-              </dt>
-              <dd className="text-sm font-medium text-foreground tracking-tight break-words">
-                {item.v}
-              </dd>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          {meta.map((item, idx) => (
+            <div
+              key={item.k}
+              className="group relative border border-border bg-muted/20 backdrop-blur-sm p-4 sm:p-5 transition-colors duration-200 hover:border-primary/35 hover:bg-muted/35"
+            >
+              <span className="absolute top-0 left-0 w-8 h-px bg-primary/60 group-hover:w-full transition-all duration-300" />
+              <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground/70">
+                {String(idx + 1).padStart(2, "0")} / {item.k}
+              </span>
+              <p className="mt-2 text-sm sm:text-[15px] font-medium text-foreground tracking-tight leading-snug break-words">
+                {item.k === "Status" ? (
+                  <span className="inline-flex items-center gap-2">
+                    <span className="relative flex size-2 shrink-0">
+                      <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400/60" />
+                      <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
+                    </span>
+                    {item.v}
+                  </span>
+                ) : (
+                  item.v
+                )}
+              </p>
             </div>
           ))}
-        </dl>
+        </div>
 
-        {/* Socials row */}
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mt-5 sm:mt-6 pt-4 border-t border-border/60">
+        {/* Socials card */}
+        <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-border bg-muted/20 backdrop-blur-sm p-4 sm:px-5 sm:py-4 transition-colors duration-200 hover:border-primary/25">
           <span className="text-[10px] uppercase tracking-widest text-muted-foreground/70 shrink-0">
             Elsewhere
           </span>
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
             {inlineSocials.map((social) => (
               <a
                 key={social.label}
@@ -163,7 +177,7 @@ const Header: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200 text-sm"
+                className="inline-flex size-9 items-center justify-center border border-border bg-background/60 text-muted-foreground hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition-colors duration-200 text-sm"
               >
                 <social.Icon />
               </a>
