@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { springSnappy, springSoft, easeInOut } from "@/lib/motion";
 import { Rocket, Layers, Cpu, Database, ArrowUpRight } from "lucide-react";
 
-const RESUME_PDF_PATH = "/resume.pdf";
+const RESUME_PDF_PATH = "/Ibrahim_Khalil_Tushar_Resume.pdf";
 const CV_DOC_URL = "https://drive.google.com/file/d/1kDBaB5KUNH5UAQdH_rf_ps6SyojpBALF/view?usp=sharing";
 
 const floatingIcon: Variants = {
