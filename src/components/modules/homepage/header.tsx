@@ -15,7 +15,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import HeroTerminal from "@/components/modules/homepage/hero-terminal";
 
 const RESUME_PDF_PATH = "/resume.pdf";
-const CV_DOC_URL = "https://drive.google.com/file/d/1SRmpjnOP1ObxgMxFuA98vavWiP7SOxS-/view?usp=sharing";
+const CV_DOC_URL = "https://drive.google.com/file/d/1iN_l8gCrnPxz86haoGZsqoM7Tc50kWAG/view?usp=sharing";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 10 },
