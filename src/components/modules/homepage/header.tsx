@@ -14,7 +14,7 @@ import { springSoft, easeInOut } from "@/lib/motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import HeroTerminal from "@/components/modules/homepage/hero-terminal";
 
-const RESUME_PDF_PATH = "/resume.pdf";
+const RESUME_PDF_PATH = "/Ibrahim_Khalil_Tushar_Resume.pdf";
 const CV_DOC_URL = "https://drive.google.com/file/d/1iN_l8gCrnPxz86haoGZsqoM7Tc50kWAG/view?usp=sharing";
 
 const fadeUp: Variants = {
