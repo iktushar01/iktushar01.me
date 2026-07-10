@@ -3,22 +3,22 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 const GREETINGS = [
-    { word: "Hello", lang: "English" },
-    { word: "Bonjour", lang: "French" },
-    { word: "Hola", lang: "Spanish" },
-    { word: "Ciao", lang: "Italian" },
-    { word: "Hallo", lang: "German" },
-    { word: "Olá", lang: "Portuguese" },
-    { word: "こんにちは", lang: "Japanese" },
-    { word: "안녕하세요", lang: "Korean" },
-    { word: "你好", lang: "Chinese" },
-    { word: "নমস্কার", lang: "Bengali" },
-    { word: "مرحبا", lang: "Arabic" },
-    { word: "Привет", lang: "Russian" },
-    { word: "नमस्ते", lang: "Hindi" },
-    { word: "Merhaba", lang: "Turkish" },
-    { word: "Hej", lang: "Swedish" },
-  ];
+  { word: "Hello", lang: "English" },
+  { word: "Bonjour", lang: "French" },
+  { word: "Hola", lang: "Spanish" },
+  { word: "Ciao", lang: "Italian" },
+  { word: "Hallo", lang: "German" },
+  { word: "Olá", lang: "Portuguese" },
+  { word: "こんにちは", lang: "Japanese" },
+  { word: "안녕하세요", lang: "Korean" },
+  { word: "你好", lang: "Chinese" },
+  { word: "مرحبا", lang: "Arabic" },
+  { word: "Привет", lang: "Russian" },
+  { word: "नमस्ते", lang: "Hindi" },
+  { word: "Merhaba", lang: "Turkish" },
+  { word: "Hej", lang: "Swedish" },
+   { word: "হ্যালো", lang: "Bengali" },
+];
 
 const WORD_INTERVAL = 150;
 
